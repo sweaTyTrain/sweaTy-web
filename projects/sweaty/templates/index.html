@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Sweaty Exercise Page</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    /* Custom styling for the page */
+    body {
+      background-color: #000000; /* Black background */
+      color: #ffffff; /* White text color */
+      margin: 0;
+      padding: 0;
+    }
+    .navbar {
+      background-color: #000000; /* Black navbar background */
+    }
+    .navbar a {
+      color: #ffffff; /* White text color for navbar links */
+    }
+    .wave-image {
+      width: 100%;
+      max-width: 100vw; /* 100% of viewport width */
+      height: auto;
+      position: relative;
+      margin-bottom: -4px; /* Remove default margin for better alignment */
+    }
+    .black-box {
+      background-color: #000000; /* Black */
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+    }
+    .start-button {
+      background-color: #87ceeb; /* Sky Blue */
+      color: #000000; /* Black */
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .sub-heading {
+      font-size: 12px;
+      color: #87ceeb; /* Sky Blue */
+      margin-top: 5px; /* Adjust as needed */
+    }
+    .contact-info {
+      font-size: 12px;
+      margin-left: 10px; /* Adjust as needed */
+      margin-bottom: 10px; /* Adjust as needed */
+    }
+    .copyright {
+      font-size: 10px;
+      margin-left: 10px; /* Adjust as needed */
+      margin-bottom: 10px; /* Adjust as needed */
+      text-align: left;
+      margin-top: 10px; /* Add margin-top for spacing */
+    }
+    .sweaty-title {
+      color: #87ceeb; /* Sky Blue */
+      font-size: 28px;
+    }
+    .vr-ai-text {
+      color: #ffffff; /* White */
+      font-size: 15px;
+      margin-top: 10px; /* Adjust as needed */
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <a class="navbar-brand" href="#">Sweaty Exercise</a>
+  <span class="navbar-text text-white">VR/AI Simulation</span>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Contact</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">About</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#">Login</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Wave Image and Start Button Section -->
+<div class="container-fluid p-0">
+  <img src="https://t3.ftcdn.net/jpg/03/88/45/12/360_F_388451241_EwDnK81imLLHNjvL2CNLucIMaZ0mcLBh.jpg" alt="Wave Image" class="wave-image">
+  <div class="black-box">
+    <p class="text-white sweaty-title">Welcome To <span>SweaTy</span></p>
+    <p class="sub-heading">You can enjoy exercise like a game</p>
+
+    <form action="{% url 'second' %}" method="get">
+    <button class="start-button"> Start</button>
+    </form>
+  </div>
+</div>
+<br>
+<br>
+
+<div class="row">
+  <div class="col-md-12 copyright">
+    <p>Tel: 010-4259-0716</p>
+    <p>Email: sketchdesktv@gmail.com</p>
+    <p>© 2024 CopyRight By Lee. All Rights reserved.</p>
+  </div>
+</div>
+
+</body>
+</html>
