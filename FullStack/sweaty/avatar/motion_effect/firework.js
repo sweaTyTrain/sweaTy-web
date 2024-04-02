@@ -112,6 +112,11 @@ document.addEventListener("DOMContentLoaded", (_) => {
         function frame() {
             let currentTime = Date.now(); // 현재 시간 기록
             let elapsedTime = (currentTime - startTime) / 1000; // 경과 시간 (초 단위)
+            // 오디오 요소 생성
+            var audio = new Audio('FullStack/sweaty/avatar/motion_effect/mp3-output-ttsfree(dot)com (1).mp3');
+
+            // 재생
+            audio.play();
     
             if (elapsedTime < 5) { // 5초가 지날 때까지 애니메이션 실행
 
