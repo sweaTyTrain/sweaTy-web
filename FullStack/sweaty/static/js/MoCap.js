@@ -646,6 +646,14 @@ const onResults = (results) => {
             receivedDataElement3.innerHTML = 'SquatAccu: ' + String(parseFloat(jsonAccuracy)*100) + '%'; // HTML
             
 
+            // jsonAccuracy가 90 이상이면 effect js 로드
+            if (parseFloat(jsonAccuracy) >= 0.9) {
+                // 외부 JavaScript 파일 로드
+                var script = document.createElement('script');
+                script.src = 'FullStack/sweaty/avatar/motion_effect/firework.js'; // 스크립트 파일 경로 지정
+                document.head.appendChild(script);
+            }
+
             //aframe 가상환경 안에  텍스트 로드
             //const shoulderText2 = document.querySelector('#shoulderText2');
             //shoulderText2.setAttribute('value', `probability1: (${JSON.stringify(jsonData)})`);
