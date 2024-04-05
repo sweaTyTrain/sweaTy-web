@@ -55,34 +55,85 @@ animate();
 
 /* VRM CHARACTER SETUP */
 
-// Import Character VRM
+//GLTFloader
 const loader = new THREE.GLTFLoader();
-loader.crossOrigin = "anonymous";
-// Import model from URL, add your own model here
-loader.load(
-    modelUrl,
 
-    (gltf) => {
-        THREE.VRMUtils.removeUnnecessaryJoints(gltf.scene);
 
-        THREE.VRM.from(gltf).then((vrm) => {
-            scene.add(vrm.scene);
-            currentVrm = vrm;
-            currentVrm.scene.rotation.y = Math.PI; // Rotate model 180deg to face camera
-        });
-    },
+//아바타 로드 및 교체 함수
+function loadModel(modelUrl) {
 
-    (progress) => console.log("Loading model...", 100.0 * (progress.loaded / progress.total), "%"),
+    loader.crossOrigin = "anonymous";
+    loader.load(
+        modelUrl,
+        (gltf) => {
+            THREE.VRMUtils.removeUnnecessaryJoints(gltf.scene);
 
-    (error) => console.error(error)
-);
+            THREE.VRM.from(gltf).then((vrm) => {
+                if (currentVrm) {
+                    scene.remove(currentVrm.scene);
+                    currentVrm.dispose();
+                }
 
-loader.load('../../static/assets/lowPoly.gltf', (gltf) => {
+                scene.add(vrm.scene);
+                currentVrm = vrm;
+                currentVrm.scene.rotation.y = Math.PI; // Rotate model 180deg to face camera
+            });
+        },
+        (progress) => console.log("Loading model...", 100.0 * (progress.loaded / progress.total), "%"),
+        (error) => console.error(error)
+    );
+}
+
+loadModel(modelUrl);
+
+$("#loadModelButton1").click(function() {
+    loadModel(modelUrl);
+});
+
+$("#loadModelButton2").click(function() {
+    loadModel(modelUrl);
+});
+
+
+
+
+
+let currentMap = null;
+//맵 로드 및 교체 함수
+
+function loadMap (MapUrl){
+    loader.load(MapUrl, (gltf) => {
     const mesh = gltf.scene;
     mesh.position.set(-2.0, -47.0, 10);
     mesh.scale.set(2, 2, 2);
     scene.add(mesh);
+    currentMap = mesh;
 })
+
+}
+loadMap (MapUrl);
+
+ $("#image-button1").click(function() {
+    if (currentMap) {
+        scene.remove(currentMap);
+    }
+
+    loadMap (MapUrl);
+ });
+
+  $("#image-button2").click(function() {
+    if (currentMap) {
+        scene.remove(currentMap);
+    }
+
+    loadMap (MapUrl);
+ });
+
+
+
+
+
+
 
 // loader.load('../../static/assets/gym.gltf', (gltf) => {
 //     const mesh = gltf.scene;
@@ -159,6 +210,12 @@ fontLoader.load('../../static/fonts/DungGeunMo_Regular.json', function (font) {
     scene.add(textMesh);
     console.log("새로생성");
 });
+
+
+
+
+
+
 
 // Animate Rotation Helper function
 // 앉을때 양반다리 모양으로 접히는것이 rigRotation함수를 적용한 관절이 잘못된 것이 아닐까?
