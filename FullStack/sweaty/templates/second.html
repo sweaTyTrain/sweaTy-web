@@ -1,5 +1,5 @@
 {% load static %}
-
+{% csrf_token %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -56,6 +56,25 @@
             font-size: 48px;
             color: black;
         }
+
+        #image-button-container {
+            position: fixed;
+            top: 10px; /* Adjust top position as needed */
+            right: 10px; /* Adjust right position as needed */
+            z-index: 10000; /* Ensure it's above other content */
+            display: flex;
+            flex-direction: column; /* Arrange items vertically */
+            align-items: flex-end; /* Align items to the right */
+        }
+        #image-button1 {
+            width: 100px; /* Adjust width as needed */
+            height: 70px; /* Adjust height as needed */
+            margin-bottom: 10px; /* Adjust spacing between buttons */
+        }
+       #image-button2{
+            width: 100px; /* Adjust width as needed */
+            height: 70px; /* Adjust height as needed */
+        }
     </style>
   </head>
   <body>
@@ -71,15 +90,61 @@
       </section>
     </div>
     <h1 class="notranslate">
+          <button id="loadModelButton1">캐릭터1</button>
+    <button id="loadModelButton2">캐릭터2</button>
+
       <p id="showClass" ></p>
       <p id="showPre" ></p>
       <p id="showCnt" ></p>
       <p id="showSquatAcuu" ></p>
     </h1>
-    
-    <script>
-        const jsonUrl = "{% url 'test' %}";
-        const modelUrl = "{% static 'model/three-vrm-girl.vrm' %}";
+
+
+
+
+    <div id="image-button-container">
+        <img id="image-button1" src="{% static 'img/field.jpg' %}" alt="Image Button">
+        <img id="image-button2" src="{% static 'img/desert.jpg' %}" alt="Image Button">
+    </div>
+
+
+
+
+
+
+        <script>
+        const jsonUrl = {% url 'test' %}
+        let modelUrl = "{% static 'model/sukuna.vrm' %}";        //초기 아바타
+        let MapUrl = "{% static 'assets/lowPoly.gltf' %}";       //초기 맵
+
+
+        //아바타 교체 버튼
+        $("#loadModelButton1").click(function() {
+            modelUrl = "{% static 'model/sukuna.vrm' %}"; // 캐릭터1 모델의 URL 설정
+
+        });
+
+        $("#loadModelButton2").click(function() {
+            modelUrl = "{% static 'model/three-vrm-girl.vrm' %}"; // 캐릭터2 모델의 URL 설정
+
+        });
+
+
+
+
+          //맵 교체 버튼
+          $("#image-button1").click(function() {
+                MapUrl = "{% static 'assets/lowPoly.gltf' %}";            //초원맵으로 바꿀것
+
+          });
+
+          $("#image-button2").click(function() {
+               MapUrl = "{% static 'assets/scene.gltf' %}";                 //사막맵으로 바꿀것
+               });
+
+
+
+
     </script>
     <script type="module" src="{% static 'js/MoCap.js' %}"></script>
 
