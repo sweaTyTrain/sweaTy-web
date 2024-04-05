@@ -1,5 +1,5 @@
 {% load static %}
-
+{% csrf_token %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -18,6 +18,10 @@
       <script src="https://unpkg.com/three@0.133.0/build/three.js"></script>
       <!--     GLTF Loader for Three.js -->
       <script src="https://unpkg.com/three@0.133.0/examples/js/loaders/GLTFLoader.js"></script>
+      <script src="https://unpkg.com/three@0.133.0/examples/js/loaders/FontLoader.js"></script>
+      <script src="https://unpkg.com/three@0.133.0/examples/js/geometries/TextGeometry.js"></script>
+      <script src="https://unpkg.com/three@0.133.0/examples/js/loaders/RGBELoader.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@tweenjs/tween.js@23.1.1/dist/tween.umd.min.js"></script>
       <!--     Orbit Controls for Three.js -->
       <script src="https://unpkg.com/three@0.133.0/examples/js/controls/OrbitControls.js"></script>
       <!--     VRM Loader for Three.js -->
@@ -34,11 +38,49 @@
       <!--     Kalidokit Kinematic Solver -->
       <script src="https://cdn.jsdelivr.net/npm/kalidokit@1.1/dist/kalidokit.umd.js"></script>
       <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+
+      <style>
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        #loading-text {
+            font-size: 48px;
+            color: black;
+        }
+
+        #image-button-container {
+            position: fixed;
+            top: 10px; /* Adjust top position as needed */
+            right: 10px; /* Adjust right position as needed */
+            z-index: 10000; /* Ensure it's above other content */
+            display: flex;
+            flex-direction: column; /* Arrange items vertically */
+            align-items: flex-end; /* Align items to the right */
+        }
+        #image-button1 {
+            width: 100px; /* Adjust width as needed */
+            height: 70px; /* Adjust height as needed */
+            margin-bottom: 10px; /* Adjust spacing between buttons */
+        }
+       #image-button2{
+            width: 100px; /* Adjust width as needed */
+            height: 70px; /* Adjust height as needed */
+        }
+    </style>
   </head>
   <body>
-
-
-
+    <div id="loading-screen">
+      <p id="loading-text">Loading...</p>
+    </div>
 
     <div class="preview">
       <video class="input_video" width="1280px" height="720px"></video>
@@ -48,22 +90,61 @@
       </section>
     </div>
     <h1 class="notranslate">
+          <button id="loadModelButton1">캐릭터1</button>
+    <button id="loadModelButton2">캐릭터2</button>
+
       <p id="showClass" ></p>
       <p id="showPre" ></p>
       <p id="showCnt" ></p>
       <p id="showSquatAcuu" ></p>
     </h1>
 
-    <!-- <img src="{% static 'js/Metal_Tiles_003_height.png' %}" alt="Height Map">
-    <img src="{% static 'js/Metal_Tiles_003_basecolor.jpg' %}" alt="Basecolor Map">
-    <img src="{% static 'js/Metal_Tiles_003_normal.jpg' %}" alt="Normal Map">
-    <img src="{% static 'js/Metal_Tiles_003_roughness.jpg' %}" alt="Roughness Map">
-    <img src="{% static 'js/Metal_Tiles_003_ambientOcclusion.jpg' %}" alt="AmbientOcclusion Map">
-    <img src="{% static 'js/Metal_Tiles_003_metallic.jpg' %}" alt="Metallic Map"> -->
-    
-    <script>
-        const jsonUrl = "{% url 'test' %}";
-        const modelUrl = "{% static 'model/three-vrm-girl.vrm' %}";
+
+
+
+    <div id="image-button-container">
+        <img id="image-button1" src="{% static 'img/field.jpg' %}" alt="Image Button">
+        <img id="image-button2" src="{% static 'img/desert.jpg' %}" alt="Image Button">
+    </div>
+
+
+
+
+
+
+        <script>
+        const jsonUrl = {% url 'test' %}
+        let modelUrl = "{% static 'model/sukuna.vrm' %}";        //초기 아바타
+        let MapUrl = "{% static 'assets/lowPoly.gltf' %}";       //초기 맵
+
+
+        //아바타 교체 버튼
+        $("#loadModelButton1").click(function() {
+            modelUrl = "{% static 'model/sukuna.vrm' %}"; // 캐릭터1 모델의 URL 설정
+
+        });
+
+        $("#loadModelButton2").click(function() {
+            modelUrl = "{% static 'model/three-vrm-girl.vrm' %}"; // 캐릭터2 모델의 URL 설정
+
+        });
+
+
+
+
+          //맵 교체 버튼
+          $("#image-button1").click(function() {
+                MapUrl = "{% static 'assets/lowPoly.gltf' %}";            //초원맵으로 바꿀것
+
+          });
+
+          $("#image-button2").click(function() {
+               MapUrl = "{% static 'assets/scene.gltf' %}";                 //사막맵으로 바꿀것
+               });
+
+
+
+
     </script>
     <script type="module" src="{% static 'js/MoCap.js' %}"></script>
 
