@@ -12,8 +12,12 @@ renderer.setPixelRatio(window.devicePixelRatio);
 document.body.appendChild(renderer.domElement);
 
 // camera
-const orbitCamera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 1000);
-orbitCamera.position.set(0.0, 0.0, 4.4);
+const orbitCamera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+orbitCamera.position.set(0.0, 20.0, 54.4);
+
+// 시작 위치와 최종 위치 정의
+const start = { x: orbitCamera.position.x, y: orbitCamera.position.y, z: orbitCamera.position.z };
+const target = { x: 0.0, y: 2.0, z: 7.4 }; // 원하는 새로운 위치
 
 // controls
 const orbitControls = new THREE.OrbitControls(orbitCamera, renderer.domElement);
@@ -26,42 +30,12 @@ const scene = new THREE.Scene();
 
 // light
 const light = new THREE.DirectionalLight(0xffffff);
-light.position.set(1.0, 1.0, 1.0).normalize();
+light.position.set(2.0, 2.0, 1.0).normalize();
+light.intensity = 1.5; // 밝기 조절
 scene.add(light);
 
-const textureLoader = new THREE.TextureLoader();
-const tilesBaseColor = textureLoader.load("../../static/img/Metal_Tiles_003_basecolor.jpg");
-const tilesNormalMap = textureLoader.load("../../static/img/Metal_Tiles_003_normal.jpg");
-const tilesHeightMap = textureLoader.load("../../static/img/Metal_Tiles_003_height.png");
-const tilesRoughnessMap = textureLoader.load("../../static/img/Metal_Tiles_003_roughness.jpg");
-const tilesAmbientOcclusionMap = textureLoader.load("../../static/img/Metal_Tiles_003_ambientOcclusion.jpg");
-const tilesMetallicMap = textureLoader.load("../../static/img/Metal_Tiles_003_metallic.jpg");
-
-const plane = new THREE.Mesh(new THREE.PlaneGeometry(2, 2, 512, 512), 
-    new THREE.MeshStandardMaterial(
-        {
-            map: tilesBaseColor,
-            normalMap: tilesNormalMap,
-            displacementMap: tilesHeightMap,
-            displacementScale: 0.1,
-            roughnessMap: tilesRoughnessMap,
-            roughness: 0.5,
-            aoMap: tilesAmbientOcclusionMap,
-        }
-
-))
-
-plane.rotation.x = Math.PI * 3/2;
-plane.geometry.attributes.uv2 = plane.geometry.attributes.uv;
-scene.add(plane);
-
-// // 바닥 생성
-// const groundSize = 10; // 바닥의 크기
-// const groundMaterial = new THREE.MeshBasicMaterial({ color: 0x808080, side: THREE.DoubleSide }); // 바닥의 재질
-// const groundGeometry = new THREE.PlaneGeometry(groundSize, groundSize); // 바닥의 geometry 생성
-// const groundMesh = new THREE.Mesh(groundGeometry, groundMaterial);// 바닥의 mesh 생성
-// groundMesh.rotation.x = Math.PI / 2; // 바닥의 회전 설정 (예: 바닥을 x축 주변으로 90도 회전)
-// scene.add(groundMesh);  // 씬에 바닥 추가
+// const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
+// scene.add(ambientLight);
 
 // Main Render Loop
 const clock = new THREE.Clock();
@@ -73,33 +47,175 @@ function animate() {
         // Update model to render physics
         currentVrm.update(clock.getDelta());
     }
+    TWEEN.update();
+    orbitControls.update();
     renderer.render(scene, orbitCamera);
 }
 animate();
 
 /* VRM CHARACTER SETUP */
 
-// Import Character VRM
+//GLTFloader
 const loader = new THREE.GLTFLoader();
-loader.crossOrigin = "anonymous";
-// Import model from URL, add your own model here
-loader.load(
-    modelUrl,
 
-    (gltf) => {
-        THREE.VRMUtils.removeUnnecessaryJoints(gltf.scene);
 
-        THREE.VRM.from(gltf).then((vrm) => {
-            scene.add(vrm.scene);
-            currentVrm = vrm;
-            currentVrm.scene.rotation.y = Math.PI; // Rotate model 180deg to face camera
-        });
-    },
+//아바타 로드 및 교체 함수
+function loadModel(modelUrl) {
 
-    (progress) => console.log("Loading model...", 100.0 * (progress.loaded / progress.total), "%"),
+    loader.crossOrigin = "anonymous";
+    loader.load(
+        modelUrl,
+        (gltf) => {
+            THREE.VRMUtils.removeUnnecessaryJoints(gltf.scene);
 
-    (error) => console.error(error)
-);
+            THREE.VRM.from(gltf).then((vrm) => {
+                if (currentVrm) {
+                    scene.remove(currentVrm.scene);
+                    currentVrm.dispose();
+                }
+
+                scene.add(vrm.scene);
+                currentVrm = vrm;
+                currentVrm.scene.rotation.y = Math.PI; // Rotate model 180deg to face camera
+            });
+        },
+        (progress) => console.log("Loading model...", 100.0 * (progress.loaded / progress.total), "%"),
+        (error) => console.error(error)
+    );
+}
+
+loadModel(modelUrl);
+
+$("#loadModelButton1").click(function() {
+    loadModel(modelUrl);
+});
+
+$("#loadModelButton2").click(function() {
+    loadModel(modelUrl);
+});
+
+
+
+
+
+let currentMap = null;
+//맵 로드 및 교체 함수
+
+function loadMap (MapUrl){
+    loader.load(MapUrl, (gltf) => {
+    const mesh = gltf.scene;
+    mesh.position.set(-2.0, -47.0, 10);
+    mesh.scale.set(2, 2, 2);
+    scene.add(mesh);
+    currentMap = mesh;
+})
+
+}
+loadMap (MapUrl);
+
+ $("#image-button1").click(function() {
+    if (currentMap) {
+        scene.remove(currentMap);
+    }
+
+    loadMap (MapUrl);
+ });
+
+  $("#image-button2").click(function() {
+    if (currentMap) {
+        scene.remove(currentMap);
+    }
+
+    loadMap (MapUrl);
+ });
+
+
+
+
+
+
+
+// loader.load('../../static/assets/gym.gltf', (gltf) => {
+//     const mesh = gltf.scene;
+//     mesh.position.set(-1.0, 0.0, 2.0);
+//     mesh.rotation.set(0.0, Math.PI/2, 0.0);
+//     mesh.scale.set(0.3, 0.3, 0.3);
+//     scene.add(mesh);
+// })
+
+const rgbeloader = new THREE.RGBELoader();
+
+rgbeloader.load('../../static/assets/sunflowers_puresky_8k.hdr', (texture) => {
+    texture.mapping = THREE.EquirectangularReflectionMapping;
+    scene.background = texture;
+
+    // // 파일 로드 완료 후 로딩 화면 숨기기
+    // loadingScreen.style.display = 'none';
+    document.getElementById('loading-screen').style.display = 'none';
+    // Tween.js를 사용하여 애니메이션 적용
+    const tween = new TWEEN.Tween(start)
+    .to(target, 3000) // 지속 시간을 밀리초 단위로 설정 (3초)
+    .easing(TWEEN.Easing.Quadratic.InOut) // 이징 함수 설정 (선택 사항)
+    .onUpdate(() => {
+        // 애니메이션 갱신될 때마다 카메라 위치 업데이트
+        orbitCamera.position.set(start.x, start.y, start.z);
+    })
+    .onComplete(() => {
+        // 애니메이션이 끝나면 3, 2, 1 글자가 1초 간격으로 차례대로 나오게 함
+        const countDownDiv = document.createElement('div');
+        countDownDiv.style.position = 'fixed';
+        countDownDiv.style.top = '50%';
+        countDownDiv.style.left = '50%';
+        countDownDiv.style.transform = 'translate(-50%, -50%)';
+        countDownDiv.style.fontSize = '48px';
+        countDownDiv.style.color = 'black';
+        countDownDiv.innerText = '3';
+        document.body.appendChild(countDownDiv);
+
+        setTimeout(() => {
+            countDownDiv.innerText = '2';
+        }, 1000);
+
+        setTimeout(() => {
+            countDownDiv.innerText = '1';
+        }, 2000);
+        setTimeout(() => {
+            countDownDiv.innerText = 'Start!';
+        }, 3000);
+        setTimeout(() => {
+            document.body.removeChild(countDownDiv);
+        }, 4000);
+    })
+    .start(); // 애니메이션 시작
+});
+
+const fontLoader = new THREE.FontLoader();
+fontLoader.load('../../static/fonts/DungGeunMo_Regular.json', function (font) {
+    const textGeometry = new THREE.TextGeometry('Count: 0', {
+        font: font,
+        size: 1,
+        height: 0.1,
+        bevelEnabled: true, // 윤곽선 활성화
+        bevelSize: 0.05, // 윤곽선 크기
+        bevelThickness: 0.05, // 윤곽선 두께
+    });
+
+    const textMaterial = new THREE.MeshStandardMaterial({ color: 0x507A03 }); // 텍스트 색상
+    const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+
+    // 윤곽선 색상을 검정색(0x000000)으로 설정
+    textMaterial.emissive.setHex(0x000000);
+    textMesh.name = 'countText';
+    textMesh.position.set(-3, 3, 0);
+    scene.add(textMesh);
+    console.log("새로생성");
+});
+
+
+
+
+
+
 
 // Animate Rotation Helper function
 // 앉을때 양반다리 모양으로 접히는것이 rigRotation함수를 적용한 관절이 잘못된 것이 아닐까?
@@ -204,171 +320,6 @@ const animateVRM = (vrm, results) => {
             runtime: "mediapipe",
             video: videoElement,
         });
-
-        // rigPosition(
-        //     "Hips", 
-        //     {
-        //         x: (pose3DLandmarks[23].x + pose3DLandmarks[24].x)/2,
-        //         y: -1*(pose3DLandmarks[23].y + pose3DLandmarks[24].y)/2,
-        //         z: (pose3DLandmarks[23].z + pose3DLandmarks[24].z)/2
-        //     },
-        //     1,
-        //     0.9
-        //     );
-
-        // rigPosition(
-        //     "Chest", 
-        //     {
-        //         x: (pose3DLandmarks[11].x + pose3DLandmarks[12].x),
-        //         y: -1*(pose3DLandmarks[11].y + pose3DLandmarks[12].y),
-        //         z: (pose3DLandmarks[11].z + pose3DLandmarks[12].z)
-        //     },
-        //     1,
-        //     0.9
-        // );
-
-        // rigPosition(
-        //     "Spine", 
-        //     {
-        //         x: (pose3DLandmarks[11].x + pose3DLandmarks[12].x + pose3DLandmarks[23].x + pose3DLandmarks[24].x)/4,
-        //         y: -1*((pose3DLandmarks[11].y + pose3DLandmarks[12].y)/2 + (pose3DLandmarks[23].y + pose3DLandmarks[24].y)/2)/3,
-        //         z: (pose3DLandmarks[11].z + pose3DLandmarks[12].z + pose3DLandmarks[23].z + pose3DLandmarks[24].z)/4
-        //     },
-        //     1,
-        //     0.9
-        // );
-
-        // rigPosition(
-        //     "RightUpperArm", 
-        //     {
-        //         x: pose3DLandmarks[11].x,
-        //         y: -1*pose3DLandmarks[11].y,
-        //         z: pose3DLandmarks[11].z
-        //     },
-        //     1,
-        //     0.9
-        // );
-
-        // rigPosition(
-        //     "LeftUpperArm", 
-        //     {
-        //         x: pose3DLandmarks[12].x,
-        //         y: -1*pose3DLandmarks[12].y,
-        //         z: pose3DLandmarks[12].z
-        //     },
-        //     1,
-        //     0.9
-        // );
-
-        // rigPosition(
-        //     "RightLowerArm", 
-        //     {
-        //         x: pose3DLandmarks[13].x,
-        //         y: -1*pose3DLandmarks[13].y,
-        //         z: pose3DLandmarks[13].z
-        //     },
-        //     1,
-        //     0.9
-        // );
-
-        // rigPosition(
-        //     "LeftLowerArm", 
-        //     {
-        //         x: pose3DLandmarks[14].x,
-        //         y: -1*pose3DLandmarks[14].y,
-        //         z: pose3DLandmarks[14].z
-        //     },
-        //     1,
-        //     0.9
-        // );
-
-        // rigPosition(
-        //     "RightHand", 
-        //     {
-        //         x: pose3DLandmarks[15].x,
-        //         y: -1*pose3DLandmarks[15].y,
-        //         z: pose3DLandmarks[15].z
-        //     },
-        //     1,
-        //     0.9
-        // );
-
-        // rigPosition(
-        //     "LeftHand", 
-        //     {
-        //         x: pose3DLandmarks[16].x,
-        //         y: -1*pose3DLandmarks[16].y,
-        //         z: pose3DLandmarks[16].z
-        //     },
-        //     1,
-        //     0.9
-        // );
-
-        // rigPosition(
-        //     "RightUpperLeg", 
-        //     {
-        //         x: pose3DLandmarks[23].x,
-        //         y: -1*pose3DLandmarks[23].y,
-        //         z: pose3DLandmarks[23].z
-        //     },
-        //     1,
-        //     0.9
-        // );
-
-        // rigPosition(
-        //     "LeftUpperLeg", 
-        //     {
-        //         x: pose3DLandmarks[24].x,
-        //         y: -1*pose3DLandmarks[24].y,
-        //         z: pose3DLandmarks[24].z
-        //     },
-        //     1,
-        //     0.9
-        // );
-
-        // rigPosition(
-        //     "RightLowerLeg", 
-        //     {
-        //         x: pose3DLandmarks[25].x,
-        //         y: -1*pose3DLandmarks[25].y,
-        //         z: pose3DLandmarks[25].z
-        //     },
-        //     1,
-        //     0.9
-        // );
-
-        // rigPosition(
-        //     "LeftLowerLeg", 
-        //     {
-        //         x: pose3DLandmarks[26].x,
-        //         y: -1*pose3DLandmarks[26].y,
-        //         z: pose3DLandmarks[26].z
-        //     },
-        //     1,
-        //     0.9
-        // );
-
-        // rigPosition(
-        //     "RightFoot", 
-        //     {
-        //         x: pose3DLandmarks[27].x,
-        //         y: -1*pose3DLandmarks[27].y,
-        //         z: pose3DLandmarks[27].z
-        //     },
-        //     1,
-        //     0.9
-        // );
-
-        // rigPosition(
-        //     "LeftFoot", 
-        //     {
-        //         x: pose3DLandmarks[28].x,
-        //         y: -1*pose3DLandmarks[28].y,
-        //         z: pose3DLandmarks[28].z
-        //     },
-        //     1,
-        //     0.9
-        // );
 
         // 엉덩이 관절 노드를 얻기
         const hipsNode = vrm.humanoid.getBoneNode(THREE.VRMSchema.HumanoidBoneName.Hips);
@@ -496,7 +447,9 @@ let videoElement = document.querySelector(".input_video"),
 
 //AJAX 좌표 전송
 
-
+// 이전 jsonCnt를 저장할 변수 선언
+let previousJsonCnt = '0';
+console.log("초기화");
 
 const onResults = (results) => {
     // Draw landmark guides
@@ -644,13 +597,52 @@ const onResults = (results) => {
             receivedDataElement2.innerHTML = 'Count: ' + jsonCnt; // HTML
             var receivedDataElement3 = document.getElementById('showSquatAcuu'); // HTML 요소 선택
             receivedDataElement3.innerHTML = 'SquatAccu: ' + String(parseFloat(jsonAccuracy)*100) + '%'; // HTML
-            
+
+            // 현재 jsonCnt와 이전 jsonCnt를 비교하여 값이 변경되었는지 확인
+            if (jsonCnt !== previousJsonCnt) {
+                console.log("실행됨");
+                console.log(previousJsonCnt);
+                console.log(jsonCnt);
+
+                // 변경된 경우에만 처리
+                previousJsonCnt = jsonCnt; // 이전 jsonCnt 업데이트
+                console.log(previousJsonCnt);
+
+                // 이전 텍스트 메시지 제거
+                const previousTextMesh = scene.getObjectByName('countText');
+                scene.remove(previousTextMesh);
+                console.log("기존삭제");
+
+
+                // 새로운 텍스트 메시지 생성
+                const fontLoader = new THREE.FontLoader();
+                fontLoader.load('../../static/fonts/DungGeunMo_Regular.json', function (font) {
+                    const textGeometry = new THREE.TextGeometry('Count: '+ jsonCnt, {
+                        font: font,
+                        size: 1,
+                        height: 0.1,
+                        bevelEnabled: true, // 윤곽선 활성화
+                        bevelSize: 0.05, // 윤곽선 크기
+                        bevelThickness: 0.05, // 윤곽선 두께
+                    });
+
+                    const textMaterial = new THREE.MeshStandardMaterial({ color: 0x507A03 }); // 텍스트 색상
+                    const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+
+                    // 윤곽선 색상을 검정색(0x000000)으로 설정
+                    textMaterial.emissive.setHex(0x000000);
+                    textMesh.name = 'countText';
+                    textMesh.position.set(-3, 3, 0);
+                    scene.add(textMesh);
+                    console.log("새로생성");
+                });
+            }
 
             //aframe 가상환경 안에  텍스트 로드
             //const shoulderText2 = document.querySelector('#shoulderText2');
             //shoulderText2.setAttribute('value', `probability1: (${JSON.stringify(jsonData)})`);
 
-
+            
 
 
         },
