@@ -634,9 +634,9 @@ const onResults = (results) => {
 };
 }
 
-const holistic = new Pose({
+const holistic = new Holistic({
     locateFile: (file) => {
-        return `https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5.1675469404/${file}`;
+        return `https://cdn.jsdelivr.net/npm/@mediapipe/holistic@0.5.1635989137/${file}`;
     },  
 });
 
@@ -665,33 +665,33 @@ const drawResults = (results) => {
         color: "#ff0364",
         lineWidth: 2,
     });
-    // drawConnectors(canvasCtx, results.faceLandmarks, FACEMESH_TESSELATION, {
-    //     color: "#C0C0C070",
-    //     lineWidth: 1,
-    // });
-    // if (results.faceLandmarks && results.faceLandmarks.length === 478) {
-    //     //draw pupils
-    //     drawLandmarks(canvasCtx, [results.faceLandmarks[468], results.faceLandmarks[468 + 5]], {
-    //         color: "#ffe603",
-    //         lineWidth: 2,
-    //     });
-    // }
-    // drawConnectors(canvasCtx, results.leftHandLandmarks, HAND_CONNECTIONS, {
-    //     color: "#eb1064",
-    //     lineWidth: 5,
-    // });
-    // drawLandmarks(canvasCtx, results.leftHandLandmarks, {
-    //     color: "#00cff7",
-    //     lineWidth: 2,
-    // });
-    // drawConnectors(canvasCtx, results.rightHandLandmarks, HAND_CONNECTIONS, {
-    //     color: "#22c3e3",
-    //     lineWidth: 5,
-    // });
-    // drawLandmarks(canvasCtx, results.rightHandLandmarks, {
-    //     color: "#ff0364",
-    //     lineWidth: 2,
-    // });
+    drawConnectors(canvasCtx, results.faceLandmarks, FACEMESH_TESSELATION, {
+        color: "#C0C0C070",
+        lineWidth: 1,
+    });
+    if (results.faceLandmarks && results.faceLandmarks.length === 478) {
+        //draw pupils
+        drawLandmarks(canvasCtx, [results.faceLandmarks[468], results.faceLandmarks[468 + 5]], {
+            color: "#ffe603",
+            lineWidth: 2,
+        });
+    }
+    drawConnectors(canvasCtx, results.leftHandLandmarks, HAND_CONNECTIONS, {
+        color: "#eb1064",
+        lineWidth: 5,
+    });
+    drawLandmarks(canvasCtx, results.leftHandLandmarks, {
+        color: "#00cff7",
+        lineWidth: 2,
+    });
+    drawConnectors(canvasCtx, results.rightHandLandmarks, HAND_CONNECTIONS, {
+        color: "#22c3e3",
+        lineWidth: 5,
+    });
+    drawLandmarks(canvasCtx, results.rightHandLandmarks, {
+        color: "#ff0364",
+        lineWidth: 2,
+    });
 };
 
 let frameCounter = 0;
