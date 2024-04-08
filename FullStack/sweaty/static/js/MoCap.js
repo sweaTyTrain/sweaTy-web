@@ -5,6 +5,9 @@ const lerp = Kalidokit.Vector.lerp;
 /* THREEJS WORLD SETUP */
 let currentVrm;
 
+let startTime;
+let endTime;
+
 // renderer
 const renderer = new THREE.WebGLRenderer({ alpha: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -40,6 +43,7 @@ scene.add(light);
 // Main Render Loop
 const clock = new THREE.Clock();
 
+let mixer;
 function animate() {
     requestAnimationFrame(animate);
 
@@ -49,6 +53,8 @@ function animate() {
     }
     TWEEN.update();
     orbitControls.update();
+    if (mixer)
+        mixer.update(clock.getDelta());
     renderer.render(scene, orbitCamera);
 }
 animate();
@@ -94,48 +100,55 @@ loader.load('../../static/assets/lowPoly.gltf', (gltf) => {
 
 const rgbeloader = new THREE.RGBELoader();
 
-rgbeloader.load('../../static/assets/sunflowers_puresky_8k.hdr', (texture) => {
+rgbeloader.load('../../static/assets/kloofendal_48d_partly_cloudy_puresky_4k.hdr', (texture) => {
     texture.mapping = THREE.EquirectangularReflectionMapping;
     scene.background = texture;
 
-    // // 파일 로드 완료 후 로딩 화면 숨기기
-    // loadingScreen.style.display = 'none';
-    document.getElementById('loading-screen').style.display = 'none';
-    // Tween.js를 사용하여 애니메이션 적용
-    const tween = new TWEEN.Tween(start)
-    .to(target, 3000) // 지속 시간을 밀리초 단위로 설정 (3초)
-    .easing(TWEEN.Easing.Quadratic.InOut) // 이징 함수 설정 (선택 사항)
-    .onUpdate(() => {
-        // 애니메이션 갱신될 때마다 카메라 위치 업데이트
-        orbitCamera.position.set(start.x, start.y, start.z);
-    })
-    .onComplete(() => {
-        // 애니메이션이 끝나면 3, 2, 1 글자가 1초 간격으로 차례대로 나오게 함
-        const countDownDiv = document.createElement('div');
-        countDownDiv.style.position = 'fixed';
-        countDownDiv.style.top = '50%';
-        countDownDiv.style.left = '50%';
-        countDownDiv.style.transform = 'translate(-50%, -50%)';
-        countDownDiv.style.fontSize = '48px';
-        countDownDiv.style.color = 'black';
-        countDownDiv.innerText = '3';
-        document.body.appendChild(countDownDiv);
+    setTimeout(() => {
+        // // 파일 로드 완료 후 로딩 화면 숨기기
+        // loadingScreen.style.display = 'none';
+        document.getElementById('loading-screen').style.display = 'none';
+        // Tween.js를 사용하여 애니메이션 적용
+        const tween = new TWEEN.Tween(start)
+        .to(target, 3000) // 지속 시간을 밀리초 단위로 설정 (3초)
+        .easing(TWEEN.Easing.Quadratic.InOut) // 이징 함수 설정 (선택 사항)
+        .onUpdate(() => {
+            // 애니메이션 갱신될 때마다 카메라 위치 업데이트
+            orbitCamera.position.set(start.x, start.y, start.z);
+        })
+        .onComplete(() => {
+            // 애니메이션이 끝나면 3, 2, 1 글자가 1초 간격으로 차례대로 나오게 함
+            const countDownDiv = document.createElement('div');
+            countDownDiv.style.position = 'fixed';
+            countDownDiv.style.top = '50%';
+            countDownDiv.style.left = '50%';
+            countDownDiv.style.transform = 'translate(-50%, -50%)';
+            countDownDiv.style.fontSize = '300px';
+            countDownDiv.style.color = '#507A03';
+            countDownDiv.style.textShadow = '0 0 10px rgba(0, 0, 0, 1)';
+            countDownDiv.style.fontFamily = 'DungGeunMo'; // DungGeunMo 글꼴 사용
+            countDownDiv.innerText = '3';
+            document.body.appendChild(countDownDiv);
 
-        setTimeout(() => {
-            countDownDiv.innerText = '2';
-        }, 1000);
+            setTimeout(() => {
+                countDownDiv.style.color = '#c5bb00';
+                countDownDiv.innerText = '2';
+            }, 1000);
 
-        setTimeout(() => {
-            countDownDiv.innerText = '1';
-        }, 2000);
-        setTimeout(() => {
-            countDownDiv.innerText = 'Start!';
-        }, 3000);
-        setTimeout(() => {
-            document.body.removeChild(countDownDiv);
-        }, 4000);
-    })
-    .start(); // 애니메이션 시작
+            setTimeout(() => {
+                countDownDiv.style.color = '#c16a00';
+                countDownDiv.innerText = '1';
+            }, 2000);
+            setTimeout(() => {
+                countDownDiv.style.color = '#c50000';
+                countDownDiv.innerText = 'Start!';
+            }, 3000);
+            setTimeout(() => {
+                document.body.removeChild(countDownDiv);
+            }, 4000);
+        })
+        .start(); // 애니메이션 시작
+    }, 3000);
 });
 
 const fontLoader = new THREE.FontLoader();
@@ -247,6 +260,7 @@ const animateVRM = (vrm, results) => {
     // Be careful, hand landmarks may be reversed
     const leftHandLandmarks = results.rightHandLandmarks;
     const rightHandLandmarks = results.leftHandLandmarks;
+    console.log(results);
     
     // Animate Face
     if (faceLandmarks) {
@@ -395,6 +409,8 @@ let previousJsonCnt = '0';
 console.log("초기화");
 
 const onResults = (results) => {
+
+
     // Draw landmark guides
     drawResults(results);
     // Animate model
@@ -506,7 +522,7 @@ const onResults = (results) => {
 
     //보안 csrftoken
     var csrftoken = document.querySelector("meta[name=csrf_token]").content
-
+    startTime = performance.now();
     $.ajax({
         url: jsonUrl, // URL을 템플릿 태그로 설정
         type: 'POST',
@@ -516,6 +532,11 @@ const onResults = (results) => {
         data: CoordinateData,
 
         success: function(data) {
+            endTime = performance.now();
+            // 밀리초에서 초로 변환
+            const elapsedTimeInSeconds = (endTime - startTime) / 1000;
+        
+            console.log(`코드 실행 시간: ${elapsedTimeInSeconds.toFixed(3)}초`);
             console.log('Data sent successfully');
             // Class 저장 리스트
             var className = ['good_stand', 'good_progress', 'good_sit',
@@ -543,6 +564,21 @@ const onResults = (results) => {
 
             // 현재 jsonCnt와 이전 jsonCnt를 비교하여 값이 변경되었는지 확인
             if (jsonCnt !== previousJsonCnt) {
+                loader.load('../../static/assets/untitled.gltf', (gltf) => {
+                    const mesh = gltf.scene;
+                    mesh.position.set(0.0, 1.0, -1.0);
+                    mesh.scale.set(0.5, 0.5, 0.5);
+                    scene.add(mesh);
+                    mixer = new THREE.AnimationMixer(mesh);
+                    const clips = gltf.animations;
+                    const clip = THREE.AnimationClip.findByName(clips, 'Rotate');
+                    const action = mixer.clipAction(clip);
+
+                    action.setDuration(1);
+                    action.play();
+                })
+
+
                 console.log("실행됨");
                 console.log(previousJsonCnt);
                 console.log(jsonCnt);
@@ -598,10 +634,10 @@ const onResults = (results) => {
 };
 }
 
-const holistic = new Holistic({
+const holistic = new Pose({
     locateFile: (file) => {
-        return `https://cdn.jsdelivr.net/npm/@mediapipe/holistic@0.5.1635989137/${file}`;
-    },
+        return `https://cdn.jsdelivr.net/npm/@mediapipe/pose@0.5.1675469404/${file}`;
+    },  
 });
 
 holistic.setOptions({
@@ -609,7 +645,7 @@ holistic.setOptions({
     smoothLandmarks: true,
     minDetectionConfidence: 0.7,
     minTrackingConfidence: 0.7,
-    refineFaceLandmarks: true,
+    refineFaceLandmarks: false,
 });
 // Pass holistic a callback function
 holistic.onResults(onResults);
@@ -629,39 +665,47 @@ const drawResults = (results) => {
         color: "#ff0364",
         lineWidth: 2,
     });
-    drawConnectors(canvasCtx, results.faceLandmarks, FACEMESH_TESSELATION, {
-        color: "#C0C0C070",
-        lineWidth: 1,
-    });
-    if (results.faceLandmarks && results.faceLandmarks.length === 478) {
-        //draw pupils
-        drawLandmarks(canvasCtx, [results.faceLandmarks[468], results.faceLandmarks[468 + 5]], {
-            color: "#ffe603",
-            lineWidth: 2,
-        });
-    }
-    drawConnectors(canvasCtx, results.leftHandLandmarks, HAND_CONNECTIONS, {
-        color: "#eb1064",
-        lineWidth: 5,
-    });
-    drawLandmarks(canvasCtx, results.leftHandLandmarks, {
-        color: "#00cff7",
-        lineWidth: 2,
-    });
-    drawConnectors(canvasCtx, results.rightHandLandmarks, HAND_CONNECTIONS, {
-        color: "#22c3e3",
-        lineWidth: 5,
-    });
-    drawLandmarks(canvasCtx, results.rightHandLandmarks, {
-        color: "#ff0364",
-        lineWidth: 2,
-    });
+    // drawConnectors(canvasCtx, results.faceLandmarks, FACEMESH_TESSELATION, {
+    //     color: "#C0C0C070",
+    //     lineWidth: 1,
+    // });
+    // if (results.faceLandmarks && results.faceLandmarks.length === 478) {
+    //     //draw pupils
+    //     drawLandmarks(canvasCtx, [results.faceLandmarks[468], results.faceLandmarks[468 + 5]], {
+    //         color: "#ffe603",
+    //         lineWidth: 2,
+    //     });
+    // }
+    // drawConnectors(canvasCtx, results.leftHandLandmarks, HAND_CONNECTIONS, {
+    //     color: "#eb1064",
+    //     lineWidth: 5,
+    // });
+    // drawLandmarks(canvasCtx, results.leftHandLandmarks, {
+    //     color: "#00cff7",
+    //     lineWidth: 2,
+    // });
+    // drawConnectors(canvasCtx, results.rightHandLandmarks, HAND_CONNECTIONS, {
+    //     color: "#22c3e3",
+    //     lineWidth: 5,
+    // });
+    // drawLandmarks(canvasCtx, results.rightHandLandmarks, {
+    //     color: "#ff0364",
+    //     lineWidth: 2,
+    // });
 };
+
+let frameCounter = 0;
 
 // Use `Mediapipe` utils to get camera - lower resolution = higher fps
 const camera = new Camera(videoElement, {
     onFrame: async () => {
-        await holistic.send({ image: videoElement });
+        
+        // 5프레임마다 한 번씩만 비디오를 전송
+        if (frameCounter % 1 === 0) {
+            await holistic.send({ image: videoElement });
+        }
+
+        frameCounter++;
     },
     width: 640,
     height: 480,
