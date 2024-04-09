@@ -248,6 +248,7 @@ const animateVRM = (vrm, results) => {
     if (!vrm) {
         return;
     }
+
     // Take the results from `Holistic` and animate character based on its Face, Pose, and Hand Keypoints.
     let riggedPose, riggedLeftHand, riggedRightHand, riggedFace;
 
@@ -268,7 +269,7 @@ const animateVRM = (vrm, results) => {
         });
         rigFace(riggedFace);
     }
-
+    console.log(vrm);
     // Animate Pose
     if (pose2DLandmarks && pose3DLandmarks) {
         riggedPose = Kalidokit.Pose.solve(pose3DLandmarks, pose2DLandmarks, {
@@ -402,7 +403,7 @@ let videoElement = document.querySelector(".input_video"),
 
 // 이전 jsonCnt를 저장할 변수 선언
 let previousJsonCnt = '0';
-let previousJsonAccu = '0.0';
+let previousJsonAccu = '-1';
 let switchAccu = 0;
 console.log("초기화");
 
@@ -586,6 +587,22 @@ const onResults = (results) => {
                     textMesh.position.set(-3, 3, 0);
                     scene.add(textMesh);
                 });
+
+                // 모델의 blendShapeProxy를 가져옴
+                const blendShapeProxy = currentVrm.blendShapeProxy;
+
+                // 표정을 설정할 이름과 값 설정
+                const expressionName = "fun";
+                const expressionValue = 1.0; // 0부터 1 사이의 값으로 설정
+
+                // 블렌드 쉐이프 값 설정
+                blendShapeProxy.setValue(expressionName, expressionValue);
+
+                // 3초 후에 무표정으로 돌아가는 함수 호출
+                setTimeout(() => {
+                    // 이전 표정으로 돌아감
+                    blendShapeProxy.setValue(expressionName, 0);
+                }, 3000); // 3초 후에 실행됨 (단위: 밀리초)
             }
 
             if (parseFloat(jsonAccuracy)*100 < 70 && switchAccu == 0 && jsonAccuracy !== previousJsonAccu ) {
@@ -623,6 +640,22 @@ const onResults = (results) => {
                     }, 3000); // 1000ms = 1초
                     switchAccu = 0;
                 })
+
+                // 모델의 blendShapeProxy를 가져옴
+                const blendShapeProxy = currentVrm.blendShapeProxy;
+
+                // 표정을 설정할 이름과 값 설정
+                const expressionName = "angry";
+                const expressionValue = 1.0; // 0부터 1 사이의 값으로 설정
+
+                // 블렌드 쉐이프 값 설정
+                blendShapeProxy.setValue(expressionName, expressionValue);
+
+                // 3초 후에 무표정으로 돌아가는 함수 호출
+                setTimeout(() => {
+                    // 이전 표정으로 돌아감
+                    blendShapeProxy.setValue(expressionName, 0);
+                }, 3000); // 3초 후에 실행됨 (단위: 밀리초)
 
             }
 
