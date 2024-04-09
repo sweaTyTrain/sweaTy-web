@@ -24,4 +24,7 @@ cmd(Terminal) 창에서 수행
 
 8. python manage.py runserver 입력   
 
-9. 로컬 주소 복사 후 chrome에서 실행 
+9. 로컬 주소 복사 후 chrome에서 실행
+
+
+https://3d.nicovideo.jp/search?page=2&word=VRM&word_type=caption
