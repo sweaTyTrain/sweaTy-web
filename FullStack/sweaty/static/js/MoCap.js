@@ -170,7 +170,6 @@ fontLoader.load('../../static/fonts/DungGeunMo_Regular.json', function (font) {
     textMesh.name = 'countText';
     textMesh.position.set(-3, 3, 0);
     scene.add(textMesh);
-    console.log("새로생성");
 });
 
 // Animate Rotation Helper function
@@ -260,7 +259,6 @@ const animateVRM = (vrm, results) => {
     // Be careful, hand landmarks may be reversed
     const leftHandLandmarks = results.rightHandLandmarks;
     const rightHandLandmarks = results.leftHandLandmarks;
-    console.log(results);
     
     // Animate Face
     if (faceLandmarks) {
@@ -330,8 +328,6 @@ const animateVRM = (vrm, results) => {
 
         rigRotation("Hips", riggedPose.Hips.rotation);
 
-        console.log(vrm);
-        console.log(riggedPose);
         riggedPose.LeftUpperLeg.y = riggedPose.LeftUpperLeg.y*-0.2;
         riggedPose.RightUpperLeg.y = riggedPose.RightUpperLeg.y*-0.2;
         rigRotation("Chest", riggedPose.Chest);
@@ -406,6 +402,8 @@ let videoElement = document.querySelector(".input_video"),
 
 // 이전 jsonCnt를 저장할 변수 선언
 let previousJsonCnt = '0';
+let previousJsonAccu = '0.0';
+let switchAccu = 0;
 console.log("초기화");
 
 const onResults = (results) => {
@@ -518,7 +516,6 @@ const onResults = (results) => {
                     "leftAnkleZCoordinate": parseFloat(leftAnkleZCoordinate),
                     //"landmarkData": landmarkData,
     };
-    console.log(CoordinateData);
 
     //보안 csrftoken
     var csrftoken = document.querySelector("meta[name=csrf_token]").content
@@ -532,12 +529,6 @@ const onResults = (results) => {
         data: CoordinateData,
 
         success: function(data) {
-            endTime = performance.now();
-            // 밀리초에서 초로 변환
-            const elapsedTimeInSeconds = (endTime - startTime) / 1000;
-        
-            console.log(`코드 실행 시간: ${elapsedTimeInSeconds.toFixed(3)}초`);
-            console.log('Data sent successfully');
             // Class 저장 리스트
             var className = ['good_stand', 'good_progress', 'good_sit',
                              'knee_narrow_progress', 'knee_narrow_sit',
@@ -551,6 +542,7 @@ const onResults = (results) => {
             var jsonAccuracy = data.json_data7;
             var jsonCnt = data.json_data9;
             var jsonClassIdx = data.json_data13;
+            var jsonSquatState = data.json_11;
             
             //HTML에 텍스트 로드
             var receivedDataElement0 = document.getElementById('showClass'); // HTML 요소 선택
@@ -564,34 +556,14 @@ const onResults = (results) => {
 
             // 현재 jsonCnt와 이전 jsonCnt를 비교하여 값이 변경되었는지 확인
             if (jsonCnt !== previousJsonCnt) {
-                loader.load('../../static/assets/untitled.gltf', (gltf) => {
-                    const mesh = gltf.scene;
-                    mesh.position.set(0.0, 1.0, -1.0);
-                    mesh.scale.set(0.5, 0.5, 0.5);
-                    scene.add(mesh);
-                    mixer = new THREE.AnimationMixer(mesh);
-                    const clips = gltf.animations;
-                    const clip = THREE.AnimationClip.findByName(clips, 'Rotate');
-                    const action = mixer.clipAction(clip);
-
-                    action.setDuration(1);
-                    action.play();
-                })
-
-
-                console.log("실행됨");
-                console.log(previousJsonCnt);
-                console.log(jsonCnt);
-
+                gen_flower();
+                console.log("꽃생성");
                 // 변경된 경우에만 처리
                 previousJsonCnt = jsonCnt; // 이전 jsonCnt 업데이트
-                console.log(previousJsonCnt);
 
                 // 이전 텍스트 메시지 제거
                 const previousTextMesh = scene.getObjectByName('countText');
                 scene.remove(previousTextMesh);
-                console.log("기존삭제");
-
 
                 // 새로운 텍스트 메시지 생성
                 const fontLoader = new THREE.FontLoader();
@@ -613,8 +585,45 @@ const onResults = (results) => {
                     textMesh.name = 'countText';
                     textMesh.position.set(-3, 3, 0);
                     scene.add(textMesh);
-                    console.log("새로생성");
                 });
+            }
+
+            if (parseFloat(jsonAccuracy)*100 < 70 && switchAccu == 0 && jsonAccuracy !== previousJsonAccu ) {
+                switchAccu = 1;
+                loader.load('../../static/assets/cloud_thunder.gltf', (gltf) => {
+                    // 변경된 경우에만 처리
+                    previousJsonAccu = jsonAccuracy; // 이전 jsonCnt 업데이트
+
+                    const mesh = gltf.scene;
+                    mesh.position.set(0.0, 1.0, -1.0);
+                    mesh.scale.set(0.5, 0.5, 0.5);
+                    scene.add(mesh);
+                    console.log("구름생성");
+                    mixer = new THREE.AnimationMixer(mesh);
+                    const clips = gltf.animations;
+                    const clip1 = THREE.AnimationClip.findByName(clips, 'Movement1');
+                    const clip2 = THREE.AnimationClip.findByName(clips, 'Movement2');
+                    const clip3 = THREE.AnimationClip.findByName(clips, 'Movement3');
+
+                    const action1 = mixer.clipAction(clip1);
+                    const action2 = mixer.clipAction(clip2);
+                    const action3 = mixer.clipAction(clip3);
+
+                    action1.setDuration(0.05);
+                    action2.setDuration(0.05);
+                    action3.setDuration(0.05);
+
+                    action1.play();
+                    action2.play();
+                    action3.play();
+
+                    // 1초 후에 GLTF를 삭제하는 함수 호출
+                    setTimeout(() => {
+                        scene.remove(mesh); // Scene에서 mesh 제거
+                    }, 3000); // 1000ms = 1초
+                    switchAccu = 0;
+                })
+
             }
 
             //aframe 가상환경 안에  텍스트 로드
@@ -632,6 +641,32 @@ const onResults = (results) => {
         });
 
 };
+}
+
+function gen_flower() {
+    loader.load('../../static/assets/flower_pink.gltf', (gltf) => {
+        const mesh = gltf.scene;
+        mesh.position.set(0.0, 1.0, -1.0);
+        mesh.scale.set(0.5, 0.5, 0.5);
+        scene.add(mesh);
+        mixer = new THREE.AnimationMixer(mesh);
+        const clips = gltf.animations;
+        const clip = THREE.AnimationClip.findByName(clips, 'Rotate');
+        const action = mixer.clipAction(clip);
+
+        action.setDuration(0.03);
+        action.play();
+
+        // 1초 후에 GLTF를 삭제하는 함수 호출
+        setTimeout(() => {
+            scene.remove(mesh); // Scene에서 mesh 제거
+        }, 3000); // 1000ms = 1초
+    })
+}
+
+function gen_cloudThunder() {
+
+
 }
 
 const holistic = new Holistic({
