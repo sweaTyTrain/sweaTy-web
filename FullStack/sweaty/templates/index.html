@@ -3,75 +3,74 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Sweaty Exercise Page</title>
+  <title>Welcome to Sweaty !</title>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <style>
-    /* Custom styling for the page */
+
     body {
-      background-color: #000000; /* Black background */
-      color: #ffffff; /* White text color */
-      margin: 0;
-      padding: 0;
+      background-color: rgb(194, 209, 229);
     }
+
     .navbar {
-      background-color: #000000; /* Black navbar background */
+      background-color: rgb(157, 141, 198);
+      margin-bottom: 10%;
     }
+
     .navbar a {
-      color: #ffffff; /* White text color for navbar links */
+      color: rgb(139, 115, 200);
     }
-    .wave-image {
-      width: 100%;
-      max-width: 100vw; /* 100% of viewport width */
-      height: auto;
-      position: relative;
-      margin-bottom: -4px; /* Remove default margin for better alignment */
+    
+    .button-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 3rem;
+      margin-bottom: 12%;
     }
-    .black-box {
-      background-color: #000000; /* Black */
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      padding: 20px;
-      border-radius: 10px;
-      text-align: center;
-    }
-    .start-button {
-      background-color: #87ceeb; /* Sky Blue */
-      color: #000000; /* Black */
-      padding: 10px 20px;
-      font-size: 16px;
-      border: none;
-      border-radius: 5px;
+
+    .button-container button {
+      border: 0.4rem solid rgb(157, 141, 198);
+      background: rgb(157, 141, 198);
       cursor: pointer;
-      margin-top: 10px;
+      width: 20rem;
+      height: 25rem;
+      border-radius: 5rem;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      transition: box-shadow 0.3s ease; /* 음영 변경을 부드럽게 만들기 위한 트랜지션 */
     }
-    .sub-heading {
-      font-size: 12px;
-      color: #87ceeb; /* Sky Blue */
-      margin-top: 5px; /* Adjust as needed */
+
+    .button-container button:focus {
+    outline: none;
     }
-    .contact-info {
-      font-size: 12px;
-      margin-left: 10px; /* Adjust as needed */
-      margin-bottom: 10px; /* Adjust as needed */
+
+    .button-container button img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 4rem;
     }
+
+    .button-container button span {
+      font-size: 2rem;
+      font-weight: bold;
+      color: rgb(157, 141, 198);
+    }
+
+    .button-container button:hover {
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* 마우스를 올렸을 때 음영 변경 */
+    }
+
     .copyright {
       font-size: 10px;
-      margin-left: 10px; /* Adjust as needed */
-      margin-bottom: 10px; /* Adjust as needed */
-      text-align: left;
-      margin-top: 10px; /* Add margin-top for spacing */
+      text-align: center;
     }
-    .sweaty-title {
-      color: #87ceeb; /* Sky Blue */
-      font-size: 28px;
+
+    @media (max-width: 767px) {
+      .button-container button {
+        width: 100%;
+      }
     }
-    .vr-ai-text {
-      color: #ffffff; /* White */
-      font-size: 15px;
-      margin-top: 10px; /* Adjust as needed */
-    }
+
   </style>
 </head>
 <body>
@@ -79,7 +78,7 @@
 <!-- Navigation Bar -->
 <nav class="navbar navbar-expand-lg navbar-dark">
   <a class="navbar-brand" href="#">Sweaty Exercise</a>
-  <span class="navbar-text text-white">VR/AI Simulation</span>
+  <span class="navbar-text">VR/AI Simulation</span>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -101,26 +100,39 @@
   </div>
 </nav>
 
-<!-- Wave Image and Start Button Section -->
-<div class="container-fluid p-0">
-  <img src="https://t3.ftcdn.net/jpg/03/88/45/12/360_F_388451241_EwDnK81imLLHNjvL2CNLucIMaZ0mcLBh.jpg" alt="Wave Image" class="wave-image">
-  <div class="black-box">
-    <p class="text-white sweaty-title">Welcome To <span>SweaTy</span></p>
-    <p class="sub-heading">You can enjoy exercise like a game</p>
+<!-- World Button Section -->
+<div class="container">
+  <div class="button-container">
+    <form action="desert.html" method="get">
+      <button>
+        <img src="static/assets/world/desert.png" alt="Desert">
+        <span>Desert</span>
+      </button>
+    </form>
 
-    <form action="{% url 'second' %}" method="get">
-    <button class="start-button"> Start</button>
+    <form action="desert.html" method="get">
+      <button onclick="window.location.href='island.html'">
+        <img src="static/assets/world/island.png" alt="Island">
+        <span>Island</span>
+      </button>
+    </form>
+
+    <form action="desert.html" method="get">
+      <button onclick="window.location.href='mountain.html'">
+        <img src="static/assets/world/mountain.png" alt="Mountain">
+        <span>Mountain</span>
+      </button>
     </form>
   </div>
 </div>
-<br>
-<br>
 
-<div class="row">
-  <div class="col-md-12 copyright">
-    <p>Tel: 010-4259-0716</p>
-    <p>Email: sketchdesktv@gmail.com</p>
-    <p>© 2024 CopyRight By Lee. All Rights reserved.</p>
+<!-- Copyright -->
+<div class="container">
+  <div class="row">
+    <div class="col-md-12 copyright">
+      <p>Email: sketchdesktv@gmail.com
+      <br> © 2024 CopyRight By sweaTy. All Rights reserved.</p>
+    </div>
   </div>
 </div>
 

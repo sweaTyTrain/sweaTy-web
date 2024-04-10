@@ -77,7 +77,7 @@ loader.load(
     (error) => console.error(error)
 );
 
-loader.load('../../static/assets/low_poly_castle_in_ruins/scene.gltf', (gltf) => {
+loader.load('../../static/assets/low_poly_desert/scene.gltf', (gltf) => {
     const mesh = gltf.scene;
     mesh.position.set(-2.0, -47.0, 10);
     mesh.scale.set(2, 2, 2);
