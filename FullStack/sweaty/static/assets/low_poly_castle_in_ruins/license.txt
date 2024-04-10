@@ -1,0 +1,8 @@
+Model Information:
+* title:	Low poly castle in ruins
+* source:	https://sketchfab.com/3d-models/low-poly-castle-in-ruins-b4beaf78a6784847b4e63da79351a86b
+* author:	Cosmoart (https://sketchfab.com/cosmoart)
+
+Model License:
+* license type:	SKETCHFAB Standard (https://sketchfab.com/licenses)
+* requirements:	Under basic restrictions, use worldwide, on all types of media, commercially or not, and in all types of derivative works
