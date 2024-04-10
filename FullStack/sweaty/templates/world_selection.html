@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>가로로 이미지 버튼 3개</title>
+<style>
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+  .button-container {
+    display: flex;
+    justify-content: space-between;
+    width: 300px; /* 버튼 컨테이너의 너비 조정 */
+  }
+  .button-container button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+  }
+  .button-container button:hover {
+    background-color: #0056b3;
+  }
+</style>
+</head>
+<body>
+
+<div class="button-container">
+  <button><img src="FullStack\sweaty\static\assets\world\desert.PNG" alt="Button 1"></button>
+  <button><img src="FullStack\sweaty\static\assets\world\island.PNG" alt="Button 2"></button>
+  <button><img src="FullStack\sweaty\static\assets\world\mountain.PNG" alt="Button 3"></button>
+</div>
+
+</body>
+</html>
