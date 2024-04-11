@@ -3,6 +3,10 @@
     font-display: block;
     src: url("./assets/Font/kalidoface-jelly.ttf") format("truetype");
 }
+@font-face {
+    font-family: "DungGeunMo";
+    src: url('../fonts/DungGeunMo.ttf') format('truetype');
+}
 h1 {
     font-family: "Jelly";
     font-size: 32px;

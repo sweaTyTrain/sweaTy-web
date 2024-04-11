@@ -5,6 +5,9 @@ const lerp = Kalidokit.Vector.lerp;
 /* THREEJS WORLD SETUP */
 let currentVrm;
 
+let startTime;
+let endTime;
+
 // renderer
 const renderer = new THREE.WebGLRenderer({ alpha: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -40,6 +43,7 @@ scene.add(light);
 // Main Render Loop
 const clock = new THREE.Clock();
 
+let mixer;
 function animate() {
     requestAnimationFrame(animate);
 
@@ -49,6 +53,8 @@ function animate() {
     }
     TWEEN.update();
     orbitControls.update();
+    if (mixer)
+        mixer.update(clock.getDelta());
     renderer.render(scene, orbitCamera);
 }
 animate();
@@ -94,48 +100,55 @@ loader.load('../../static/assets/lowPoly.gltf', (gltf) => {
 
 const rgbeloader = new THREE.RGBELoader();
 
-rgbeloader.load('../../static/assets/sunflowers_puresky_8k.hdr', (texture) => {
+rgbeloader.load('../../static/assets/kloofendal_48d_partly_cloudy_puresky_4k.hdr', (texture) => {
     texture.mapping = THREE.EquirectangularReflectionMapping;
     scene.background = texture;
 
-    // // 파일 로드 완료 후 로딩 화면 숨기기
-    // loadingScreen.style.display = 'none';
-    document.getElementById('loading-screen').style.display = 'none';
-    // Tween.js를 사용하여 애니메이션 적용
-    const tween = new TWEEN.Tween(start)
-    .to(target, 3000) // 지속 시간을 밀리초 단위로 설정 (3초)
-    .easing(TWEEN.Easing.Quadratic.InOut) // 이징 함수 설정 (선택 사항)
-    .onUpdate(() => {
-        // 애니메이션 갱신될 때마다 카메라 위치 업데이트
-        orbitCamera.position.set(start.x, start.y, start.z);
-    })
-    .onComplete(() => {
-        // 애니메이션이 끝나면 3, 2, 1 글자가 1초 간격으로 차례대로 나오게 함
-        const countDownDiv = document.createElement('div');
-        countDownDiv.style.position = 'fixed';
-        countDownDiv.style.top = '50%';
-        countDownDiv.style.left = '50%';
-        countDownDiv.style.transform = 'translate(-50%, -50%)';
-        countDownDiv.style.fontSize = '48px';
-        countDownDiv.style.color = 'black';
-        countDownDiv.innerText = '3';
-        document.body.appendChild(countDownDiv);
+    setTimeout(() => {
+        // // 파일 로드 완료 후 로딩 화면 숨기기
+        // loadingScreen.style.display = 'none';
+        document.getElementById('loading-screen').style.display = 'none';
+        // Tween.js를 사용하여 애니메이션 적용
+        const tween = new TWEEN.Tween(start)
+        .to(target, 3000) // 지속 시간을 밀리초 단위로 설정 (3초)
+        .easing(TWEEN.Easing.Quadratic.InOut) // 이징 함수 설정 (선택 사항)
+        .onUpdate(() => {
+            // 애니메이션 갱신될 때마다 카메라 위치 업데이트
+            orbitCamera.position.set(start.x, start.y, start.z);
+        })
+        .onComplete(() => {
+            // 애니메이션이 끝나면 3, 2, 1 글자가 1초 간격으로 차례대로 나오게 함
+            const countDownDiv = document.createElement('div');
+            countDownDiv.style.position = 'fixed';
+            countDownDiv.style.top = '50%';
+            countDownDiv.style.left = '50%';
+            countDownDiv.style.transform = 'translate(-50%, -50%)';
+            countDownDiv.style.fontSize = '300px';
+            countDownDiv.style.color = '#507A03';
+            countDownDiv.style.textShadow = '0 0 10px rgba(0, 0, 0, 1)';
+            countDownDiv.style.fontFamily = 'DungGeunMo'; // DungGeunMo 글꼴 사용
+            countDownDiv.innerText = '3';
+            document.body.appendChild(countDownDiv);
 
-        setTimeout(() => {
-            countDownDiv.innerText = '2';
-        }, 1000);
+            setTimeout(() => {
+                countDownDiv.style.color = '#c5bb00';
+                countDownDiv.innerText = '2';
+            }, 1000);
 
-        setTimeout(() => {
-            countDownDiv.innerText = '1';
-        }, 2000);
-        setTimeout(() => {
-            countDownDiv.innerText = 'Start!';
-        }, 3000);
-        setTimeout(() => {
-            document.body.removeChild(countDownDiv);
-        }, 4000);
-    })
-    .start(); // 애니메이션 시작
+            setTimeout(() => {
+                countDownDiv.style.color = '#c16a00';
+                countDownDiv.innerText = '1';
+            }, 2000);
+            setTimeout(() => {
+                countDownDiv.style.color = '#c50000';
+                countDownDiv.innerText = 'Start!';
+            }, 3000);
+            setTimeout(() => {
+                document.body.removeChild(countDownDiv);
+            }, 4000);
+        })
+        .start(); // 애니메이션 시작
+    }, 3000);
 });
 
 const fontLoader = new THREE.FontLoader();
@@ -157,7 +170,6 @@ fontLoader.load('../../static/fonts/DungGeunMo_Regular.json', function (font) {
     textMesh.name = 'countText';
     textMesh.position.set(-3, 3, 0);
     scene.add(textMesh);
-    console.log("새로생성");
 });
 
 // Animate Rotation Helper function
@@ -236,6 +248,7 @@ const animateVRM = (vrm, results) => {
     if (!vrm) {
         return;
     }
+
     // Take the results from `Holistic` and animate character based on its Face, Pose, and Hand Keypoints.
     let riggedPose, riggedLeftHand, riggedRightHand, riggedFace;
 
@@ -256,7 +269,7 @@ const animateVRM = (vrm, results) => {
         });
         rigFace(riggedFace);
     }
-
+    console.log(vrm);
     // Animate Pose
     if (pose2DLandmarks && pose3DLandmarks) {
         riggedPose = Kalidokit.Pose.solve(pose3DLandmarks, pose2DLandmarks, {
@@ -316,8 +329,6 @@ const animateVRM = (vrm, results) => {
 
         rigRotation("Hips", riggedPose.Hips.rotation);
 
-        console.log(vrm);
-        console.log(riggedPose);
         riggedPose.LeftUpperLeg.y = riggedPose.LeftUpperLeg.y*-0.2;
         riggedPose.RightUpperLeg.y = riggedPose.RightUpperLeg.y*-0.2;
         rigRotation("Chest", riggedPose.Chest);
@@ -392,9 +403,13 @@ let videoElement = document.querySelector(".input_video"),
 
 // 이전 jsonCnt를 저장할 변수 선언
 let previousJsonCnt = '0';
+let previousJsonAccu = '-1';
+let switchAccu = 0;
 console.log("초기화");
 
 const onResults = (results) => {
+
+
     // Draw landmark guides
     drawResults(results);
     // Animate model
@@ -502,11 +517,10 @@ const onResults = (results) => {
                     "leftAnkleZCoordinate": parseFloat(leftAnkleZCoordinate),
                     //"landmarkData": landmarkData,
     };
-    console.log(CoordinateData);
 
     //보안 csrftoken
     var csrftoken = document.querySelector("meta[name=csrf_token]").content
-
+    startTime = performance.now();
     $.ajax({
         url: jsonUrl, // URL을 템플릿 태그로 설정
         type: 'POST',
@@ -516,7 +530,6 @@ const onResults = (results) => {
         data: CoordinateData,
 
         success: function(data) {
-            console.log('Data sent successfully');
             // Class 저장 리스트
             var className = ['good_stand', 'good_progress', 'good_sit',
                              'knee_narrow_progress', 'knee_narrow_sit',
@@ -530,6 +543,7 @@ const onResults = (results) => {
             var jsonAccuracy = data.json_data7;
             var jsonCnt = data.json_data9;
             var jsonClassIdx = data.json_data13;
+            var jsonSquatState = data.json_11;
             
             //HTML에 텍스트 로드
             var receivedDataElement0 = document.getElementById('showClass'); // HTML 요소 선택
@@ -543,19 +557,14 @@ const onResults = (results) => {
 
             // 현재 jsonCnt와 이전 jsonCnt를 비교하여 값이 변경되었는지 확인
             if (jsonCnt !== previousJsonCnt) {
-                console.log("실행됨");
-                console.log(previousJsonCnt);
-                console.log(jsonCnt);
-
+                gen_flower();
+                console.log("꽃생성");
                 // 변경된 경우에만 처리
                 previousJsonCnt = jsonCnt; // 이전 jsonCnt 업데이트
-                console.log(previousJsonCnt);
 
                 // 이전 텍스트 메시지 제거
                 const previousTextMesh = scene.getObjectByName('countText');
                 scene.remove(previousTextMesh);
-                console.log("기존삭제");
-
 
                 // 새로운 텍스트 메시지 생성
                 const fontLoader = new THREE.FontLoader();
@@ -577,8 +586,77 @@ const onResults = (results) => {
                     textMesh.name = 'countText';
                     textMesh.position.set(-3, 3, 0);
                     scene.add(textMesh);
-                    console.log("새로생성");
                 });
+
+                // 모델의 blendShapeProxy를 가져옴
+                const blendShapeProxy = currentVrm.blendShapeProxy;
+
+                // 표정을 설정할 이름과 값 설정
+                const expressionName = "fun";
+                const expressionValue = 1.0; // 0부터 1 사이의 값으로 설정
+
+                // 블렌드 쉐이프 값 설정
+                blendShapeProxy.setValue(expressionName, expressionValue);
+
+                // 3초 후에 무표정으로 돌아가는 함수 호출
+                setTimeout(() => {
+                    // 이전 표정으로 돌아감
+                    blendShapeProxy.setValue(expressionName, 0);
+                }, 3000); // 3초 후에 실행됨 (단위: 밀리초)
+            }
+
+            if (parseFloat(jsonAccuracy)*100 < 70 && switchAccu == 0 && jsonAccuracy !== previousJsonAccu ) {
+                switchAccu = 1;
+                loader.load('../../static/assets/cloud_thunder.gltf', (gltf) => {
+                    // 변경된 경우에만 처리
+                    previousJsonAccu = jsonAccuracy; // 이전 jsonCnt 업데이트
+
+                    const mesh = gltf.scene;
+                    mesh.position.set(0.0, 1.0, -1.0);
+                    mesh.scale.set(0.5, 0.5, 0.5);
+                    scene.add(mesh);
+                    console.log("구름생성");
+                    mixer = new THREE.AnimationMixer(mesh);
+                    const clips = gltf.animations;
+                    const clip1 = THREE.AnimationClip.findByName(clips, 'Movement1');
+                    const clip2 = THREE.AnimationClip.findByName(clips, 'Movement2');
+                    const clip3 = THREE.AnimationClip.findByName(clips, 'Movement3');
+
+                    const action1 = mixer.clipAction(clip1);
+                    const action2 = mixer.clipAction(clip2);
+                    const action3 = mixer.clipAction(clip3);
+
+                    action1.setDuration(0.05);
+                    action2.setDuration(0.05);
+                    action3.setDuration(0.05);
+
+                    action1.play();
+                    action2.play();
+                    action3.play();
+
+                    // 1초 후에 GLTF를 삭제하는 함수 호출
+                    setTimeout(() => {
+                        scene.remove(mesh); // Scene에서 mesh 제거
+                    }, 3000); // 1000ms = 1초
+                    switchAccu = 0;
+                })
+
+                // 모델의 blendShapeProxy를 가져옴
+                const blendShapeProxy = currentVrm.blendShapeProxy;
+
+                // 표정을 설정할 이름과 값 설정
+                const expressionName = "angry";
+                const expressionValue = 1.0; // 0부터 1 사이의 값으로 설정
+
+                // 블렌드 쉐이프 값 설정
+                blendShapeProxy.setValue(expressionName, expressionValue);
+
+                // 3초 후에 무표정으로 돌아가는 함수 호출
+                setTimeout(() => {
+                    // 이전 표정으로 돌아감
+                    blendShapeProxy.setValue(expressionName, 0);
+                }, 3000); // 3초 후에 실행됨 (단위: 밀리초)
+
             }
 
             //aframe 가상환경 안에  텍스트 로드
@@ -598,10 +676,36 @@ const onResults = (results) => {
 };
 }
 
+function gen_flower() {
+    loader.load('../../static/assets/flower_pink.gltf', (gltf) => {
+        const mesh = gltf.scene;
+        mesh.position.set(0.0, 1.0, -1.0);
+        mesh.scale.set(0.6, 0.6, 0.6);
+        scene.add(mesh);
+        mixer = new THREE.AnimationMixer(mesh);
+        const clips = gltf.animations;
+        const clip = THREE.AnimationClip.findByName(clips, 'Rotate');
+        const action = mixer.clipAction(clip);
+
+        action.setDuration(0.03);
+        action.play();
+
+        // 1초 후에 GLTF를 삭제하는 함수 호출
+        setTimeout(() => {
+            scene.remove(mesh); // Scene에서 mesh 제거
+        }, 3000); // 1000ms = 1초
+    })
+}
+
+function gen_cloudThunder() {
+
+
+}
+
 const holistic = new Holistic({
     locateFile: (file) => {
         return `https://cdn.jsdelivr.net/npm/@mediapipe/holistic@0.5.1635989137/${file}`;
-    },
+    },  
 });
 
 holistic.setOptions({
@@ -609,7 +713,7 @@ holistic.setOptions({
     smoothLandmarks: true,
     minDetectionConfidence: 0.7,
     minTrackingConfidence: 0.7,
-    refineFaceLandmarks: true,
+    refineFaceLandmarks: false,
 });
 // Pass holistic a callback function
 holistic.onResults(onResults);
@@ -658,10 +762,18 @@ const drawResults = (results) => {
     });
 };
 
+let frameCounter = 0;
+
 // Use `Mediapipe` utils to get camera - lower resolution = higher fps
 const camera = new Camera(videoElement, {
     onFrame: async () => {
-        await holistic.send({ image: videoElement });
+        
+        // 5프레임마다 한 번씩만 비디오를 전송
+        if (frameCounter % 1 === 0) {
+            await holistic.send({ image: videoElement });
+        }
+
+        frameCounter++;
     },
     width: 640,
     height: 480,
