@@ -63,48 +63,90 @@ animate();
 
 // Import Character VRM
 const loader = new THREE.GLTFLoader();
-loader.crossOrigin = "anonymous";
-// Import model from URL, add your own model here
-loader.load(
-    modelUrl,
+function loadModel(modelUrl) {
 
-    (gltf) => {
-        THREE.VRMUtils.removeUnnecessaryJoints(gltf.scene);
+    loader.crossOrigin = "anonymous";
+    loader.load(
+        modelUrl,
+        (gltf) => {
+            THREE.VRMUtils.removeUnnecessaryJoints(gltf.scene);
 
-        THREE.VRM.from(gltf).then((vrm) => {
-            scene.add(vrm.scene);
-            currentVrm = vrm;
-            currentVrm.scene.rotation.y = Math.PI; // Rotate model 180deg to face camera
-        });
-    },
+            THREE.VRM.from(gltf).then((vrm) => {
+                if (currentVrm) {
+                    scene.remove(currentVrm.scene);
+                    currentVrm.dispose();
+                }
 
-    (progress) => console.log("Loading model...", 100.0 * (progress.loaded / progress.total), "%"),
+                scene.add(vrm.scene);
+                currentVrm = vrm;
+                currentVrm.scene.rotation.y = Math.PI; // Rotate model 180deg to face camera
+            });
+        },
+        (progress) => console.log("Loading model...", 100.0 * (progress.loaded / progress.total), "%"),
+        (error) => console.error(error)
+    );
+}
 
-    (error) => console.error(error)
-);
+loadModel(modelUrl);
+
+$("#loadModelButton1").click(function() {
+    loadModel(modelUrl);
+});
+
+$("#loadModelButton2").click(function() {
+    loadModel(modelUrl);
+});
 
 
-// loader.load('../../static/assets/low_poly_desert/scene.gltf', (gltf) => {
-//     const mesh = gltf.scene;
-//     mesh.position.set(-5, -3, -25);
-//     mesh.scale.set(2, 2, 2);
-//     scene.add(mesh);
-// })
 
-loader.load('../../static/assets/lowPoly.gltf', (gltf) => {
+
+
+let currentMap = null;
+//맵 로드 및 교체 함수
+
+function loadMap1 (MapUrl){
+    loader.load(MapUrl, (gltf) => {
     const mesh = gltf.scene;
     mesh.position.set(-2.0, -47.0, 10);
     mesh.scale.set(2, 2, 2);
     scene.add(mesh);
+    currentMap = mesh;
 })
 
-// loader.load('../../static/assets/gym.gltf', (gltf) => {
-//     const mesh = gltf.scene;
-//     mesh.position.set(-1.0, 0.0, 2.0);
-//     mesh.rotation.set(0.0, Math.PI/2, 0.0);
-//     mesh.scale.set(0.3, 0.3, 0.3);
-//     scene.add(mesh);
-// })
+}
+function loadMap2 (MapUrl){
+    loader.load(MapUrl, (gltf) => {
+    const mesh = gltf.scene;
+    mesh.position.set(0, -4, -10);
+    mesh.scale.set(10, 10 , 10);
+    scene.add(mesh);
+    currentMap = mesh;
+})
+
+}
+
+
+loadMap1 (MapUrl);
+
+
+
+ $("#image-button1").click(function() {
+    if (currentMap) {
+        scene.remove(currentMap);
+    }
+
+    loadMap1 (MapUrl);
+ });
+
+  $("#image-button2").click(function() {
+    if (currentMap) {
+        scene.remove(currentMap);
+
+    }
+
+    loadMap2 (MapUrl);
+ });
+
 
 const rgbeloader = new THREE.RGBELoader();
 
