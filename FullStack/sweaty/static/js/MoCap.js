@@ -680,7 +680,7 @@ function gen_flower() {
     loader.load('../../static/assets/flower_pink.gltf', (gltf) => {
         const mesh = gltf.scene;
         mesh.position.set(0.0, 1.0, -1.0);
-        mesh.scale.set(0.5, 0.5, 0.5);
+        mesh.scale.set(0.6, 0.6, 0.6);
         scene.add(mesh);
         mixer = new THREE.AnimationMixer(mesh);
         const clips = gltf.animations;
