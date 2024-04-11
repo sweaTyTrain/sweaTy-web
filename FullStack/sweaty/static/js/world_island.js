@@ -79,8 +79,15 @@ loader.load(
 
 loader.load('../../static/assets/low_poly_island/scene.gltf', (gltf) => {
     const mesh = gltf.scene;
-    mesh.position.set(-2.0, -47.0, 10);
+    mesh.position.set(3, -0.9, -0.5);
     mesh.scale.set(2, 2, 2);
+    scene.add(mesh);
+})
+
+loader.load('../../static/assets/Island/Man_hawaiian/scene.gltf', (gltf) => {
+    const mesh = gltf.scene;
+    mesh.position.set(-2, 0, 0);
+    mesh.scale.set(1.5, 1.5, 1.5);
     scene.add(mesh);
 })
 

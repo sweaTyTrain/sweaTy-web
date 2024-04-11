@@ -1,0 +1,328 @@
+{
+  "accessors": [
+    {
+      "bufferView": 2,
+      "componentType": 5126,
+      "count": 4126,
+      "max": [
+        0.046907711774110794,
+        2.0188956260681152,
+        2.030913829803467
+      ],
+      "min": [
+        -1.8892993927001953,
+        -0.03595238924026489,
+        -0.017251143231987953
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 2,
+      "byteOffset": 49512,
+      "componentType": 5126,
+      "count": 4126,
+      "max": [
+        0.9998174905776978,
+        0.997544527053833,
+        0.9969725608825684
+      ],
+      "min": [
+        -0.9996909499168396,
+        -0.9975791573524475,
+        -0.9968023300170898
+      ],
+      "type": "VEC3"
+    },
+    {
+      "bufferView": 3,
+      "componentType": 5126,
+      "count": 4126,
+      "max": [
+        0.9997631907463074,
+        0.9943714737892151,
+        0.9999824166297913,
+        1.0
+      ],
+      "min": [
+        -0.9993924498558044,
+        -0.9998534917831421,
+        -0.9958703517913818,
+        1.0
+      ],
+      "type": "VEC4"
+    },
+    {
+      "bufferView": 1,
+      "componentType": 5126,
+      "count": 4126,
+      "max": [
+        0.9991602301597595,
+        0.9961135983467102
+      ],
+      "min": [
+        0.0008397505152970552,
+        0.0008397505152970552
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 33008,
+      "componentType": 5126,
+      "count": 4126,
+      "max": [
+        0.9991602301597595,
+        0.9961135983467102
+      ],
+      "min": [
+        0.0008397505152970552,
+        0.0008397505152970552
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 66016,
+      "componentType": 5126,
+      "count": 4126,
+      "max": [
+        0.9991602301597595,
+        0.9961135983467102
+      ],
+      "min": [
+        0.0008397505152970552,
+        0.0008397505152970552
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 1,
+      "byteOffset": 99024,
+      "componentType": 5126,
+      "count": 4126,
+      "max": [
+        0.9991602301597595,
+        0.9961135983467102
+      ],
+      "min": [
+        0.0008397505152970552,
+        0.0008397505152970552
+      ],
+      "type": "VEC2"
+    },
+    {
+      "bufferView": 0,
+      "componentType": 5125,
+      "count": 12480,
+      "type": "SCALAR"
+    }
+  ],
+  "asset": {
+    "extras": {
+      "author": "metabrains.ai (https://sketchfab.com/metabrains.ai)",
+      "license": "CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)",
+      "source": "https://sketchfab.com/3d-models/tropical-hawaiian-champak-plumeria-flower-3ac90668b9714936bbb5e201f26158af",
+      "title": "Tropical Hawaiian Champak Plumeria Flower"
+    },
+    "generator": "Sketchfab-15.27.0",
+    "version": "2.0"
+  },
+  "bufferViews": [
+    {
+      "buffer": 0,
+      "byteLength": 49920,
+      "name": "floatBufferViews",
+      "target": 34963
+    },
+    {
+      "buffer": 0,
+      "byteLength": 132032,
+      "byteOffset": 49920,
+      "byteStride": 8,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 99024,
+      "byteOffset": 181952,
+      "byteStride": 12,
+      "name": "floatBufferViews",
+      "target": 34962
+    },
+    {
+      "buffer": 0,
+      "byteLength": 66016,
+      "byteOffset": 280976,
+      "byteStride": 16,
+      "name": "floatBufferViews",
+      "target": 34962
+    }
+  ],
+  "buffers": [
+    {
+      "byteLength": 346992,
+      "uri": "scene.bin"
+    }
+  ],
+  "extensionsUsed": [
+    "KHR_materials_specular"
+  ],
+  "images": [
+    {
+      "uri": "textures/Plumeria_material_baseColor.png"
+    },
+    {
+      "uri": "textures/Plumeria_material_metallicRoughness.png"
+    },
+    {
+      "uri": "textures/Plumeria_material_normal.png"
+    }
+  ],
+  "materials": [
+    {
+      "doubleSided": true,
+      "extensions": {
+        "KHR_materials_specular": {
+          "specularColorFactor": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "specularFactor": 0.565335056259219
+        }
+      },
+      "name": "Plumeria_material",
+      "normalTexture": {
+        "index": 2
+      },
+      "pbrMetallicRoughness": {
+        "baseColorTexture": {
+          "index": 0
+        },
+        "metallicFactor": 0.059428752544769654,
+        "metallicRoughnessTexture": {
+          "index": 1
+        }
+      }
+    }
+  ],
+  "meshes": [
+    {
+      "name": "Object_0",
+      "primitives": [
+        {
+          "attributes": {
+            "NORMAL": 1,
+            "POSITION": 0,
+            "TANGENT": 2,
+            "TEXCOORD_0": 3,
+            "TEXCOORD_1": 4,
+            "TEXCOORD_2": 5,
+            "TEXCOORD_3": 6
+          },
+          "indices": 7,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "children": [
+        1
+      ],
+      "matrix": [
+        0.02551159717367657,
+        -0.0020804193664896668,
+        -0.02255541780238257,
+        0.0,
+        -0.020578081020615535,
+        0.012069329508516807,
+        -0.02438832831851467,
+        0.0,
+        0.009466661403123133,
+        0.03184210761542694,
+        0.007770404154760609,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "Sketchfab_model"
+    },
+    {
+      "children": [
+        2
+      ],
+      "name": "root"
+    },
+    {
+      "children": [
+        3
+      ],
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        2.220446049250313e-16,
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        2.220446049250313e-16,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "GLTF_SceneRootNode"
+    },
+    {
+      "children": [
+        4
+      ],
+      "name": "Circle.001_0"
+    },
+    {
+      "mesh": 0,
+      "name": "Object_4"
+    }
+  ],
+  "samplers": [
+    {
+      "magFilter": 9729,
+      "minFilter": 9987,
+      "wrapS": 10497,
+      "wrapT": 10497
+    }
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "name": "Sketchfab_Scene",
+      "nodes": [
+        0
+      ]
+    }
+  ],
+  "textures": [
+    {
+      "sampler": 0,
+      "source": 0
+    },
+    {
+      "sampler": 0,
+      "source": 1
+    },
+    {
+      "sampler": 0,
+      "source": 2
+    }
+  ]
+}

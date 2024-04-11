@@ -78,19 +78,19 @@ loader.load(
 );
 
 
-loader.load('../../static/assets/low_poly_desert/scene.gltf', (gltf) => {
+// loader.load('../../static/assets/low_poly_desert/scene.gltf', (gltf) => {
+//     const mesh = gltf.scene;
+//     mesh.position.set(-5, -3, -25);
+//     mesh.scale.set(2, 2, 2);
+//     scene.add(mesh);
+// })
+
+loader.load('../../static/assets/lowPoly.gltf', (gltf) => {
     const mesh = gltf.scene;
     mesh.position.set(-2.0, -47.0, 10);
     mesh.scale.set(2, 2, 2);
     scene.add(mesh);
 })
-
-// loader.load('static/assets/lowPoly.gltf', (gltf) => {
-//     const mesh = gltf.scene;
-//     mesh.position.set(-2.0, -47.0, 10);
-//     mesh.scale.set(2, 2, 2);
-//     scene.add(mesh);
-// })
 
 // loader.load('../../static/assets/gym.gltf', (gltf) => {
 //     const mesh = gltf.scene;

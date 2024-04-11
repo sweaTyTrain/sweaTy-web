@@ -8,12 +8,12 @@
   <style>
 
     body {
-      background-color: rgb(194, 209, 229);
+      background-color: rgb(227, 238, 220);
       font-family: 'DungGeunMo', sans-serif; /* DungGeunMo 폰트를 사용하거나, 사용할 수 없을 경우 sans-serif를 대비로 지정 */
     }
 
     .navbar {
-      background-color: rgb(157, 141, 198);
+      background-color: #91c82a;
       margin-bottom: 10%;
     }
 
@@ -30,8 +30,8 @@
     }
 
     .button-container button {
-      border: 0.4rem solid rgb(157, 141, 198);
-      background: rgb(157, 141, 198);
+      border: 0.4rem solid #91c82a;
+      background: #91c82a;
       cursor: pointer;
       width: 20rem;
       height: 25rem;
@@ -54,7 +54,7 @@
     .button-container button span {
       font-size: 2rem;
       font-weight: bold;
-      color: rgb(157, 141, 198);
+      color: #91c82a;
       font-family: 'DungGeunMo', sans-serif; /* DungGeunMo 폰트를 사용하거나, 사용할 수 없을 경우 sans-serif를 대비로 지정 */
 }
 
@@ -119,15 +119,15 @@
       </button>
     </form>
 
-    <form action="desert.html" method="get">
-      <button onclick="window.location.href='island.html'">
+    <form action="{% url 'island' %}" method="get">
+      <button>
         <img src="static/assets/world/island.png" alt="Island">
         <span>Island</span>
       </button>
     </form>
 
-    <form action="desert.html" method="get">
-      <button onclick="window.location.href='mountain.html'">
+    <form action="{% url 'mountain' %}" method="get">
+      <button>
         <img src="static/assets/world/mountain.png" alt="Mountain">
         <span>Mountain</span>
       </button>

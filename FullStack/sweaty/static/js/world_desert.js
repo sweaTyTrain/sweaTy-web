@@ -77,12 +77,27 @@ loader.load(
     (error) => console.error(error)
 );
 
+
 loader.load('../../static/assets/low_poly_desert/scene.gltf', (gltf) => {
     const mesh = gltf.scene;
-    mesh.position.set(-2.0, -47.0, 10);
+    mesh.position.set(-5, -1, -40);
     mesh.scale.set(2, 2, 2);
     scene.add(mesh);
 })
+
+loader.load('../../static/assets/world_low_poly/pyramid_and_the_sphinx/scene.gltf', (gltf) => {
+    const mesh = gltf.scene;
+    mesh.position.set(-50, 0, -20);
+    mesh.scale.set(0.03, 0.03, 0.03);
+    scene.add(mesh);
+})
+
+// loader.load('static/assets/lowPoly.gltf', (gltf) => {
+//     const mesh = gltf.scene;
+//     mesh.position.set(-2.0, -47.0, 10);
+//     mesh.scale.set(2, 2, 2);
+//     scene.add(mesh);
+// })
 
 // loader.load('../../static/assets/gym.gltf', (gltf) => {
 //     const mesh = gltf.scene;
