@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import index,second,video_feed,test
+from .views import index,second,video_feed,test,desert
 
 from django.conf import settings
 from django.conf.urls.static import static
@@ -10,6 +10,7 @@ urlpatterns = [
     path('video_feed/', video_feed, name='video_feed'),  #opencv 인공지능 화면 url
     path('test/', test, name='test'),   #jsonresponse 페이지
     path('second/', second, name='second'),    #아바타 뷰 url
+    path('desert/', desert, name='desert'),   #사막 월드 url
 
 ]
 

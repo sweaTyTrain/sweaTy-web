@@ -9,6 +9,7 @@
 
     body {
       background-color: rgb(194, 209, 229);
+      font-family: 'DungGeunMo', sans-serif; /* DungGeunMo 폰트를 사용하거나, 사용할 수 없을 경우 sans-serif를 대비로 지정 */
     }
 
     .navbar {
@@ -54,7 +55,8 @@
       font-size: 2rem;
       font-weight: bold;
       color: rgb(157, 141, 198);
-    }
+      font-family: 'DungGeunMo', sans-serif; /* DungGeunMo 폰트를 사용하거나, 사용할 수 없을 경우 sans-serif를 대비로 지정 */
+}
 
     .button-container button:hover {
       box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* 마우스를 올렸을 때 음영 변경 */
@@ -70,6 +72,13 @@
         width: 100%;
       }
     }
+
+    @font-face {
+     font-family: 'DungGeunMo';
+     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/DungGeunMo.woff') format('woff');
+     font-weight: normal;
+     font-style: normal;
+}
 
   </style>
 </head>
@@ -103,7 +112,7 @@
 <!-- World Button Section -->
 <div class="container">
   <div class="button-container">
-    <form action="desert.html" method="get">
+    <form action="{% url 'desert' %}" method="get">
       <button>
         <img src="static/assets/world/desert.png" alt="Desert">
         <span>Desert</span>

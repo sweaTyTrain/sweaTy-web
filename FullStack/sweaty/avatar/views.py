@@ -41,6 +41,10 @@ def second(request):
     return render(request, 'second.html')
 
 
+#사막 뷰
+def desert(request):
+    return render(request, 'desert.html')
+
 
 def test(request):
     if request.method == 'POST':

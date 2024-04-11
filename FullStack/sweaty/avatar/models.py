@@ -107,7 +107,6 @@ def find_max_index(lst):
 
 # 인공지능 뷰 (파이썬으로만 html 없이 opencv 화면 렌더링)
 
-
 def gen(camera):
     while True:
         frame = camera.get_frame()
