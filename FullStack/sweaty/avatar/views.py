@@ -41,6 +41,18 @@ def second(request):
     return render(request, 'second.html')
 
 
+# 사막 뷰
+def desert(request):
+    return render(request, 'desert.html')
+
+# mountain 뷰
+def mountain(request):
+    return render(request, 'mountain.html')
+
+# island 뷰
+def island(request):
+    return render(request, 'island.html')
+
 
 def test(request):
     if request.method == 'POST':
