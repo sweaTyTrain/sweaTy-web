@@ -25,7 +25,7 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 3rem;
+      gap: 5rem;
       margin-bottom: 12%;
     }
 
@@ -87,7 +87,7 @@
 <!-- Navigation Bar -->
 <nav class="navbar navbar-expand-lg navbar-dark">
   <a class="navbar-brand" href="#">Sweaty Exercise</a>
-  <span class="navbar-text">VR/AI Simulation</span>
+  <span class="navbar-text">AR/AI Simulation</span>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -141,9 +141,9 @@
 
     <form action="{% url 'second' %}" method="get">
 
-      <input type="hidden" name="selectedButton" id="selectedButtonInput" value="">
+      <input type="hidden" name="loadMapButton" id="selectedButtonInput" value="">
 
-      <button type="submit" onclick="setSelectedButton('Desert')">
+      <button type="submit" id="loadMapButton" onclick="setSelectedButton('Desert')">
         <img src="static/assets/world/desert.png" alt="Desert">
         <span>Desert</span>
       </button>

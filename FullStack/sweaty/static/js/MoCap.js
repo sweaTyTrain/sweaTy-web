@@ -59,52 +59,150 @@ function animate() {
 }
 animate();
 
+
+
+const loader = new THREE.GLTFLoader();
+
+// Desert 맵 로드 함수
+function loadDesert(MapUrl) {
+    loader.load(MapUrl, (gltf) => {
+        // 이전 맵 제거
+        // if (currentMap) {
+        //     scene.remove(currentMap);
+        //     currentMap = null;
+        // }
+
+        // 새 맵 로드
+        const mesh = gltf.scene;
+        mesh.position.set(-5, -1, -40);
+        mesh.scale.set(2, 2, 2);
+        scene.add(mesh);
+        // currentMap = mesh;
+        console.log("맵을 로드했습니다.");
+    });
+}
+
+
+// Island 맵 로드 함수
+function loadIsland(MapUrl) {
+    loader.load(MapUrl, (gltf) => {
+        // 이전 맵 제거
+        // if (currentMap) {
+        //     scene.remove(currentMap);
+        //     currentMap = null;
+        // }
+
+        // 새 맵 로드
+        const mesh = gltf.scene;
+        mesh.position.set(-2, 0, 0);
+        mesh.scale.set(1.5, 1.5, 1.5);
+        scene.add(mesh);
+        // currentMap = mesh;
+        console.log("맵을 로드했습니다.");
+    });
+}
+
+// Mountain 맵 로드 함수
+function loadMountain(MapUrl) {
+    loader.load(MapUrl, (gltf) => {
+        // 이전 맵 제거
+        // if (currentMap) {
+        //     scene.remove(currentMap);
+        //     currentMap = null;
+        // }
+
+        // 새 맵 로드
+        const mesh = gltf.scene;
+        mesh.position.set(-2.0, -47.0, 10);
+        mesh.scale.set(2, 2, 2);
+        scene.add(mesh);
+        // currentMap = mesh;
+        console.log("맵을 로드했습니다.");
+    });
+}
+
+
 /* VRM CHARACTER SETUP */
 
-// Import Character VRM
-const loader = new THREE.GLTFLoader();
-loader.crossOrigin = "anonymous";
-// Import model from URL, add your own model here
-loader.load(
-    modelUrl,
+// VRM 모델 로드 함수
+function loadModel(modelUrl) {
+    loader.crossOrigin = "anonymous";
+    loader.load(
+        modelUrl,
+        (gltf) => {
+            THREE.VRMUtils.removeUnnecessaryJoints(gltf.scene);
 
-    (gltf) => {
-        THREE.VRMUtils.removeUnnecessaryJoints(gltf.scene);
+            THREE.VRM.from(gltf).then((vrm) => {
+                if (currentVrm) {
+                    scene.remove(currentVrm.scene);
+                    currentVrm.dispose();
+                }
 
-        THREE.VRM.from(gltf).then((vrm) => {
-            scene.add(vrm.scene);
-            currentVrm = vrm;
-            currentVrm.scene.rotation.y = Math.PI; // Rotate model 180deg to face camera
-        });
-    },
+                scene.add(vrm.scene);
+                currentVrm = vrm;
+                currentVrm.scene.rotation.y = Math.PI; // 모델을 카메라에 맞게 회전
+                console.log("모델을 로드했습니다.");
+            });
+        },
+        (progress) => console.log("모델 로딩 중...", 100.0 * (progress.loaded / progress.total), "%"),
+        (error) => console.error(error)
+    );
+}
 
-    (progress) => console.log("Loading model...", 100.0 * (progress.loaded / progress.total), "%"),
 
-    (error) => console.error(error)
-);
+// $("#loadModelButton1").click(function() {
+//     loadModel(modelUrl);
+// });
+
+// $("#loadModelButton2").click(function() {
+//     loadModel(modelUrl);
+// });
 
 
-// loader.load('../../static/assets/low_poly_desert/scene.gltf', (gltf) => {
+
+// function loadMap1 (MapUrl){
+//     loader.load(MapUrl, (gltf) => {
 //     const mesh = gltf.scene;
-//     mesh.position.set(-5, -3, -25);
+//     mesh.position.set(-2.0, -47.0, 10);
 //     mesh.scale.set(2, 2, 2);
 //     scene.add(mesh);
+//     currentMap = mesh;
 // })
 
-loader.load('../../static/assets/lowPoly.gltf', (gltf) => {
-    const mesh = gltf.scene;
-    mesh.position.set(-2.0, -47.0, 10);
-    mesh.scale.set(2, 2, 2);
-    scene.add(mesh);
-})
-
-// loader.load('../../static/assets/gym.gltf', (gltf) => {
+// }
+// function loadMap2 (MapUrl){
+//     loader.load(MapUrl, (gltf) => {
 //     const mesh = gltf.scene;
-//     mesh.position.set(-1.0, 0.0, 2.0);
-//     mesh.rotation.set(0.0, Math.PI/2, 0.0);
-//     mesh.scale.set(0.3, 0.3, 0.3);
+//     mesh.position.set(0, -4, -10);
+//     mesh.scale.set(10, 10 , 10);
 //     scene.add(mesh);
+//     currentMap = mesh;
 // })
+
+// }
+
+
+// loadMap1 (MapUrl);
+
+
+
+//  $("#image-button1").click(function() {
+//     if (currentMap) {
+//         scene.remove(currentMap);
+//     }
+
+//     loadMap1 (MapUrl);
+//  });
+
+//   $("#image-button2").click(function() {
+//     if (currentMap) {
+//         scene.remove(currentMap);
+
+//     }
+
+//     loadMap2 (MapUrl);
+//  });
+
 
 const rgbeloader = new THREE.RGBELoader();
 

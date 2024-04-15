@@ -101,7 +101,6 @@
 
 
 
-
     <div id="image-button-container">
         <img id="image-button1" src="{% static 'img/field.jpg' %}" alt="Image Button">
         <img id="image-button2" src="{% static 'img/desert.jpg' %}" alt="Image Button">
@@ -109,79 +108,75 @@
 
 
 
+    <script src="../../static/js/MoCap.js"></script>
 
-
-
-        <script>
+    <script >
         const jsonUrl = "{% url 'test' %}";
-        let modelUrl = "{% static 'model/sukuna.vrm' %}";        //초기 아바타
-        let MapUrl = "{% static 'assets/lowPoly.gltf' %}";       //초기 맵
+        let modelUrl = null;        //초기 아바타
+        let MapUrl = null;       //초기 맵
+
+        // //아바타 교체 버튼
+        // $("#loadModelButton1").click(function() {
+        //     modelUrl = "{% static 'model/sukuna.vrm' %}"; // 캐릭터1 모델의 URL 설정
+        //     loadModel(modelUrl); // 모델 재로드
+
+        // });
+
+        // $("#loadModelButton2").click(function() {
+        //     modelUrl = "{% static 'model/three-vrm-girl.vrm' %}"; // 캐릭터2 모델의 URL 설정
+        //     loadModel(modelUrl); // 모델 재로드
+
+        // });
 
 
-        //아바타 교체 버튼
-        $("#loadModelButton1").click(function() {
-            modelUrl = "{% static 'model/sukuna.vrm' %}"; // 캐릭터1 모델의 URL 설정
+        // //맵 교체 버튼
+        // $("#image-button1").click(function() {
+        //     MapUrl = "{% static 'assets/lowPoly.gltf' %}";            //초원맵으로 바꿀것
+        // });
 
-        });
+        // $("#image-button2").click(function() {
+        //     MapUrl = "{% static 'assets/scene.gltf' %}";                 //사막맵으로 바꿀것
+        // });
+   
+        window.onload = function() {
+            // URL의 파라미터에서 선택된 버튼의 정보 가져오기
+            let urlParams = new URLSearchParams(window.location.search);
+            let selectedButton = urlParams.get('loadMapButton');
 
-        $("#loadModelButton2").click(function() {
-            modelUrl = "{% static 'model/three-vrm-girl.vrm' %}"; // 캐릭터2 모델의 URL 설정
+            // 가져온 정보에 따른 처리
+            switch(selectedButton) {
+                case "Desert":
+                    // Desert 버튼에 대한 처리
+                    console.log("Desert 버튼이 클릭되었습니다.");
+                    MapUrl = "{% static 'assets/low_poly_desert/scene.gltf' %}";
+                    modelUrl = "{% static 'model/sukuna.vrm' %}"
+                    loadDesert(MapUrl); // MapUrl이 설정된 후 loadMap 함수 호출
+                    loadModel(modelUrl)
+                    break;
+                case "Island":
+                    // Island 버튼에 대한 처리
+                    console.log("Island 버튼이 클릭되었습니다.");
+                    MapUrl = "{% static 'assets/low_poly_island/scene.gltf' %}";
+                    modelUrl = "{% static 'model/sukuna.vrm' %}"
+                    loadIsland(MapUrl); // MapUrl이 설정된 후 loadMap 함수 호출
+                    loadModel(modelUrl)
+                    break;
+                case "Mountain":
+                    // Mountain 버튼에 대한 처리
+                    console.log("Mountain 버튼이 클릭되었습니다.");
+                    MapUrl = "{% static 'assets/low_poly_mountain/scene.gltf' %}";
+                    modelUrl = "{% static 'model/sukuna.vrm' %}"
+                    loadMountain(MapUrl); // MapUrl이 설정된 후 loadMap 함수 호출
+                    loadModel(modelUrl)
+                    break;
+                default:
+                    // 아무 버튼도 클릭되지 않았을 때의 처리
+                    console.log("아무 버튼도 클릭되지 않았습니다.");
+                    break;
+            }
+        };
 
-        });
-
-
-
-
-          //맵 교체 버튼
-          $("#image-button1").click(function() {
-                MapUrl = "{% static 'assets/lowPoly.gltf' %}";            //초원맵으로 바꿀것
-
-          });
-
-          $("#image-button2").click(function() {
-               MapUrl = "{% static 'assets/scene.gltf' %}";                 //사막맵으로 바꿀것
-               });
-
-
-
-
-    </script>
-    <script type="module">
-
-      // 페이지가 로드될 때 실행되는 함수
-      window.onload = function() {
-          // URL의 파라미터에서 선택된 버튼의 정보 가져오기
-          let urlParams = new URLSearchParams(window.location.search);
-          let selectedButton = urlParams.get('selectedButton');
-  
-          function loadScript(src) {
-              let script = document.createElement('script');
-              script.src = src;
-              document.body.appendChild(script);
-        }
-          // 가져온 정보에 따른 처리
-          switch(selectedButton) {
-              case "Desert":
-                  // Desert 버튼에 대한 처리
-                  console.log("Desert 버튼이 클릭되었습니다.");
-                  loadScript("{% static 'js/world_desert.js' %}");
-                  break;
-              case "Island":
-                  // Island 버튼에 대한 처리
-                  console.log("Island 버튼이 클릭되었습니다.");
-                  loadScript("{% static 'js/world_island.js' %}");
-                  break;
-              case "Mountain":
-                  // Mountain 버튼에 대한 처리
-                  console.log("Mountain 버튼이 클릭되었습니다.");
-                  loadScript("{% static 'js/world_mountain.js' %}");
-                  break;
-              default:
-                  // 아무 버튼도 클릭되지 않았을 때의 처리
-                  console.log("아무 버튼도 클릭되지 않았습니다.");
-                  break;
-          }
-      };
+      
     </script>
   </body>
 

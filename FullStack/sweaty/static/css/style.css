@@ -1,7 +1,7 @@
 @font-face {
     font-family: "Jelly";
     font-display: block;
-    src: url("./assets/Font/kalidoface-jelly.ttf") format("truetype");
+    src: url("../assets/Font/kalidoface-jelly.ttf") format("truetype");
 }
 @font-face {
     font-family: "DungGeunMo";
