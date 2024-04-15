@@ -113,7 +113,7 @@
 
 
         <script>
-        const jsonUrl = {% url 'test' %}
+        const jsonUrl = "{% url 'test' %}";
         let modelUrl = "{% static 'model/sukuna.vrm' %}";        //초기 아바타
         let MapUrl = "{% static 'assets/lowPoly.gltf' %}";       //초기 맵
 
@@ -146,8 +146,43 @@
 
 
     </script>
-    <script type="module" src="{% static 'js/MoCap.js' %}"></script>
+    <script type="module">
 
+      // 페이지가 로드될 때 실행되는 함수
+      window.onload = function() {
+          // URL의 파라미터에서 선택된 버튼의 정보 가져오기
+          let urlParams = new URLSearchParams(window.location.search);
+          let selectedButton = urlParams.get('selectedButton');
+  
+          function loadScript(src) {
+              let script = document.createElement('script');
+              script.src = src;
+              document.body.appendChild(script);
+        }
+          // 가져온 정보에 따른 처리
+          switch(selectedButton) {
+              case "Desert":
+                  // Desert 버튼에 대한 처리
+                  console.log("Desert 버튼이 클릭되었습니다.");
+                  loadScript("{% static 'js/world_desert.js' %}");
+                  break;
+              case "Island":
+                  // Island 버튼에 대한 처리
+                  console.log("Island 버튼이 클릭되었습니다.");
+                  loadScript("{% static 'js/world_island.js' %}");
+                  break;
+              case "Mountain":
+                  // Mountain 버튼에 대한 처리
+                  console.log("Mountain 버튼이 클릭되었습니다.");
+                  loadScript("{% static 'js/world_mountain.js' %}");
+                  break;
+              default:
+                  // 아무 버튼도 클릭되지 않았을 때의 처리
+                  console.log("아무 버튼도 클릭되지 않았습니다.");
+                  break;
+          }
+      };
+    </script>
   </body>
 
 </html>

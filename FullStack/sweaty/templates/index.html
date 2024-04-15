@@ -110,9 +110,10 @@
 </nav>
 
 <!-- World Button Section -->
-<div class="container">
+
+<!-- <div class="container">
   <div class="button-container">
-    <form action="{% url 'desert' %}" method="get">
+    <form action="{% url 'second' %}" method="get">
       <button>
         <img src="static/assets/world/desert.png" alt="Desert">
         <span>Desert</span>
@@ -133,7 +134,44 @@
       </button>
     </form>
   </div>
+</div> -->
+
+<div class="container">
+  <div class="button-container">
+
+    <form action="{% url 'second' %}" method="get">
+
+      <input type="hidden" name="selectedButton" id="selectedButtonInput" value="">
+
+      <button type="submit" onclick="setSelectedButton('Desert')">
+        <img src="static/assets/world/desert.png" alt="Desert">
+        <span>Desert</span>
+      </button>
+
+      <button type="submit" onclick="setSelectedButton('Island')">
+        <img src="static/assets/world/island.png" alt="Island">
+        <span>Island</span>
+      </button>
+
+      <button type="submit" onclick="setSelectedButton('Mountain')">
+        <img src="static/assets/world/mountain.png" alt="Mountain">
+        <span>Mountain</span>
+      </button>
+
+    </form>
+    
+    <script>
+      // 선택된 버튼을 hidden input에 설정하는 함수
+      function setSelectedButton(buttonName) {
+          document.getElementById("selectedButtonInput").value = buttonName;
+      }
+    </script>
+
+  </div>
 </div>
+
+
+
 
 <!-- Copyright -->
 <div class="container">
