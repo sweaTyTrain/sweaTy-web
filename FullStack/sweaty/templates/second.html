@@ -75,9 +75,161 @@
             width: 100px; /* Adjust width as needed */
             height: 70px; /* Adjust height as needed */
         }
+
+
+      /* 원형 게이지 바 스타일 */
+
+      .circle {
+        left: 1rem;
+        top: 35rem;
+        font-size: 40px;
+        width: 200px;
+        height: 200px;
+        display: flex;
+        border-radius: 50%;
+        border: 1px solid #353b48;
+        position: fixed;
+        background: conic-gradient(yellowgreen var(--start-deg), white 0deg);
+
+      }
+      .inner-circle {
+        width: 80%;
+        height: 80%;
+        border-radius: inherit;
+        background-color: #353b48;
+        margin: auto;
+        display: flex;
+        color: white;
+        justify-content: center;
+      }
+
+      .inner-circle span {
+        display: flex;
+        align-items: center;
+      }
+
+
+
+      /* .container {
+        left: 1rem;
+        top: 35rem;
+        font-size: 40px;
+        width: 200px;
+        height: 200px;
+        display: flex;
+        border-radius: 50%;
+        border: 1px solid #353b48;
+        position: fixed;
+        background: yellowgreen;
+
+      }
+
+      .svg {
+        display: block;
+        margin: calc(50% - 30px) auto;
+      }
+
+      .border {
+        width: 100px;
+        height: 100px;
+        fill: none;
+        stroke: white;
+        stroke-width: 3;
+        opacity: 0.3;
+        stroke-width: 5; /* 테두리의 두께를 조절합니다. 
+      }
+
+      .progress {
+        
+        width: 100px;
+        height: 100px;
+
+        fill:none;
+        stroke: white;
+        stroke-width: 3;
+        stroke-dasharray: 125.6;
+        stroke-dashoffset: 125.6;
+        animation: progress 2s ease-in-out infinite;
+
+        transform-origin: center;
+        transform: rotate(-90deg);
+        stroke-width: 5; /* 테두리의 두께를 조절합니다.
+
+      }
+
+      @keyframes progress {
+        0%
+        {
+          stroke-dashoffset: var(--deg);
+        }
+      } */
     </style>
   </head>
+
+
+
   <body>
+<!-- circle-process bar -->
+    <!-- <div id="process">
+      <div class="circle">
+        <div class="inner-circle">
+          <span id="text-process"></span>
+        </div>
+      </div> -->
+
+
+      <!-- <div class="container">
+        <svg width="60" height="60" class="svg">
+          <circle r="20" cx="30" cy="30" class="border"></circle>
+          <circle r="20" cx="30" cy="30" class="progress"></circle>
+        </svg>
+        <span id="text-process"></span>
+
+      </div> -->
+
+
+      <script>
+
+        // var Degree = document.getElementById('text-process').innerText;
+        // var processDegree = parseFloat(Degree).toFixed(2);
+
+        // // deg 값 변경을 위한 함수
+        // function changeDeg(deg) {
+        //   var circleElement = document.querySelector('.circle');
+        //   circleElement.setProperty('--start-deg', '90deg');
+        //   // document.documentElement.circle.setProperty('--start-deg', deg + 'deg');
+        // }
+
+        // while(!isNaN(processDegree)) {
+        //   changeDeg(processDegree);
+        //   console.log("process while문 안으로 진입");
+        // }
+        
+    
+        // // 매 2초마다 deg 값 변경
+        // setInterval(function() {
+        //   // processDegree 변수 값을 changeDeg 함수의 매개변수로 전달
+        //   changeDeg(processDegree);
+        // }, 2000); // 2초마다 변경
+
+
+
+
+        // ver 2
+        var textProcessElement = document.getElementById('text-process');
+        var degree = textProcessElement.innerText;
+
+        // 변수 설정
+        document.documentElement.style.setProperty('--deg', degree);
+        window.log("--deg 변수 받아오기 완료")
+                
+
+      </script>
+
+
+
+
+
     <div id="loading-screen">
       <p id="loading-text">Loading...</p>
     </div>
@@ -89,9 +241,11 @@
         <a class="current" href="/"><p>VRM</p></a>
       </section>
     </div>
+
+
     <h1 class="notranslate">
-          <button id="loadModelButton1">캐릭터1</button>
-    <button id="loadModelButton2">캐릭터2</button>
+        <button id="loadModelButton1">캐릭터1</button>
+        <button id="loadModelButton2">캐릭터2</button>
 
       <p id="showClass" ></p>
       <p id="showPre" ></p>
@@ -105,6 +259,8 @@
         <img id="image-button1" src="{% static 'img/field.jpg' %}" alt="Image Button">
         <img id="image-button2" src="{% static 'img/desert.jpg' %}" alt="Image Button">
     </div>
+
+
 
 
 
@@ -149,17 +305,21 @@
                     // Desert 버튼에 대한 처리
                     console.log("Desert 버튼이 클릭되었습니다.");
                     MapUrl = "{% static 'assets/low_poly_desert/scene.gltf' %}";
+                    MapUrl2 = "{% static 'assets 2/world_low_poly/pyramid_and_the_sphinx/scene.gltf' %}";
                     modelUrl = "{% static 'model/sukuna.vrm' %}"
                     loadDesert(MapUrl); // MapUrl이 설정된 후 loadMap 함수 호출
-                    loadModel(modelUrl)
+                    loadModel(modelUrl);
+                    loadPyramid(MapUrl2);
                     break;
                 case "Island":
                     // Island 버튼에 대한 처리
                     console.log("Island 버튼이 클릭되었습니다.");
                     MapUrl = "{% static 'assets/low_poly_island/scene.gltf' %}";
+                    MapUrl2 = "{% static 'assets 2/Island/Man_hawaiian/scene.gltf' %}";
                     modelUrl = "{% static 'model/sukuna.vrm' %}"
                     loadIsland(MapUrl); // MapUrl이 설정된 후 loadMap 함수 호출
-                    loadModel(modelUrl)
+                    loadModel(modelUrl);
+                    loadMaui(MapUrl2);
                     break;
                 case "Mountain":
                     // Mountain 버튼에 대한 처리
