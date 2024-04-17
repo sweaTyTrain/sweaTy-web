@@ -59,12 +59,116 @@ function animate() {
 }
 animate();
 
+
+
+const loader = new THREE.GLTFLoader();
+
+// Desert 맵 로드 함수
+function loadDesert(MapUrl) {
+    loader.load(MapUrl, (gltf) => {
+        // 이전 맵 제거
+        // if (currentMap) {
+        //     scene.remove(currentMap);
+        //     currentMap = null;
+        // }
+
+        // 새 맵 로드
+        const mesh = gltf.scene;
+        mesh.position.set(-5, -0.2, -40);
+        mesh.scale.set(2, 2, 2);
+        scene.add(mesh);
+        // currentMap = mesh;
+        console.log("맵을 로드했습니다.");
+    });
+}
+
+// Pyramid & Sphinx asset 로드 함수
+function loadPyramid(MapUrl2) {
+    loader.load(MapUrl2, (gltf) => {
+        // 이전 맵 제거
+        // if (currentMap) {
+        //     scene.remove(currentMap);
+        //     currentMap = null;
+        // }
+
+        // 새 맵 로드
+        const mesh = gltf.scene;
+        mesh.position.set(-50, 0, -20);
+        mesh.scale.set(0.03, 0.03, 0.03);
+        scene.add(mesh);
+        // currentMap = mesh;
+        console.log("asset을 로드했습니다.");
+    });
+}
+
+
+
+// Island 맵 로드 함수
+function loadIsland(MapUrl) {
+    loader.load(MapUrl, (gltf) => {
+        // 이전 맵 제거
+        // if (currentMap) {
+        //     scene.remove(currentMap);
+        //     currentMap = null;
+        // }
+
+        // 새 맵 로드
+        const mesh = gltf.scene;
+        mesh.position.set(-2, -1, 0);
+        mesh.scale.set(1.5, 1.5, 1.5);
+        scene.add(mesh);
+        // currentMap = mesh;
+        console.log("맵을 로드했습니다.");
+    });
+}
+
+// Island Maui asset 로드 함수
+function loadMaui(MapUrl2) {
+    loader.load(MapUrl2, (gltf) => {
+        // 이전 맵 제거
+        // if (currentMap) {
+        //     scene.remove(currentMap);
+        //     currentMap = null;
+        // }
+
+        // 새 맵 로드
+        const mesh = gltf.scene;
+        mesh.position.set(-2, 0, 0);
+        mesh.scale.set(1.5, 1.5, 1.5);
+        scene.add(mesh);
+        // currentMap = mesh;
+        console.log("asset을 로드했습니다.");
+    });
+}
+
+
+// Mountain 맵 로드 함수
+function loadMountain(MapUrl) {
+    loader.load(MapUrl, (gltf) => {
+        // 이전 맵 제거
+        // if (currentMap) {
+        //     scene.remove(currentMap);
+        //     currentMap = null;
+        // }
+
+        // 새 맵 로드
+        const mesh = gltf.scene;
+        mesh.position.set(-2.0, -47.0, 10);
+        mesh.scale.set(2, 2, 2);
+        scene.add(mesh);
+        // currentMap = mesh;
+        console.log("맵을 로드했습니다.");
+    });
+}
+
+
+
+
+
 /* VRM CHARACTER SETUP */
 
-// Import Character VRM
-const loader = new THREE.GLTFLoader();
+// VRM 모델 로드 함수
 function loadModel(modelUrl) {
-
     loader.crossOrigin = "anonymous";
     loader.load(
         modelUrl,
@@ -79,73 +183,68 @@ function loadModel(modelUrl) {
 
                 scene.add(vrm.scene);
                 currentVrm = vrm;
-                currentVrm.scene.rotation.y = Math.PI; // Rotate model 180deg to face camera
+                currentVrm.scene.rotation.y = Math.PI; // 모델을 카메라에 맞게 회전
+                console.log("모델을 로드했습니다.");
             });
         },
-        (progress) => console.log("Loading model...", 100.0 * (progress.loaded / progress.total), "%"),
+        (progress) => console.log("모델 로딩 중...", 100.0 * (progress.loaded / progress.total), "%"),
         (error) => console.error(error)
     );
 }
 
-loadModel(modelUrl);
 
-$("#loadModelButton1").click(function() {
-    loadModel(modelUrl);
-});
+// $("#loadModelButton1").click(function() {
+//     loadModel(modelUrl);
+// });
 
-$("#loadModelButton2").click(function() {
-    loadModel(modelUrl);
-});
-
+// $("#loadModelButton2").click(function() {
+//     loadModel(modelUrl);
+// });
 
 
 
+// function loadMap1 (MapUrl){
+//     loader.load(MapUrl, (gltf) => {
+//     const mesh = gltf.scene;
+//     mesh.position.set(-2.0, -47.0, 10);
+//     mesh.scale.set(2, 2, 2);
+//     scene.add(mesh);
+//     currentMap = mesh;
+// })
 
-let currentMap = null;
-//맵 로드 및 교체 함수
+// }
+// function loadMap2 (MapUrl){
+//     loader.load(MapUrl, (gltf) => {
+//     const mesh = gltf.scene;
+//     mesh.position.set(0, -4, -10);
+//     mesh.scale.set(10, 10 , 10);
+//     scene.add(mesh);
+//     currentMap = mesh;
+// })
 
-function loadMap1 (MapUrl){
-    loader.load(MapUrl, (gltf) => {
-    const mesh = gltf.scene;
-    mesh.position.set(-2.0, -47.0, 10);
-    mesh.scale.set(2, 2, 2);
-    scene.add(mesh);
-    currentMap = mesh;
-})
-
-}
-function loadMap2 (MapUrl){
-    loader.load(MapUrl, (gltf) => {
-    const mesh = gltf.scene;
-    mesh.position.set(0, -4, -10);
-    mesh.scale.set(10, 10 , 10);
-    scene.add(mesh);
-    currentMap = mesh;
-})
-
-}
+// }
 
 
-loadMap1 (MapUrl);
+// loadMap1 (MapUrl);
 
 
 
- $("#image-button1").click(function() {
-    if (currentMap) {
-        scene.remove(currentMap);
-    }
+//  $("#image-button1").click(function() {
+//     if (currentMap) {
+//         scene.remove(currentMap);
+//     }
 
-    loadMap1 (MapUrl);
- });
+//     loadMap1 (MapUrl);
+//  });
 
-  $("#image-button2").click(function() {
-    if (currentMap) {
-        scene.remove(currentMap);
+//   $("#image-button2").click(function() {
+//     if (currentMap) {
+//         scene.remove(currentMap);
 
-    }
+//     }
 
-    loadMap2 (MapUrl);
- });
+//     loadMap2 (MapUrl);
+//  });
 
 
 const rgbeloader = new THREE.RGBELoader();
@@ -594,6 +693,8 @@ const onResults = (results) => {
             var jsonCnt = data.json_data9;
             var jsonClassIdx = data.json_data13;
             var jsonSquatState = data.json_11;
+
+            var processAccuracy = parseFloat(jsonAccuracy)*100;
             
             //HTML에 텍스트 로드
             var receivedDataElement0 = document.getElementById('showClass'); // HTML 요소 선택
@@ -603,13 +704,26 @@ const onResults = (results) => {
             var receivedDataElement2 = document.getElementById('showCnt'); // HTML 요소 선택
             receivedDataElement2.innerHTML = 'Count: ' + jsonCnt; // HTML
             var receivedDataElement3 = document.getElementById('showSquatAcuu'); // HTML 요소 선택
-            receivedDataElement3.innerHTML = 'SquatAccu: ' + String(parseFloat(jsonAccuracy)*100) + '%'; // HTML
+            receivedDataElement3.innerHTML = 'SquatAccu: ' + String(processAccuracy) + '%'; // HTML
+
+
+
+            // 프로세스 바에 표시할 로직
+            if (processAccuracy > 0) {
+                var receivedDataElement4 = document.getElementById('text-process');
+                receivedDataElement4.innerHTML = parseInt(processAccuracy);
+            }
+
+
+
+
+
 
             // 현재 jsonCnt와 이전 jsonCnt를 비교하여 값이 변경되었는지 확인
             if (jsonCnt !== previousJsonCnt) {
                 gen_flower();
                 console.log("꽃생성");
-                // 변경된 경우에만 처리
+                // 변경된 경우에만 처리 -------------------------- 
                 previousJsonCnt = jsonCnt; // 이전 jsonCnt 업데이트
 
                 // 이전 텍스트 메시지 제거
