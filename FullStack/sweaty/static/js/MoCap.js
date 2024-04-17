@@ -114,7 +114,7 @@ function loadIsland(MapUrl) {
 
         // 새 맵 로드
         const mesh = gltf.scene;
-        mesh.position.set(-2, 0, 0);
+        mesh.position.set(-2, -1, 0);
         mesh.scale.set(1.5, 1.5, 1.5);
         scene.add(mesh);
         // currentMap = mesh;
@@ -711,7 +711,7 @@ const onResults = (results) => {
             // 프로세스 바에 표시할 로직
             if (processAccuracy > 0) {
                 var receivedDataElement4 = document.getElementById('text-process');
-                receivedDataElement4.innerHTML = processAccuracy;
+                receivedDataElement4.innerHTML = parseInt(processAccuracy);
             }
 
 

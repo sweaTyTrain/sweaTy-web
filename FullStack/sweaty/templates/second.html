@@ -77,151 +77,106 @@
         }
 
 
+
+
       /* 원형 게이지 바 스타일 */
 
-      .circle {
+      .container {
         left: 1rem;
-        top: 35rem;
-        font-size: 40px;
+        top: 43rem;
         width: 200px;
         height: 200px;
-        display: flex;
         border-radius: 50%;
-        border: 1px solid #353b48;
-        position: fixed;
-        background: conic-gradient(yellowgreen var(--start-deg), white 0deg);
-
-      }
-      .inner-circle {
-        width: 80%;
-        height: 80%;
-        border-radius: inherit;
-        background-color: #353b48;
-        margin: auto;
-        display: flex;
-        color: white;
-        justify-content: center;
-      }
-
-      .inner-circle span {
-        display: flex;
-        align-items: center;
-      }
-
-
-
-      /* .container {
-        left: 1rem;
-        top: 35rem;
-        font-size: 40px;
-        width: 200px;
-        height: 200px;
-        display: flex;
-        border-radius: 50%;
-        border: 1px solid #353b48;
         position: fixed;
         background: yellowgreen;
 
       }
 
-      .svg {
-        display: block;
-        margin: calc(50% - 30px) auto;
-      }
-
       .border {
-        width: 100px;
-        height: 100px;
         fill: none;
         stroke: white;
-        stroke-width: 3;
         opacity: 0.3;
-        stroke-width: 5; /* 테두리의 두께를 조절합니다. 
+        stroke-width: 25;
       }
 
       .progress {
-        
-        width: 100px;
-        height: 100px;
-
+        position: absolute;
         fill:none;
         stroke: white;
-        stroke-width: 3;
-        stroke-dasharray: 125.6;
-        stroke-dashoffset: 125.6;
+        stroke-dasharray: 0;
+        stroke-dashoffset: 0;
         animation: progress 2s ease-in-out infinite;
 
         transform-origin: center;
         transform: rotate(-90deg);
-        stroke-width: 5; /* 테두리의 두께를 조절합니다.
+        stroke-width: 25; 
 
       }
 
       @keyframes progress {
-        0%
-        {
-          stroke-dashoffset: var(--deg);
+        0% {
+          stroke-dashoffset: 0;
         }
-      } */
+    }
+      @font-face {
+        font-family: 'DungGeunMo';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/DungGeunMo.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+      #text-process {
+        font-family: 'DungGeunMo'; /* 글자체 설정 */
+        position: absolute; /* 부모 요소를 기준으로 절대적으로 위치 설정 */
+        top: 50%; /* 부모 요소의 세로 중앙 위치 */
+        left: 50%; /* 부모 요소의 가로 중앙 위치 */
+        transform: translate(-50%, -50%); /* 수직 및 수평 중앙 정렬 */
+        font-size: 80px; /* 글자 크기 설정 */
+        color: black; /* 글자 색상 설정 */
+      }
     </style>
   </head>
 
 
 
   <body>
-<!-- circle-process bar -->
-    <!-- <div id="process">
-      <div class="circle">
-        <div class="inner-circle">
-          <span id="text-process"></span>
-        </div>
-      </div> -->
 
 
-      <!-- <div class="container">
-        <svg width="60" height="60" class="svg">
-          <circle r="20" cx="30" cy="30" class="border"></circle>
-          <circle r="20" cx="30" cy="30" class="progress"></circle>
+      <div class="container">
+        <svg width="200" height="200" class="svg">
+          <!-- border와 progress의 위치를 동일하게 설정 -->
+          <circle r="85" cx="100" cy="100" class="border"></circle>
+          <circle r="85" cx="100" cy="100" class="progress"></circle>
         </svg>
         <span id="text-process"></span>
-
-      </div> -->
+      </div>
+      
 
 
       <script>
 
-        // var Degree = document.getElementById('text-process').innerText;
-        // var processDegree = parseFloat(Degree).toFixed(2);
-
-        // // deg 값 변경을 위한 함수
-        // function changeDeg(deg) {
-        //   var circleElement = document.querySelector('.circle');
-        //   circleElement.setProperty('--start-deg', '90deg');
-        //   // document.documentElement.circle.setProperty('--start-deg', deg + 'deg');
-        // }
-
-        // while(!isNaN(processDegree)) {
-        //   changeDeg(processDegree);
-        //   console.log("process while문 안으로 진입");
-        // }
-        
-    
-        // // 매 2초마다 deg 값 변경
-        // setInterval(function() {
-        //   // processDegree 변수 값을 changeDeg 함수의 매개변수로 전달
-        //   changeDeg(processDegree);
-        // }, 2000); // 2초마다 변경
-
-
-
-
         // ver 2
         var textProcessElement = document.getElementById('text-process');
-        var degree = textProcessElement.innerText;
+        var percentage = parseFloat(textProcessElement.innerText); // 텍스트를 숫자로 변환
+        var degree = percentage; // stroke-dasharray 값의 백분율
+        // var degree = 50; // stroke-dasharray 값의 백분율
+
+        // degree 값 확인
+        console.log(degree);
+
+
+        // 선의 시작점을 동적으로 설정하는 함수
+        function setStrokeDashOffset(offset) {
+          document.querySelector('.progress').style.strokeDashoffset = offset;
+        }
+
+        // 시작점을 동적으로 설정
+        setStrokeDashOffset(degree);
+
+
 
         // 변수 설정
-        document.documentElement.style.setProperty('--deg', degree);
-        window.log("--deg 변수 받아오기 완료")
+        // document.documentElement.setProperty('--deg', degree);
                 
 
       </script>
