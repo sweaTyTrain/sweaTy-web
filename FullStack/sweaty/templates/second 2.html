@@ -1,0 +1,305 @@
+{% load static %}
+{% csrf_token %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <!-- HTML Meta Tags -->
+    <title>AVATAR</title>
+    <meta
+      name="description"
+      content="Track face and body rigs just your browser webcam!"
+    />
+    <meta name="csrf_token" content="{{ csrf_token }}">
+
+      <!--     AJAX           -->
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <!--     Basic Three.js -->
+      <script src="https://unpkg.com/three@0.133.0/build/three.js"></script>
+      <!--     GLTF Loader for Three.js -->
+      <script src="https://unpkg.com/three@0.133.0/examples/js/loaders/GLTFLoader.js"></script>
+      <script src="https://unpkg.com/three@0.133.0/examples/js/loaders/FontLoader.js"></script>
+      <script src="https://unpkg.com/three@0.133.0/examples/js/geometries/TextGeometry.js"></script>
+      <script src="https://unpkg.com/three@0.133.0/examples/js/loaders/RGBELoader.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/@tweenjs/tween.js@23.1.1/dist/tween.umd.min.js"></script>
+      <!--     Orbit Controls for Three.js -->
+      <script src="https://unpkg.com/three@0.133.0/examples/js/controls/OrbitControls.js"></script>
+      <!--     VRM Loader for Three.js -->
+      <script src="https://unpkg.com/@pixiv/three-vrm@0.6.7/lib/three-vrm.js"></script>
+      <!--     Mediapipe or Tensorflow.js -->
+      <script src="https://cdn.jsdelivr.net/npm/@mediapipe/holistic@0.5.1635989137/holistic.js" crossorigin="anonymous"></script>
+      <!--     Mediapipe Drawing Tools -->
+      <script
+      src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"
+      crossorigin="anonymous"
+      ></script>
+      <!--     Mediapipe Camera Tools -->
+      <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
+      <!--     Kalidokit Kinematic Solver -->
+      <script src="https://cdn.jsdelivr.net/npm/kalidokit@1.1/dist/kalidokit.umd.js"></script>
+      <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+
+      <style>
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        #loading-text {
+            font-size: 48px;
+            color: black;
+        }
+
+        #image-button-container {
+            position: fixed;
+            top: 10px; /* Adjust top position as needed */
+            right: 10px; /* Adjust right position as needed */
+            z-index: 10000; /* Ensure it's above other content */
+            display: flex;
+            flex-direction: column; /* Arrange items vertically */
+            align-items: flex-end; /* Align items to the right */
+        }
+        #image-button1 {
+            width: 100px; /* Adjust width as needed */
+            height: 70px; /* Adjust height as needed */
+            margin-bottom: 10px; /* Adjust spacing between buttons */
+        }
+       #image-button2{
+            width: 100px; /* Adjust width as needed */
+            height: 70px; /* Adjust height as needed */
+        }
+
+
+
+
+      /* 원형 게이지 바 스타일 */
+
+      .container {
+        left: 1rem;
+        top: 43rem;
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        position: fixed;
+        background: yellowgreen;
+
+      }
+
+      .border {
+        fill: none;
+        stroke: white;
+        opacity: 0.3;
+        stroke-width: 25;
+      }
+
+      .progress {
+        position: absolute;
+        fill:none;
+        stroke: white;
+        stroke-dasharray: 0;
+        stroke-dashoffset: 0;
+        animation: progress 2s ease-in-out infinite;
+
+        transform-origin: center;
+        transform: rotate(-90deg);
+        stroke-width: 25; 
+
+      }
+
+      @keyframes progress {
+        0% {
+          stroke-dashoffset: 0;
+        }
+    }
+      @font-face {
+        font-family: 'DungGeunMo';
+        src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/DungGeunMo.woff') format('woff');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+      #text-process {
+        font-family: 'DungGeunMo'; /* 글자체 설정 */
+        position: absolute; /* 부모 요소를 기준으로 절대적으로 위치 설정 */
+        top: 50%; /* 부모 요소의 세로 중앙 위치 */
+        left: 50%; /* 부모 요소의 가로 중앙 위치 */
+        transform: translate(-50%, -50%); /* 수직 및 수평 중앙 정렬 */
+        font-size: 80px; /* 글자 크기 설정 */
+        color: black; /* 글자 색상 설정 */
+      }
+    </style>
+  </head>
+
+
+
+  <body>
+
+
+      <div class="container">
+        <svg width="200" height="200" class="svg">
+          <!-- border와 progress의 위치를 동일하게 설정 -->
+          <circle r="85" cx="100" cy="100" class="border"></circle>
+          <circle r="85" cx="100" cy="100" class="progress"></circle>
+        </svg>
+        <span id="text-process"></span>
+      </div>
+      
+
+
+      <script>
+
+        // ver 2
+        var textProcessElement = document.getElementById('text-process');
+        var percentage = parseFloat(textProcessElement.innerText); // 텍스트를 숫자로 변환
+        var degree = percentage; // stroke-dasharray 값의 백분율
+        // var degree = 50; // stroke-dasharray 값의 백분율
+
+        // degree 값 확인
+        console.log(degree);
+
+
+        // 선의 시작점을 동적으로 설정하는 함수
+        function setStrokeDashOffset(offset) {
+          document.querySelector('.progress').style.strokeDashoffset = offset;
+        }
+
+        // 시작점을 동적으로 설정
+        setStrokeDashOffset(degree);
+
+
+
+        // 변수 설정
+        // document.documentElement.setProperty('--deg', degree);
+                
+
+      </script>
+
+
+
+
+
+    <div id="loading-screen">
+      <p id="loading-text">Loading...</p>
+    </div>
+
+    <div class="preview">
+      <video class="input_video" width="1280px" height="720px"></video>
+      <canvas class="guides"></canvas>
+      <section>
+        <a class="current" href="/"><p>VRM</p></a>
+      </section>
+    </div>
+
+
+    <h1 class="notranslate">
+        <button id="loadModelButton1">캐릭터1</button>
+        <button id="loadModelButton2">캐릭터2</button>
+
+      <p id="showClass" ></p>
+      <p id="showPre" ></p>
+      <p id="showCnt" ></p>
+      <p id="showSquatAcuu" ></p>
+    </h1>
+
+
+
+    <div id="image-button-container">
+        <img id="image-button1" src="{% static 'img/field.jpg' %}" alt="Image Button">
+        <img id="image-button2" src="{% static 'img/desert.jpg' %}" alt="Image Button">
+    </div>
+
+
+
+
+
+    <script src="../../static/js/MoCap.js"></script>
+
+    <script >
+        const jsonUrl = "{% url 'test' %}";
+        let modelUrl = null;        //초기 아바타
+        let MapUrl = null;       //초기 맵
+
+        // //아바타 교체 버튼
+        // $("#loadModelButton1").click(function() {
+        //     modelUrl = "{% static 'model/sukuna.vrm' %}"; // 캐릭터1 모델의 URL 설정
+        //     loadModel(modelUrl); // 모델 재로드
+
+        // });
+
+        // $("#loadModelButton2").click(function() {
+        //     modelUrl = "{% static 'model/three-vrm-girl.vrm' %}"; // 캐릭터2 모델의 URL 설정
+        //     loadModel(modelUrl); // 모델 재로드
+
+        // });
+
+
+        // //맵 교체 버튼
+        // $("#image-button1").click(function() {
+        //     MapUrl = "{% static 'assets/lowPoly.gltf' %}";            //초원맵으로 바꿀것
+        // });
+
+        // $("#image-button2").click(function() {
+        //     MapUrl = "{% static 'assets/scene.gltf' %}";                 //사막맵으로 바꿀것
+        // });
+   
+        window.onload = function() {
+            // URL의 파라미터에서 선택된 버튼의 정보 가져오기
+            let urlParams = new URLSearchParams(window.location.search);
+            let selectedButton = urlParams.get('loadMapButton');
+
+            // 가져온 정보에 따른 처리
+            switch(selectedButton) {
+                case "Desert":
+                    // Desert 버튼에 대한 처리
+                    console.log("Desert 버튼이 클릭되었습니다.");
+                    MapUrl = "{% static 'assets/low_poly_desert/scene.gltf' %}";
+                    MapUrl2 = "{% static 'assets 2/world_low_poly/pyramid_and_the_sphinx/scene.gltf' %}";
+                    modelUrl = "{% static 'model/sukuna.vrm' %}"
+                    loadDesert(MapUrl); // MapUrl이 설정된 후 loadMap 함수 호출
+                    loadModel(modelUrl);
+                    loadPyramid(MapUrl2);
+                    break;
+                case "Island":
+                    // Island 버튼에 대한 처리
+                    console.log("Island 버튼이 클릭되었습니다.");
+                    MapUrl = "{% static 'assets/low_poly_island/scene.gltf' %}";
+                    MapUrl2 = "{% static 'assets 2/Island/Man_hawaiian/scene.gltf' %}";
+                    modelUrl = "{% static 'model/sukuna.vrm' %}"
+                    loadIsland(MapUrl); // MapUrl이 설정된 후 loadMap 함수 호출
+                    loadModel(modelUrl);
+                    loadMaui(MapUrl2);
+                    break;
+                case "Mountain":
+                    // Mountain 버튼에 대한 처리
+                    console.log("Mountain 버튼이 클릭되었습니다.");
+                    MapUrl = "{% static 'assets/low_poly_mountain/scene.gltf' %}";
+                    modelUrl = "{% static 'model/sukuna.vrm' %}"
+                    loadMountain(MapUrl); // MapUrl이 설정된 후 loadMap 함수 호출
+                    loadModel(modelUrl)
+                    break;
+                default:
+                    // 아무 버튼도 클릭되지 않았을 때의 처리
+                    console.log("아무 버튼도 클릭되지 않았습니다.");
+                    break;
+            }
+        };
+
+      
+    </script>
+  </body>
+
+</html>
+
+
+
+
+
+
+
