@@ -660,8 +660,6 @@ rgbeloader.load(
                     }, 3000);
                     setTimeout(() => {
                         document.body.removeChild(countDownDiv);
-                        // test
-                        setBreakTime();
                     }, 4000);
                 })
                 .start(); // 애니메이션 시작
