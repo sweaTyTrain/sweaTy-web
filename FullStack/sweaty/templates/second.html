@@ -10,48 +10,58 @@
       name="description"
       content="Track face and body rigs just your browser webcam!"
     />
-    <meta name="csrf_token" content="{{ csrf_token }}">
+    <meta name="csrf_token" content="{{ csrf_token }}" />
 
-      <!--     AJAX           -->
-      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-      <!--     Basic Three.js -->
-      <script src="https://unpkg.com/three@0.133.0/build/three.js"></script>
-      <!--     GLTF Loader for Three.js -->
-      <script src="https://unpkg.com/three@0.133.0/examples/js/loaders/GLTFLoader.js"></script>
-      <!--     Orbit Controls for Three.js -->
-      <script src="https://unpkg.com/three@0.133.0/examples/js/controls/OrbitControls.js"></script>
-      <!--     VRM Loader for Three.js -->
-      <script src="https://unpkg.com/@pixiv/three-vrm@0.6.7/lib/three-vrm.js"></script>
-      <!--     Mediapipe or Tensorflow.js -->
-      <script src="https://cdn.jsdelivr.net/npm/@mediapipe/holistic@0.5.1635989137/holistic.js" crossorigin="anonymous"></script>
-      <!--     Mediapipe Drawing Tools -->
-      <script
+    <!--     AJAX           -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!--     Basic Three.js -->
+    <script src="https://unpkg.com/three@0.133.0/build/three.js"></script>
+    <!--     GLTF Loader for Three.js -->
+    <script src="https://unpkg.com/three@0.133.0/examples/js/loaders/GLTFLoader.js"></script>
+    <!--     Orbit Controls for Three.js -->
+    <script src="https://unpkg.com/three@0.133.0/examples/js/controls/OrbitControls.js"></script>
+    <!--     VRM Loader for Three.js -->
+    <script src="https://unpkg.com/@pixiv/three-vrm@0.6.7/lib/three-vrm.js"></script>
+    <!--     Mediapipe or Tensorflow.js -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@mediapipe/holistic@0.5.1635989137/holistic.js"
+      crossorigin="anonymous"
+    ></script>
+    <!--     Mediapipe Drawing Tools -->
+    <script
       src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js"
       crossorigin="anonymous"
-      ></script>
-      <!--     Mediapipe Camera Tools -->
-      <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
-      <!--     Kalidokit Kinematic Solver -->
-      <script src="https://cdn.jsdelivr.net/npm/kalidokit@1.1/dist/kalidokit.umd.js"></script>
-      <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    ></script>
+    <!--     Mediapipe Camera Tools -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"
+      crossorigin="anonymous"
+    ></script>
+    <!--     Kalidokit Kinematic Solver -->
+    <script src="https://cdn.jsdelivr.net/npm/kalidokit@1.1/dist/kalidokit.umd.js"></script>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
   </head>
   <body>
-
-
-
-
     <div class="preview">
-      <video class="input_video" width="1280px" height="720px"></video>
+      <!-- <video class="input_video" width="1280px" height="720px"></video> -->
+      <button id="showVideo">Open camera</button>
+      <video
+        id="gum-local"
+        autoplay
+        playsinline
+        width="1280px"
+        height="720px"
+      ></video>
       <canvas class="guides"></canvas>
       <section>
         <a class="current" href="/"><p>VRM</p></a>
       </section>
     </div>
     <h1 class="notranslate">
-      <p id="showClass" ></p>
-      <p id="showPre" ></p>
-      <p id="showCnt" ></p>
-      <p id="showSquatAcuu" ></p>
+      <p id="showClass"></p>
+      <p id="showPre"></p>
+      <p id="showCnt"></p>
+      <p id="showSquatAcuu"></p>
     </h1>
 
     <!-- <img src="{% static 'js/Metal_Tiles_003_height.png' %}" alt="Height Map">
@@ -60,20 +70,11 @@
     <img src="{% static 'js/Metal_Tiles_003_roughness.jpg' %}" alt="Roughness Map">
     <img src="{% static 'js/Metal_Tiles_003_ambientOcclusion.jpg' %}" alt="AmbientOcclusion Map">
     <img src="{% static 'js/Metal_Tiles_003_metallic.jpg' %}" alt="Metallic Map"> -->
-    
+
     <script>
-        const jsonUrl = "{% url 'test' %}";
-        const modelUrl = "{% static 'model/three-vrm-girl.vrm' %}";
+      const jsonUrl = "{% url 'test' %}";
+      const modelUrl = "{% static 'model/three-vrm-girl.vrm' %}";
     </script>
     <script type="module" src="{% static 'js/MoCap.js' %}"></script>
-
   </body>
-
 </html>
-
-
-
-
-
-
-
