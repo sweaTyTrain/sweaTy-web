@@ -215,6 +215,9 @@
         <img id="image-button2" src="{% static 'img/desert.jpg' %}" alt="Image Button">
     </div>
 
+     <audio id="desert-audio" src="{% static 'audio/desert.mp3' %}" preload="auto"></audio>
+    <audio id="island-audio" src="{% static 'audio/island.mp3' %}" preload="auto"></audio>
+    <audio id="mountain-audio" src="{% static 'audio/mountain.mp3' %}" preload="auto"></audio>
 
 
 
@@ -226,18 +229,34 @@
         let modelUrl = null;        //초기 아바타
         let MapUrl = null;       //초기 맵
 
-        // //아바타 교체 버튼
-        // $("#loadModelButton1").click(function() {
-        //     modelUrl = "{% static 'model/sukuna.vrm' %}"; // 캐릭터1 모델의 URL 설정
-        //     loadModel(modelUrl); // 모델 재로드
 
-        // });
+        const desertAudio = document.getElementById('desert-audio');
+        const islandAudio = document.getElementById('island-audio');
+        const mountainAudio = document.getElementById('mountain-audio');
 
-        // $("#loadModelButton2").click(function() {
-        //     modelUrl = "{% static 'model/three-vrm-girl.vrm' %}"; // 캐릭터2 모델의 URL 설정
-        //     loadModel(modelUrl); // 모델 재로드
+        // Stop all audio before starting a new one
+        function stopAllAudio() {
+            desertAudio.pause();
+            islandAudio.pause();
+            mountainAudio.pause();
+            desertAudio.currentTime = 0;
+            islandAudio.currentTime = 0;
+            mountainAudio.currentTime = 0;
+        }
 
-        // });
+
+
+        //아바타 교체 버튼
+        $("#loadModelButton1").click(function() {
+          modelUrl = "{% static 'model/sukuna.vrm' %}"; // 캐릭터1 모델의 URL 설정
+          loadModel(modelUrl); // 모델 재로드
+        });
+
+        $("#loadModelButton2").click(function() {
+          modelUrl = "{% static 'model/three-vrm-girl.vrm' %}"; // 캐릭터2 모델의 URL 설정
+          loadModel(modelUrl); // 모델 재로드
+
+        });
 
 
         // //맵 교체 버튼
@@ -265,6 +284,9 @@
                     loadDesert(MapUrl); // MapUrl이 설정된 후 loadMap 함수 호출
                     loadModel(modelUrl);
                     loadPyramid(MapUrl2);
+                    stopAllAudio(); // Stop other audios
+                    desertAudio.play(); // Play Desert audio
+
                     break;
                 case "Island":
                     // Island 버튼에 대한 처리
@@ -275,6 +297,9 @@
                     loadIsland(MapUrl); // MapUrl이 설정된 후 loadMap 함수 호출
                     loadModel(modelUrl);
                     loadMaui(MapUrl2);
+                    stopAllAudio(); // Stop other audios
+                    islandAudio.play(); // Play Island audio
+
                     break;
                 case "Mountain":
                     // Mountain 버튼에 대한 처리
@@ -283,6 +308,8 @@
                     modelUrl = "{% static 'model/sukuna.vrm' %}"
                     loadMountain(MapUrl); // MapUrl이 설정된 후 loadMap 함수 호출
                     loadModel(modelUrl)
+                    stopAllAudio(); // Stop other audios
+                    mountainAudio.play(); // Play Mountain audio
                     break;
                 default:
                     // 아무 버튼도 클릭되지 않았을 때의 처리
