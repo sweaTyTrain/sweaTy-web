@@ -14,6 +14,30 @@ logger = logging.getLogger(__name__)
 
 #홈 화면
 def index(request):
+
+
+    SampleDatas.objects.all().delete()
+    csv_file_path = './avatar/AImodel/merged_file.csv'
+    save_csv_to_database(csv_file_path)
+    SquatDatatest.objects.all().delete()
+
+    SquatDatatest.objects.create(
+        squat_state = [0,0,0,0],
+        accuracy = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        squat_count = 0,
+        height = 0.0,
+        half_height = 0.0,
+        score = 0,
+        reg = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+
+    )
+
+
+    # Keypoints 모델의 모든 객체 삭제
+    Keypointstest.objects.all().delete()
+
+    # KeyAngles 모델의 모든 객체 삭제
+    Keyanglestest.objects.all().delete()
     # TestModel의 모든 레코드를 삭제
     TestModel.objects.all().delete()
     # TestModel 인스턴스 생성 및 squatCnt 속성을 0으로 설정
