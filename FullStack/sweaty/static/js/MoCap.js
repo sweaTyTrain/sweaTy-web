@@ -358,6 +358,8 @@ function getAjax(CoordinateData) {
         data: CoordinateData,
 
         success: function (data) {
+
+            /*
             // Class 저장 리스트
             var className = [
                 "good_stand",
@@ -387,6 +389,8 @@ function getAjax(CoordinateData) {
 
             var processAccuracy = parseFloat(jsonAccuracy) * 100;
 
+
+
             //HTML에 텍스트 로드
             var receivedDataElement0 = document.getElementById("showClass"); // HTML 요소 선택
             receivedDataElement0.innerHTML =
@@ -394,6 +398,16 @@ function getAjax(CoordinateData) {
             var receivedDataElement1 = document.getElementById("showPre"); // HTML 요소 선택
             receivedDataElement1.innerHTML =
                 "Predict: " + jsonDataPreList[parseInt(jsonClassIdx)]; // HTML
+
+            */
+
+            var jsonCnt = data.json_data0;
+
+            var jsonAccuracy = data.json_data1;
+
+
+            var processAccuracy = parseFloat(jsonAccuracy);
+
             var receivedDataElement2 = document.getElementById("showCnt"); // HTML 요소 선택
             receivedDataElement2.innerHTML = "Count: " + jsonCnt; // HTML
             var receivedDataElement3 = document.getElementById("showSquatAcuu"); // HTML 요소 선택
@@ -1202,103 +1216,161 @@ const onResults = (results) => {
     animateVRM(currentVrm, results);
 
     if (results.poseLandmarks && results.poseLandmarks.length >= 27) {
-        // 객체로 전송시 JSON.Stringify포함,  아래는 허리디스크 모델을 돌리기 위한 좌표 전송 코드
 
-        const rightShoulderIndex = 11;
-        const leftShoulderIndex = 12;
-        const rightHipIndex = 23;
-        const leftHipIndex = 24;
-        const rightKneeIndex = 25;
-        const leftKneeIndex = 26;
-        const rightAnkleIndex = 27;
-        const leftAnkleIndex = 28;
 
-        var rightShoulderLandmark = results.poseLandmarks[rightShoulderIndex];
-        var leftShoulderLandmark = results.poseLandmarks[leftShoulderIndex];
-        var rightHipLandmark = results.poseLandmarks[rightHipIndex];
-        var leftHipLandmark = results.poseLandmarks[leftHipIndex];
-        var rightKneeLandmark = results.poseLandmarks[rightKneeIndex];
-        var leftKneeLandmark = results.poseLandmarks[leftKneeIndex];
-        var rightAnkleLandmark = results.poseLandmarks[rightAnkleIndex];
-        var leftAnkleLandmark = results.poseLandmarks[leftAnkleIndex];
+    const rightShoulderIndex =  11;
+    const leftShoulderIndex =  12;
+    const rightHipIndex =  23;
+    const leftHipIndex = 24;
+    const rightKneeIndex = 25;
+    const leftKneeIndex = 26;
+    const rightAnkleIndex = 27;
+    const leftAnkleIndex = 28;
+    const rightHeelIndex = 29;
+    const leftHeelIndex = 30;
+    const rightFootIndex = 31;
+    const leftFootIndex = 32;
 
-        //객체로 전송시
-        var landmarkData = JSON.stringify(leftKneeLandmark);
 
-        //오른쪽 어깨
-        var rightShoulderXCoordinate = rightShoulderLandmark.x;
-        var rightShoulderYCoordinate = rightShoulderLandmark.y;
-        var rightShoulderZCoordinate = rightShoulderLandmark.z;
+    var rightShoulderLandmark = results.poseLandmarks[rightShoulderIndex];
+    var leftShoulderLandmark = results.poseLandmarks[leftShoulderIndex];
+    var rightHipLandmark = results.poseLandmarks[rightHipIndex];
+    var leftHipLandmark = results.poseLandmarks[leftHipIndex];
+    var rightKneeLandmark = results.poseLandmarks[rightKneeIndex];
+    var leftKneeLandmark = results.poseLandmarks[leftKneeIndex];
+    var rightAnkleLandmark = results.poseLandmarks[rightAnkleIndex];
+    var leftAnkleLandmark = results.poseLandmarks[leftAnkleIndex];
+    var rightHeelLandmark = results.poseLandmarks[rightHeelIndex];
+    var leftHeelLandmark = results.poseLandmarks[leftHeelIndex];
+    var rightFootLandmark = results.poseLandmarks[rightFootIndex];
+    var leftFootLandmark = results.poseLandmarks[leftFootIndex];
 
-        //왼쪽 어깨
-        var leftShoulderXCoordinate = leftShoulderLandmark.x;
-        var leftShoulderYCoordinate = leftShoulderLandmark.y;
-        var leftShoulderZCoordinate = leftShoulderLandmark.z;
+    //오른쪽 어깨
+    var rightShoulderXCoordinate = rightShoulderLandmark.x;
+    var rightShoulderYCoordinate = rightShoulderLandmark.y;
+    var rightShoulderZCoordinate = rightShoulderLandmark.z;
 
-        //오른쪽 엉덩이
-        var rightHipXCoordinate = rightHipLandmark.x;
-        var rightHipYCoordinate = rightHipLandmark.y;
-        var rightHipZCoordinate = rightHipLandmark.z;
+    //왼쪽 어깨
+    var leftShoulderXCoordinate = leftShoulderLandmark.x;
+    var leftShoulderYCoordinate = leftShoulderLandmark.y;
+    var leftShoulderZCoordinate = leftShoulderLandmark.z;
 
-        //왼쪽 엉덩이
-        var leftHipXCoordinate = leftHipLandmark.x;
-        var leftHipYCoordinate = leftHipLandmark.y;
-        var leftHipZCoordinate = leftHipLandmark.z;
+    //오른쪽 엉덩이
+    var rightHipXCoordinate = rightHipLandmark.x;
+    var rightHipYCoordinate = rightHipLandmark.y;
+    var rightHipZCoordinate = rightHipLandmark.z;
 
-        //오른쪽 무릎
-        var rightKneeXCoordinate = rightKneeLandmark.x;
-        var rightKneeYCoordinate = rightKneeLandmark.y;
-        var rightKneeZCoordinate = rightKneeLandmark.z;
+    //왼쪽 엉덩이
+    var leftHipXCoordinate = leftHipLandmark.x;
+    var leftHipYCoordinate = leftHipLandmark.y;
+    var leftHipZCoordinate = leftHipLandmark.z;
 
-        //왼쪽 무릎
-        var leftKneeXCoordinate = leftKneeLandmark.x;
-        var leftKneeYCoordinate = leftKneeLandmark.y;
-        var leftKneeZCoordinate = leftKneeLandmark.z;
+    //오른쪽 무릎
+    var rightKneeXCoordinate = rightKneeLandmark.x;
+    var rightKneeYCoordinate = rightKneeLandmark.y;
+    var rightKneeZCoordinate = rightKneeLandmark.z;
 
-        //오른쪽 발목
-        var rightAnkleXCoordinate = rightAnkleLandmark.x;
-        var rightAnkleYCoordinate = rightAnkleLandmark.y;
-        var rightAnkleZCoordinate = rightAnkleLandmark.z;
+    //왼쪽 무릎
+    var leftKneeXCoordinate = leftKneeLandmark.x;
+    var leftKneeYCoordinate = leftKneeLandmark.y;
+    var leftKneeZCoordinate = leftKneeLandmark.z;
 
-        //왼쪽 발목
-        var leftAnkleXCoordinate = leftAnkleLandmark.x;
-        var leftAnkleYCoordinate = leftAnkleLandmark.y;
-        var leftAnkleZCoordinate = leftAnkleLandmark.z;
+    //오른쪽 발목
+    var rightAnkleXCoordinate = rightAnkleLandmark.x;
+    var rightAnkleYCoordinate = rightAnkleLandmark.y;
+    var rightAnkleZCoordinate = rightAnkleLandmark.z;
 
-        var CoordinateData = {
-            rightShoulderXCoordinate: parseFloat(rightShoulderXCoordinate),
-            rightShoulderYCoordinate: parseFloat(rightShoulderYCoordinate),
-            rightShoulderZCoordinate: parseFloat(rightShoulderZCoordinate),
+    //왼쪽 발목
+    var leftAnkleXCoordinate = leftAnkleLandmark.x;
+    var leftAnkleYCoordinate = leftAnkleLandmark.y;
+    var leftAnkleZCoordinate = leftAnkleLandmark.z;
 
-            leftShoulderXCoordinate: parseFloat(leftShoulderXCoordinate),
-            leftShoulderYCoordinate: parseFloat(leftShoulderYCoordinate),
-            leftShoulderZCoordinate: parseFloat(leftShoulderZCoordinate),
 
-            rightHipXCoordinate: parseFloat(rightHipXCoordinate),
-            rightHipYCoordinate: parseFloat(rightHipYCoordinate),
-            rightHipZCoordinate: parseFloat(rightHipZCoordinate),
+    //오른쪽 발 뒤꿈치
+    var rightHeelXCoordinate = rightHeelLandmark.x;
+    var rightHeelYCoordinate = rightHeelLandmark.y;
+    var rightHeelZCoordinate = rightHeelLandmark.z;
 
-            leftHipXCoordinate: parseFloat(leftHipXCoordinate),
-            leftHipYCoordinate: parseFloat(leftHipYCoordinate),
-            leftHipZCoordinate: parseFloat(leftHipZCoordinate),
 
-            rightKneeXCoordinate: parseFloat(rightKneeXCoordinate),
-            rightKneeYCoordinate: parseFloat(rightKneeYCoordinate),
-            rightKneeZCoordinate: parseFloat(rightKneeZCoordinate),
+    //왼쪽 발 뒤꿈치
+    var leftHeelXCoordinate = leftHeelLandmark.x;
+    var leftHeelYCoordinate = leftHeelLandmark.y;
+    var leftHeelZCoordinate = leftHeelLandmark.z;
 
-            leftKneeXCoordinate: parseFloat(leftKneeXCoordinate),
-            leftKneeYCoordinate: parseFloat(leftKneeYCoordinate),
-            leftKneeZCoordinate: parseFloat(leftKneeZCoordinate),
+    //오른쪽 발가락
+    var rightFootXCoordinate = rightFootLandmark.x;
+    var rightFootYCoordinate = rightFootLandmark.y;
+    var rightFootZCoordinate = rightFootLandmark.z;
 
-            rightAnkleXCoordinate: parseFloat(rightAnkleXCoordinate),
-            rightAnkleYCoordinate: parseFloat(rightAnkleYCoordinate),
-            rightAnkleZCoordinate: parseFloat(rightAnkleZCoordinate),
 
-            leftAnkleXCoordinate: parseFloat(leftAnkleXCoordinate),
-            leftAnkleYCoordinate: parseFloat(leftAnkleYCoordinate),
-            leftAnkleZCoordinate: parseFloat(leftAnkleZCoordinate),
-            //"landmarkData": landmarkData,
-        };
+    //왼쪽 발가락
+    var leftFootXCoordinate = leftFootLandmark.x;
+    var leftFootYCoordinate = leftFootLandmark.y;
+    var leftFootZCoordinate = leftFootLandmark.z;
+
+
+
+
+
+
+
+
+
+
+
+
+
+    var CoordinateData = {
+        "rightShoulderXCoordinate": parseFloat(rightShoulderXCoordinate),
+        "rightShoulderYCoordinate": parseFloat(rightShoulderYCoordinate),
+        //"rightShoulderZCoordinate": parseFloat(rightShoulderZCoordinate),
+
+        "leftShoulderXCoordinate": parseFloat(leftShoulderXCoordinate),
+        "leftShoulderYCoordinate": parseFloat(leftShoulderYCoordinate),
+        //"leftShoulderZCoordinate": parseFloat(leftShoulderZCoordinate),
+
+        "rightHipXCoordinate": parseFloat(rightHipXCoordinate),
+        "rightHipYCoordinate": parseFloat(rightHipYCoordinate),
+        //"rightHipZCoordinate": parseFloat(rightHipZCoordinate),
+
+        "leftHipXCoordinate": parseFloat(leftHipXCoordinate),
+        "leftHipYCoordinate": parseFloat(leftHipYCoordinate),
+        //"leftHipZCoordinate": parseFloat(leftHipZCoordinate),
+
+        "rightKneeXCoordinate": parseFloat(rightKneeXCoordinate),
+        "rightKneeYCoordinate": parseFloat(rightKneeYCoordinate),
+        //"rightKneeZCoordinate": parseFloat(rightKneeZCoordinate),
+
+        "leftKneeXCoordinate": parseFloat(leftKneeXCoordinate),
+        "leftKneeYCoordinate": parseFloat(leftKneeYCoordinate),
+        //"leftKneeZCoordinate": parseFloat(leftKneeZCoordinate),
+
+        "rightAnkleXCoordinate": parseFloat(rightAnkleXCoordinate),
+        "rightAnkleYCoordinate": parseFloat(rightAnkleYCoordinate),
+        //"rightAnkleZCoordinate": parseFloat(rightAnkleZCoordinate),
+
+        "leftAnkleXCoordinate": parseFloat(leftAnkleXCoordinate),
+        "leftAnkleYCoordinate": parseFloat(leftAnkleYCoordinate),
+        //"leftAnkleZCoordinate": parseFloat(leftAnkleZCoordinate),
+
+
+        "rightHeelXCoordinate": parseFloat(rightHeelXCoordinate),
+        "rightHeelYCoordinate": parseFloat(rightHeelYCoordinate),
+        //"rightHeelZCoordinate": parseFloat(rightHeelZCoordinate),
+
+        "leftHeelXCoordinate": parseFloat(leftHeelXCoordinate),
+        "leftHeelYCoordinate": parseFloat(leftHeelYCoordinate),
+        //"leftHeelZCoordinate": parseFloat(leftHeelZCoordinate),
+
+        "rightFootXCoordinate": parseFloat(rightHeelXCoordinate),
+        "rightFootYCoordinate": parseFloat(rightHeelYCoordinate),
+        //"rightFootZCoordinate": parseFloat(rightHeelZCoordinate),
+
+        "leftFootXCoordinate": parseFloat(leftFootXCoordinate),
+        "leftFootYCoordinate": parseFloat(leftFootYCoordinate),
+        //"leftFootZCoordinate": parseFloat(leftFootZCoordinate)
+
+    };
 
         myxhr = getAjax(CoordinateData);
     }
