@@ -431,7 +431,6 @@ function getAjax(CoordinateData) {
 
             var jsonAccuracy = data.json_data1;
 
-
             var processAccuracy = parseFloat(jsonAccuracy);
 
             var receivedDataElement2 = document.getElementById("showCnt"); // HTML 요소 선택
@@ -449,6 +448,7 @@ function getAjax(CoordinateData) {
 
             // 현재 jsonCnt와 이전 jsonCnt를 비교하여 값이 변경되었는지 확인
             if (jsonCnt !== previousJsonCnt) {
+                console.log("실행")
                 trainer_action2.stop();
                 trainer_action3.setDuration(0.005);
                 trainer_action3.play();
@@ -579,14 +579,12 @@ function getAjax(CoordinateData) {
                     }
                 }
             }
-
-            if (parseFloat(jsonAccuracy) * 100 < 70 && jsonAccuracy !== previousJsonAccu) {
+            console.log(parseFloat(previousJsonAccu))
+            console.log(parseFloat(jsonAccuracy))
+            if (parseFloat(jsonAccuracy) < 80 && jsonAccuracy !== previousJsonAccu) {
                 trainer_action2.stop();
                 trainer_action1.setDuration(0.002);
                 trainer_action1.play();
-
-                // 변경된 경우에만 처리
-                previousJsonAccu = jsonAccuracy; // 이전 jsonCnt 업데이트
 
                 setTimeout(() => {
                     trainer_action1.stop();
@@ -618,6 +616,8 @@ function getAjax(CoordinateData) {
                     moveCameraDefault();
                 }, 1000);
             }
+            // 변경된 경우에만 처리
+            previousJsonAccu = jsonAccuracy; // 이전 jsonCnt 업데이트
 
             //aframe 가상환경 안에  텍스트 로드
             //const shoulderText2 = document.querySelector('#shoulderText2');

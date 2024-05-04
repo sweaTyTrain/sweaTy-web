@@ -433,7 +433,7 @@ def test(request):
 
 
 
-        if  (left_knee_angle + right_knee_angle) / 2 < 150 and rightHipYCoordinate < rightKneeYCoordinate and leftHipYCoordinate < leftKneeYCoordinate:
+        if  (left_knee_angle + right_knee_angle) / 2 < 150 and (left_knee_angle + right_knee_angle) / 2 > 100:
             Keypointstest.objects.create(left_kneex=leftKneeXCoordinate,
                                          right_kneex=rightKneeXCoordinate,
                                          left_hipx=leftHipXCoordinate,
@@ -552,60 +552,60 @@ def test(request):
 
 
 
-        if squat_data.squat_state == [1,0,0,0] and rightHipYCoordinate >= rightKneeYCoordinate and leftHipYCoordinate >= leftKneeYCoordinate:
+        if squat_data.squat_state == [1,0,0,0] and (left_knee_angle + right_knee_angle) / 2 <= 100:
 
-            if (model[list(model.keys())[3]].score_samples(np.array(squat_data.reg[0]).reshape(-1, 1))<70):
+            if (model[list(model.keys())[3]].score_samples(np.array(squat_data.reg[0]).reshape(-1, 1))<90):
                 squat_data.accuracy[0] = 1
                 squat_data.save()
 
-            if (model[list(model.keys())[4]].score_samples(np.array(squat_data.reg[1]).reshape(-1, 1))<70):
+            if (model[list(model.keys())[4]].score_samples(np.array(squat_data.reg[1]).reshape(-1, 1))<90):
                 squat_data.accuracy[1] = 1
                 squat_data.save()
 
-            if (model[list(model.keys())[5]].score_samples(np.array(squat_data.reg[2]).reshape(-1, 1))<70):
+            if (model[list(model.keys())[5]].score_samples(np.array(squat_data.reg[2]).reshape(-1, 1))<90):
                 squat_data.accuracy[2] = 1
                 squat_data.save()
 
-            if (model[list(model.keys())[6]].score_samples(np.array(squat_data.reg[3]).reshape(-1, 1)) < 70):
+            if (model[list(model.keys())[6]].score_samples(np.array(squat_data.reg[3]).reshape(-1, 1)) < 90):
                 squat_data.accuracy[3] = 1
                 squat_data.save()
 
-            if (model[list(model.keys())[7]].score_samples(np.array(squat_data.reg[4]).reshape(-1, 1)) < 70):
+            if (model[list(model.keys())[7]].score_samples(np.array(squat_data.reg[4]).reshape(-1, 1)) < 90):
                 squat_data.accuracy[4] = 1
                 squat_data.save()
 
-            if (model[list(model.keys())[8]].score_samples(np.array(squat_data.reg[5]).reshape(-1, 1)) < 70):
+            if (model[list(model.keys())[8]].score_samples(np.array(squat_data.reg[5]).reshape(-1, 1)) < 90):
                 squat_data.accuracy[5] = 1
                 squat_data.save()
 
-            if (model[list(model.keys())[9]].score_samples(np.array(squat_data.reg[6]).reshape(-1, 1))<70):
+            if (model[list(model.keys())[9]].score_samples(np.array(squat_data.reg[6]).reshape(-1, 1))<90):
                 squat_data.accuracy[6] = 1
                 squat_data.save()
 
-            if (model[list(model.keys())[10]].score_samples(np.array(squat_data.reg[7]).reshape(-1, 1))<70):
+            if (model[list(model.keys())[10]].score_samples(np.array(squat_data.reg[7]).reshape(-1, 1))<90):
                 squat_data.accuracy[7] = 1
                 squat_data.save()
 
-            if (model[list(model.keys())[11]].score_samples(np.array(squat_data.reg[8]).reshape(-1, 1))<70):
+            if (model[list(model.keys())[11]].score_samples(np.array(squat_data.reg[8]).reshape(-1, 1))<90):
                 squat_data.accuracy[8] = 1
                 squat_data.save()
 
-            if (model[list(model.keys())[12]].score_samples(np.array(squat_data.reg[9]).reshape(-1, 1))<70):
+            if (model[list(model.keys())[12]].score_samples(np.array(squat_data.reg[9]).reshape(-1, 1))<90):
                 squat_data.accuracy[9] = 1
                 squat_data.save()
 
 
 
-                # 발 너비 점수
-            if (model[list(model.keys())[0]].score_samples(np.array(ratio1).reshape(-1, 1)) < 70):
+            # 발 너비 점수
+            if (model[list(model.keys())[0]].score_samples(np.array(ratio1).reshape(-1, 1)) < 90):
                 squat_data.accuracy[20] = 1
                 squat_data.save()
 
-            if (model[list(model.keys())[1]].score_samples(np.array(ratio2).reshape(-1, 1)) < 70):
+            if (model[list(model.keys())[1]].score_samples(np.array(ratio2).reshape(-1, 1)) < 90):
                 squat_data.accuracy[21] = 1
                 squat_data.save()
 
-            if (model[list(model.keys())[2]].score_samples(np.array(ratio3).reshape(-1, 1)) < 70):
+            if (model[list(model.keys())[2]].score_samples(np.array(ratio3).reshape(-1, 1)) < 90):
                 squat_data.accuracy[22] = 1
                 squat_data.save()
 
@@ -626,57 +626,57 @@ def test(request):
 
         if squat_data.squat_state==[1,1,1,0] and (left_knee_angle + right_knee_angle) / 2 >= 150:
 
-            if (model[list(model.keys())[13]].score_samples(np.array(squat_data.reg[10]).reshape(-1, 1)) < 70):
+            if (model[list(model.keys())[13]].score_samples(np.array(squat_data.reg[10]).reshape(-1, 1)) < 90):
                 squat_data.accuracy[10] = 1
                 squat_data.save()
 
-            if (model[list(model.keys())[14]].score_samples(np.array(squat_data.reg[11]).reshape(-1, 1)) < 70):
+            if (model[list(model.keys())[14]].score_samples(np.array(squat_data.reg[11]).reshape(-1, 1)) < 90):
                 squat_data.accuracy[11] = 1
                 squat_data.save()
 
-            if (model[list(model.keys())[15]].score_samples(np.array(squat_data.reg[12]).reshape(-1, 1)) < 70):
+            if (model[list(model.keys())[15]].score_samples(np.array(squat_data.reg[12]).reshape(-1, 1)) < 90):
                 squat_data.accuracy[12] = 1
                 squat_data.save()
 
-            if (model[list(model.keys())[16]].score_samples(np.array(squat_data.reg[13]).reshape(-1, 1)) < 70):
+            if (model[list(model.keys())[16]].score_samples(np.array(squat_data.reg[13]).reshape(-1, 1)) < 90):
                 squat_data.accuracy[13] = 1
                 squat_data.save()
 
-            if (model[list(model.keys())[17]].score_samples(np.array(squat_data.reg[14]).reshape(-1, 1)) < 70):
+            if (model[list(model.keys())[17]].score_samples(np.array(squat_data.reg[14]).reshape(-1, 1)) < 90):
                 squat_data.accuracy[14] = 1
                 squat_data.save()
 
-            if (model[list(model.keys())[18]].score_samples(np.array(squat_data.reg[15]).reshape(-1, 1)) < 70):
+            if (model[list(model.keys())[18]].score_samples(np.array(squat_data.reg[15]).reshape(-1, 1)) < 90):
                 squat_data.accuracy[15] = 1
                 squat_data.save()
 
-            if (model[list(model.keys())[19]].score_samples(np.array(squat_data.reg[16]).reshape(-1, 1)) < 70):
+            if (model[list(model.keys())[19]].score_samples(np.array(squat_data.reg[16]).reshape(-1, 1)) < 90):
                 squat_data.accuracy[16] = 1
                 squat_data.save()
 
-            if (model[list(model.keys())[20]].score_samples(np.array(squat_data.reg[17]).reshape(-1, 1)) < 70):
+            if (model[list(model.keys())[20]].score_samples(np.array(squat_data.reg[17]).reshape(-1, 1)) < 90):
                 squat_data.accuracy[17] = 1
                 squat_data.save()
 
-            if (model[list(model.keys())[21]].score_samples(np.array(squat_data.reg[18]).reshape(-1, 1)) < 70):
+            if (model[list(model.keys())[21]].score_samples(np.array(squat_data.reg[18]).reshape(-1, 1)) < 90):
                 squat_data.accuracy[18] = 1
                 squat_data.save()
 
-            if (model[list(model.keys())[22]].score_samples(np.array(squat_data.reg[19]).reshape(-1, 1)) < 70):
+            if (model[list(model.keys())[22]].score_samples(np.array(squat_data.reg[19]).reshape(-1, 1)) < 90):
                 squat_data.accuracy[19] = 1
                 squat_data.save()
 
 
                 # 발 너비 점수
-            if (model[list(model.keys())[0]].score_samples(np.array(ratio1).reshape(-1, 1)) < 70):
+            if (model[list(model.keys())[0]].score_samples(np.array(ratio1).reshape(-1, 1)) < 90):
                 squat_data.accuracy[20] = 1
                 squat_data.save()
 
-            if (model[list(model.keys())[1]].score_samples(np.array(ratio2).reshape(-1, 1)) < 70):
+            if (model[list(model.keys())[1]].score_samples(np.array(ratio2).reshape(-1, 1)) < 90):
                 squat_data.accuracy[21] = 1
                 squat_data.save()
 
-            if (model[list(model.keys())[2]].score_samples(np.array(ratio3).reshape(-1, 1)) < 70):
+            if (model[list(model.keys())[2]].score_samples(np.array(ratio3).reshape(-1, 1)) < 90):
                 squat_data.accuracy[22] = 1
                 squat_data.save()
 
@@ -692,7 +692,7 @@ def test(request):
             # KeyAngles 모델의 모든 객체 삭제
             Keyanglestest.objects.all().delete()
             squat_data.score = 100 - 4 * sum(squat_data.accuracy)
-            if (squat_data.score>=50):
+            if (squat_data.score>=80):
                 squat_data.squat_count = squat_data.squat_count+1
 
             squat_data.squat_state=[0,0,0,0]
