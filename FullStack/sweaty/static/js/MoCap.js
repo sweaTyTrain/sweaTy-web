@@ -15,7 +15,8 @@ renderer.setPixelRatio(window.devicePixelRatio);
 document.body.appendChild(renderer.domElement);
 
 // camera
-const orbitCamera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+const orbitCamera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 2000);
+
 orbitCamera.position.set(0.0, 20.0, 54.4);
 
 // 시작 위치와 최종 위치 정의
@@ -34,12 +35,16 @@ orbitControls.update();
 
 // scene
 const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x84FFFF);
 
 // light
 const light = new THREE.DirectionalLight(0xffffff);
-light.position.set(2.0, 2.0, 1.0).normalize();
+light.position.set(0.0, 20.0, 54.4); // 광원의 실제 위치를 변경하여 머리 위로 이동
+// light.position.set(0.0, 0.0, 0.4); // 광원의 실제 위치를 변경하여 머리 위로 이동
+
 light.intensity = 1.5; // 밝기 조절
 scene.add(light);
+
 
 // const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
 // scene.add(ambientLight);
@@ -83,15 +88,10 @@ const loader = new THREE.GLTFLoader();
 // Desert 맵 로드 함수
 function loadDesert(MapUrl) {
     loader.load(MapUrl, (gltf) => {
-        // 이전 맵 제거
-        // if (currentMap) {
-        //     scene.remove(currentMap);
-        //     currentMap = null;
-        // }
-
+        
         // 새 맵 로드
         const mesh = gltf.scene;
-        mesh.position.set(-5, -0.2, -40);
+        mesh.position.set(-4, -0.2, -40);
         mesh.scale.set(2, 2, 2);
         scene.add(mesh);
         // currentMap = mesh;
@@ -102,11 +102,6 @@ function loadDesert(MapUrl) {
 // Pyramid & Sphinx asset 로드 함수
 function loadPyramid(MapUrl2) {
     loader.load(MapUrl2, (gltf) => {
-        // 이전 맵 제거
-        // if (currentMap) {
-        //     scene.remove(currentMap);
-        //     currentMap = null;
-        // }
 
         // 새 맵 로드
         const mesh = gltf.scene;
@@ -121,12 +116,7 @@ function loadPyramid(MapUrl2) {
 // Island 맵 로드 함수
 function loadIsland(MapUrl) {
     loader.load(MapUrl, (gltf) => {
-        // 이전 맵 제거
-        // if (currentMap) {
-        //     scene.remove(currentMap);
-        //     currentMap = null;
-        // }
-
+        
         // 새 맵 로드
         const mesh = gltf.scene;
         mesh.position.set(-2, -1, 0);
@@ -140,11 +130,6 @@ function loadIsland(MapUrl) {
 // Island Maui asset 로드 함수
 function loadMaui(MapUrl2) {
     loader.load(MapUrl2, (gltf) => {
-        // 이전 맵 제거
-        // if (currentMap) {
-        //     scene.remove(currentMap);
-        //     currentMap = null;
-        // }
 
         // 새 맵 로드
         const mesh = gltf.scene;
@@ -159,16 +144,26 @@ function loadMaui(MapUrl2) {
 // Mountain 맵 로드 함수
 function loadMountain(MapUrl) {
     loader.load(MapUrl, (gltf) => {
-        // 이전 맵 제거
-        // if (currentMap) {
-        //     scene.remove(currentMap);
-        //     currentMap = null;
-        // }
-
+        
         // 새 맵 로드
         const mesh = gltf.scene;
         mesh.position.set(-2.0, -47.0, 10);
         mesh.scale.set(2, 2, 2);
+        scene.add(mesh);
+        // currentMap = mesh;
+        console.log("맵을 로드했습니다.");
+    });
+}
+
+// City 맵 로드 함수
+function loadCity(MapUrl) {
+    loader.load(MapUrl, (gltf) => {
+        
+        // 새 맵 로드
+        const mesh = gltf.scene;
+        mesh.position.set(-10, -0.5, 2);
+        mesh.scale.set(0.5, 0.5, 0.5);
+        mesh.rotation.y = Math.PI * 5/6; 
         scene.add(mesh);
         // currentMap = mesh;
         console.log("맵을 로드했습니다.");
@@ -211,7 +206,7 @@ let trainer_action1;
 let trainer_action2;
 let trainer_action3;
 
-loader.load("../static/assets/trainer.glb", (gltf) => {
+loader.load('../static/assets/trainer.glb', (gltf) => {
     const mesh = gltf.scene;
     mesh.position.set(-1.0, 1.3, -1.0);
     mesh.scale.set(0.012, 0.012, 0.012);
@@ -219,9 +214,9 @@ loader.load("../static/assets/trainer.glb", (gltf) => {
 
     mixer2 = new THREE.AnimationMixer(mesh);
     const clips = gltf.animations;
-    const clip1 = THREE.AnimationClip.findByName(clips, "AngryPoint");
-    const clip2 = THREE.AnimationClip.findByName(clips, "HappyIdle");
-    const clip3 = THREE.AnimationClip.findByName(clips, "StandingThumbsUp");
+    const clip1 = THREE.AnimationClip.findByName(clips, 'AngryPoint');
+    const clip2 = THREE.AnimationClip.findByName(clips, 'HappyIdle');
+    const clip3 = THREE.AnimationClip.findByName(clips, 'StandingThumbsUp');
 
     trainer_action1 = mixer2.clipAction(clip1);
     trainer_action2 = mixer2.clipAction(clip2);
@@ -267,26 +262,15 @@ loader.load("../static/assets/trainer2.glb", (gltf) => {
 //     loadModel(modelUrl);
 // });
 
-// function loadMap1 (MapUrl){
-//     loader.load(MapUrl, (gltf) => {
-//     const mesh = gltf.scene;
-//     mesh.position.set(-2.0, -47.0, 10);
-//     mesh.scale.set(2, 2, 2);
-//     scene.add(mesh);
-//     currentMap = mesh;
-// })
 
-// }
-// function loadMap2 (MapUrl){
-//     loader.load(MapUrl, (gltf) => {
-//     const mesh = gltf.scene;
-//     mesh.position.set(0, -4, -10);
-//     mesh.scale.set(10, 10 , 10);
-//     scene.add(mesh);
-//     currentMap = mesh;
-// })
 
-// }
+// const rgbeloader = new THREE.RGBELoader();
+
+loader.load('../static/assets/textures/star_wars_-_low_poly_hoth_skybox/scene.gltf', (gltf) => {
+    const mesh = gltf.scene;
+    mesh.position.set(0, 0, 0);
+    mesh.scale.set(5, 5, 5);
+    scene.add(mesh);
 
 // loadMap1 (MapUrl);
 
@@ -305,7 +289,7 @@ loader.load("../static/assets/trainer2.glb", (gltf) => {
 //     }
 
 //     loadMap2 (MapUrl);
-//  });
+ });
 
 // ---------------------------------------
 // ** 세트 수, 1세트당 횟수, 쉬는시간 변수 **
@@ -697,7 +681,7 @@ fontLoader.load("../../static/fonts/DungGeunMo_Regular.json", function (font) {
         bevelThickness: 0.05, // 윤곽선 두께
     });
 
-    const textMaterial = new THREE.MeshStandardMaterial({ color: 0x507a03 }); // 텍스트 색상
+    const textMaterial = new THREE.MeshStandardMaterial({ color: 0xFFD400 }); // 텍스트 색상
     const textMesh = new THREE.Mesh(textGeometry, textMaterial);
 
     // 윤곽선 색상을 검정색(0x000000)으로 설정
