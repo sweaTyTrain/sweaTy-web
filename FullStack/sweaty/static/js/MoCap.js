@@ -255,185 +255,22 @@ const animateVRM = (vrm, results) => {
   const rightHandLandmarks = results.leftHandLandmarks;
 
   // Animate Face
-  if (faceLandmarks) {
-    riggedFace = Kalidokit.Face.solve(faceLandmarks, {
-      runtime: "mediapipe",
-      video: videoElement,
-    });
-    rigFace(riggedFace);
-  }
+  // if (faceLandmarks) {
+  //   riggedFace = Kalidokit.Face.solve(faceLandmarks, {
+  //     runtime: "mediapipe",
+  //     video: videoElement,
+  //   });
+  //   rigFace(riggedFace);
+  // }
 
   // Animate Pose
   if (pose2DLandmarks && pose3DLandmarks) {
+    console.log(pose2DLandmarks);
+    console.log(pose3DLandmarks);
     riggedPose = Kalidokit.Pose.solve(pose3DLandmarks, pose2DLandmarks, {
       runtime: "mediapipe",
       video: videoElement,
     });
-
-    // rigPosition(
-    //     "Hips",
-    //     {
-    //         x: (pose3DLandmarks[23].x + pose3DLandmarks[24].x)/2,
-    //         y: -1*(pose3DLandmarks[23].y + pose3DLandmarks[24].y)/2,
-    //         z: (pose3DLandmarks[23].z + pose3DLandmarks[24].z)/2
-    //     },
-    //     1,
-    //     0.9
-    //     );
-
-    // rigPosition(
-    //     "Chest",
-    //     {
-    //         x: (pose3DLandmarks[11].x + pose3DLandmarks[12].x),
-    //         y: -1*(pose3DLandmarks[11].y + pose3DLandmarks[12].y),
-    //         z: (pose3DLandmarks[11].z + pose3DLandmarks[12].z)
-    //     },
-    //     1,
-    //     0.9
-    // );
-
-    // rigPosition(
-    //     "Spine",
-    //     {
-    //         x: (pose3DLandmarks[11].x + pose3DLandmarks[12].x + pose3DLandmarks[23].x + pose3DLandmarks[24].x)/4,
-    //         y: -1*((pose3DLandmarks[11].y + pose3DLandmarks[12].y)/2 + (pose3DLandmarks[23].y + pose3DLandmarks[24].y)/2)/3,
-    //         z: (pose3DLandmarks[11].z + pose3DLandmarks[12].z + pose3DLandmarks[23].z + pose3DLandmarks[24].z)/4
-    //     },
-    //     1,
-    //     0.9
-    // );
-
-    // rigPosition(
-    //     "RightUpperArm",
-    //     {
-    //         x: pose3DLandmarks[11].x,
-    //         y: -1*pose3DLandmarks[11].y,
-    //         z: pose3DLandmarks[11].z
-    //     },
-    //     1,
-    //     0.9
-    // );
-
-    // rigPosition(
-    //     "LeftUpperArm",
-    //     {
-    //         x: pose3DLandmarks[12].x,
-    //         y: -1*pose3DLandmarks[12].y,
-    //         z: pose3DLandmarks[12].z
-    //     },
-    //     1,
-    //     0.9
-    // );
-
-    // rigPosition(
-    //     "RightLowerArm",
-    //     {
-    //         x: pose3DLandmarks[13].x,
-    //         y: -1*pose3DLandmarks[13].y,
-    //         z: pose3DLandmarks[13].z
-    //     },
-    //     1,
-    //     0.9
-    // );
-
-    // rigPosition(
-    //     "LeftLowerArm",
-    //     {
-    //         x: pose3DLandmarks[14].x,
-    //         y: -1*pose3DLandmarks[14].y,
-    //         z: pose3DLandmarks[14].z
-    //     },
-    //     1,
-    //     0.9
-    // );
-
-    // rigPosition(
-    //     "RightHand",
-    //     {
-    //         x: pose3DLandmarks[15].x,
-    //         y: -1*pose3DLandmarks[15].y,
-    //         z: pose3DLandmarks[15].z
-    //     },
-    //     1,
-    //     0.9
-    // );
-
-    // rigPosition(
-    //     "LeftHand",
-    //     {
-    //         x: pose3DLandmarks[16].x,
-    //         y: -1*pose3DLandmarks[16].y,
-    //         z: pose3DLandmarks[16].z
-    //     },
-    //     1,
-    //     0.9
-    // );
-
-    // rigPosition(
-    //     "RightUpperLeg",
-    //     {
-    //         x: pose3DLandmarks[23].x,
-    //         y: -1*pose3DLandmarks[23].y,
-    //         z: pose3DLandmarks[23].z
-    //     },
-    //     1,
-    //     0.9
-    // );
-
-    // rigPosition(
-    //     "LeftUpperLeg",
-    //     {
-    //         x: pose3DLandmarks[24].x,
-    //         y: -1*pose3DLandmarks[24].y,
-    //         z: pose3DLandmarks[24].z
-    //     },
-    //     1,
-    //     0.9
-    // );
-
-    // rigPosition(
-    //     "RightLowerLeg",
-    //     {
-    //         x: pose3DLandmarks[25].x,
-    //         y: -1*pose3DLandmarks[25].y,
-    //         z: pose3DLandmarks[25].z
-    //     },
-    //     1,
-    //     0.9
-    // );
-
-    // rigPosition(
-    //     "LeftLowerLeg",
-    //     {
-    //         x: pose3DLandmarks[26].x,
-    //         y: -1*pose3DLandmarks[26].y,
-    //         z: pose3DLandmarks[26].z
-    //     },
-    //     1,
-    //     0.9
-    // );
-
-    // rigPosition(
-    //     "RightFoot",
-    //     {
-    //         x: pose3DLandmarks[27].x,
-    //         y: -1*pose3DLandmarks[27].y,
-    //         z: pose3DLandmarks[27].z
-    //     },
-    //     1,
-    //     0.9
-    // );
-
-    // rigPosition(
-    //     "LeftFoot",
-    //     {
-    //         x: pose3DLandmarks[28].x,
-    //         y: -1*pose3DLandmarks[28].y,
-    //         z: pose3DLandmarks[28].z
-    //     },
-    //     1,
-    //     0.9
-    // );
 
     // 엉덩이 관절 노드를 얻기
     const hipsNode = vrm.humanoid.getBoneNode(
@@ -509,77 +346,78 @@ const animateVRM = (vrm, results) => {
   }
 
   // Animate Hands
-  if (leftHandLandmarks) {
-    riggedLeftHand = Kalidokit.Hand.solve(leftHandLandmarks, "Left");
-    rigRotation("LeftHand", {
-      // Combine pose rotation Z and hand rotation X Y
-      z: riggedPose.LeftHand.z,
-      y: riggedLeftHand.LeftWrist.y,
-      x: riggedLeftHand.LeftWrist.x,
-    });
-    rigRotation("LeftRingProximal", riggedLeftHand.LeftRingProximal);
-    rigRotation("LeftRingIntermediate", riggedLeftHand.LeftRingIntermediate);
-    rigRotation("LeftRingDistal", riggedLeftHand.LeftRingDistal);
-    rigRotation("LeftIndexProximal", riggedLeftHand.LeftIndexProximal);
-    rigRotation("LeftIndexIntermediate", riggedLeftHand.LeftIndexIntermediate);
-    rigRotation("LeftIndexDistal", riggedLeftHand.LeftIndexDistal);
-    rigRotation("LeftMiddleProximal", riggedLeftHand.LeftMiddleProximal);
-    rigRotation(
-      "LeftMiddleIntermediate",
-      riggedLeftHand.LeftMiddleIntermediate
-    );
-    rigRotation("LeftMiddleDistal", riggedLeftHand.LeftMiddleDistal);
-    rigRotation("LeftThumbProximal", riggedLeftHand.LeftThumbProximal);
-    rigRotation("LeftThumbIntermediate", riggedLeftHand.LeftThumbIntermediate);
-    rigRotation("LeftThumbDistal", riggedLeftHand.LeftThumbDistal);
-    rigRotation("LeftLittleProximal", riggedLeftHand.LeftLittleProximal);
-    rigRotation(
-      "LeftLittleIntermediate",
-      riggedLeftHand.LeftLittleIntermediate
-    );
-    rigRotation("LeftLittleDistal", riggedLeftHand.LeftLittleDistal);
-  }
-  if (rightHandLandmarks) {
-    riggedRightHand = Kalidokit.Hand.solve(rightHandLandmarks, "Right");
-    rigRotation("RightHand", {
-      // Combine Z axis from pose hand and X/Y axis from hand wrist rotation
-      z: riggedPose.RightHand.z,
-      y: riggedRightHand.RightWrist.y,
-      x: riggedRightHand.RightWrist.x,
-    });
-    rigRotation("RightRingProximal", riggedRightHand.RightRingProximal);
-    rigRotation("RightRingIntermediate", riggedRightHand.RightRingIntermediate);
-    rigRotation("RightRingDistal", riggedRightHand.RightRingDistal);
-    rigRotation("RightIndexProximal", riggedRightHand.RightIndexProximal);
-    rigRotation(
-      "RightIndexIntermediate",
-      riggedRightHand.RightIndexIntermediate
-    );
-    rigRotation("RightIndexDistal", riggedRightHand.RightIndexDistal);
-    rigRotation("RightMiddleProximal", riggedRightHand.RightMiddleProximal);
-    rigRotation(
-      "RightMiddleIntermediate",
-      riggedRightHand.RightMiddleIntermediate
-    );
-    rigRotation("RightMiddleDistal", riggedRightHand.RightMiddleDistal);
-    rigRotation("RightThumbProximal", riggedRightHand.RightThumbProximal);
-    rigRotation(
-      "RightThumbIntermediate",
-      riggedRightHand.RightThumbIntermediate
-    );
-    rigRotation("RightThumbDistal", riggedRightHand.RightThumbDistal);
-    rigRotation("RightLittleProximal", riggedRightHand.RightLittleProximal);
-    rigRotation(
-      "RightLittleIntermediate",
-      riggedRightHand.RightLittleIntermediate
-    );
-    rigRotation("RightLittleDistal", riggedRightHand.RightLittleDistal);
-  }
+  // if (leftHandLandmarks) {
+  //   riggedLeftHand = Kalidokit.Hand.solve(leftHandLandmarks, "Left");
+  //   rigRotation("LeftHand", {
+  //     // Combine pose rotation Z and hand rotation X Y
+  //     z: riggedPose.LeftHand.z,
+  //     y: riggedLeftHand.LeftWrist.y,
+  //     x: riggedLeftHand.LeftWrist.x,
+  //   });
+  //   rigRotation("LeftRingProximal", riggedLeftHand.LeftRingProximal);
+  //   rigRotation("LeftRingIntermediate", riggedLeftHand.LeftRingIntermediate);
+  //   rigRotation("LeftRingDistal", riggedLeftHand.LeftRingDistal);
+  //   rigRotation("LeftIndexProximal", riggedLeftHand.LeftIndexProximal);
+  //   rigRotation("LeftIndexIntermediate", riggedLeftHand.LeftIndexIntermediate);
+  //   rigRotation("LeftIndexDistal", riggedLeftHand.LeftIndexDistal);
+  //   rigRotation("LeftMiddleProximal", riggedLeftHand.LeftMiddleProximal);
+  //   rigRotation(
+  //     "LeftMiddleIntermediate",
+  //     riggedLeftHand.LeftMiddleIntermediate
+  //   );
+  //   rigRotation("LeftMiddleDistal", riggedLeftHand.LeftMiddleDistal);
+  //   rigRotation("LeftThumbProximal", riggedLeftHand.LeftThumbProximal);
+  //   rigRotation("LeftThumbIntermediate", riggedLeftHand.LeftThumbIntermediate);
+  //   rigRotation("LeftThumbDistal", riggedLeftHand.LeftThumbDistal);
+  //   rigRotation("LeftLittleProximal", riggedLeftHand.LeftLittleProximal);
+  //   rigRotation(
+  //     "LeftLittleIntermediate",
+  //     riggedLeftHand.LeftLittleIntermediate
+  //   );
+  //   rigRotation("LeftLittleDistal", riggedLeftHand.LeftLittleDistal);
+  // }
+  // if (rightHandLandmarks) {
+  //   riggedRightHand = Kalidokit.Hand.solve(rightHandLandmarks, "Right");
+  //   rigRotation("RightHand", {
+  //     // Combine Z axis from pose hand and X/Y axis from hand wrist rotation
+  //     z: riggedPose.RightHand.z,
+  //     y: riggedRightHand.RightWrist.y,
+  //     x: riggedRightHand.RightWrist.x,
+  //   });
+  //   rigRotation("RightRingProximal", riggedRightHand.RightRingProximal);
+  //   rigRotation("RightRingIntermediate", riggedRightHand.RightRingIntermediate);
+  //   rigRotation("RightRingDistal", riggedRightHand.RightRingDistal);
+  //   rigRotation("RightIndexProximal", riggedRightHand.RightIndexProximal);
+  //   rigRotation(
+  //     "RightIndexIntermediate",
+  //     riggedRightHand.RightIndexIntermediate
+  //   );
+  //   rigRotation("RightIndexDistal", riggedRightHand.RightIndexDistal);
+  //   rigRotation("RightMiddleProximal", riggedRightHand.RightMiddleProximal);
+  //   rigRotation(
+  //     "RightMiddleIntermediate",
+  //     riggedRightHand.RightMiddleIntermediate
+  //   );
+  //   rigRotation("RightMiddleDistal", riggedRightHand.RightMiddleDistal);
+  //   rigRotation("RightThumbProximal", riggedRightHand.RightThumbProximal);
+  //   rigRotation(
+  //     "RightThumbIntermediate",
+  //     riggedRightHand.RightThumbIntermediate
+  //   );
+  //   rigRotation("RightThumbDistal", riggedRightHand.RightThumbDistal);
+  //   rigRotation("RightLittleProximal", riggedRightHand.RightLittleProximal);
+  //   rigRotation(
+  //     "RightLittleIntermediate",
+  //     riggedRightHand.RightLittleIntermediate
+  //   );
+  //   rigRotation("RightLittleDistal", riggedRightHand.RightLittleDistal);
+  // }
 };
 
 //AJAX 좌표 전송
 
 const onResults = (results) => {
+  console.log(results);
   // Draw landmark guides
   drawResults(results);
   // Animate model
@@ -749,22 +587,6 @@ const onResults = (results) => {
   }
 };
 
-const holistic = new Holistic({
-  locateFile: (file) => {
-    return `https://cdn.jsdelivr.net/npm/@mediapipe/holistic@0.5.1635989137/${file}`;
-  },
-});
-
-holistic.setOptions({
-  modelComplexity: 1,
-  smoothLandmarks: true,
-  minDetectionConfidence: 0.7,
-  minTrackingConfidence: 0.7,
-  refineFaceLandmarks: true,
-});
-// Pass holistic a callback function
-holistic.onResults(onResults);
-
 const drawResults = (results) => {
   guideCanvas.width = videoElement.videoWidth;
   guideCanvas.height = videoElement.videoHeight;
@@ -813,60 +635,88 @@ const drawResults = (results) => {
   });
 };
 
-// // Use `Mediapipe` utils to get camera - lower resolution = higher fps
-// const camera = new Camera(videoElement, {
-//     onFrame: async () => {
-//         await holistic.send({ image: videoElement });
-//     },
 //     width: 640,
-//     height: 480,
-//     facingMode: 'environment'   //학교에서 빌린 웹캠은 후면카메라로 인식되어서 코드 추가함
-// });
-// camera.start();
+import {
+  PoseLandmarker,
+  FilesetResolver,
+  DrawingUtils,
+} from "https://cdn.skypack.dev/@mediapipe/tasks-vision@0.10.0";
 
 const videoElement = document.querySelector("video");
 const guideCanvas = document.querySelector("canvas.guides");
 
-// getUsermedia parameters.
-const constraints = {
-  video: true,
+const setWebCamWithOption = (option) => {
+  if (option === "holistic") {
+    const holistic = new Holistic({
+      locateFile: (file) => {
+        return `https://cdn.jsdelivr.net/npm/@mediapipe/holistic@0.5.1635989137/${file}`;
+      },
+    });
+
+    holistic.setOptions({
+      modelComplexity: 1,
+      smoothLandmarks: true,
+      minDetectionConfidence: 0.7,
+      minTrackingConfidence: 0.7,
+      refineFaceLandmarks: true,
+    });
+    // Pass holistic a callback function
+    holistic.onResults(onResults);
+    // // Use `Mediapipe` utils to get camera - lower resolution = higher fps
+    const camera = new Camera(videoElement, {
+      onFrame: async () => {
+        await holistic.send({ image: videoElement });
+      },
+      width: 640,
+      height: 480,
+      facingMode: "environment", //학교에서 빌린 웹캠은 후면카메라로 인식되어서 코드 추가함
+    });
+    camera.start();
+  } else if (option === "poselandmark") {
+    let poseLandmarker;
+
+    const createPoseLandmarker = async () => {
+      const vision = await FilesetResolver.forVisionTasks(
+        "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.0/wasm"
+      );
+      poseLandmarker = await PoseLandmarker.createFromOptions(vision, {
+        baseOptions: {
+          modelAssetPath: `https://storage.googleapis.com/mediapipe-models/pose_landmarker/pose_landmarker_lite/float16/1/pose_landmarker_lite.task`,
+          delegate: "GPU",
+        },
+        runningMode: "VIDEO",
+        numPoses: 2,
+      });
+      activateWebcam();
+    };
+    createPoseLandmarker();
+
+    const activateWebcam = () => {
+      // getUsermedia parameters.
+      const constraints = {
+        video: true,
+      };
+
+      // Activate the webcam stream.
+      navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
+        videoElement.srcObject = stream;
+        videoElement.addEventListener("loadeddata", predictWebcam);
+      });
+    };
+
+    let lastVideoTime = -1;
+    async function predictWebcam() {
+      // Now let's start detecting the stream.
+      let startTimeMs = performance.now();
+      if (lastVideoTime !== videoElement.currentTime) {
+        lastVideoTime = videoElement.currentTime;
+        poseLandmarker.detectForVideo(videoElement, startTimeMs, onResults);
+      }
+
+      // Call this function again to keep predicting when the browser is ready.
+      window.requestAnimationFrame(predictWebcam);
+    }
+  }
 };
 
-// Activate the webcam stream.
-navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
-  video.srcObject = stream;
-  video.addEventListener("loadeddata", predictWebcam);
-});
-
-let lastVideoTime = -1;
-async function predictWebcam() {
-  canvasElement.style.height = videoHeight;
-  video.style.height = videoHeight;
-  canvasElement.style.width = videoWidth;
-  video.style.width = videoWidth;
-  // Now let's start detecting the stream.
-  if (runningMode === "IMAGE") {
-    runningMode = "VIDEO";
-    await poseLandmarker.setOptions({ runningMode: "VIDEO" });
-  }
-  let startTimeMs = performance.now();
-  if (lastVideoTime !== video.currentTime) {
-    lastVideoTime = video.currentTime;
-    poseLandmarker.detectForVideo(video, startTimeMs, (result) => {
-      canvasCtx.save();
-      canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
-      for (const landmark of result.landmarks) {
-        drawingUtils.drawLandmarks(landmark, {
-          radius: (data) => DrawingUtils.lerp(data.from!.z, -0.15, 0.1, 5, 1)
-        });
-        drawingUtils.drawConnectors(landmark, PoseLandmarker.POSE_CONNECTIONS);
-      }
-      canvasCtx.restore();
-    });
-  }
-
-  // Call this function again to keep predicting when the browser is ready.
-  if (webcamRunning === true) {
-    window.requestAnimationFrame(predictWebcam);
-  }
-}
+setWebCamWithOption("holistic");
