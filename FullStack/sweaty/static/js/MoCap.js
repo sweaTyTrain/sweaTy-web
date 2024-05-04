@@ -827,67 +827,46 @@ const drawResults = (results) => {
 const videoElement = document.querySelector("video");
 const guideCanvas = document.querySelector("canvas.guides");
 
-const constraints = (window.constraints = {
-  audio: false,
+// getUsermedia parameters.
+const constraints = {
   video: true,
+};
+
+// Activate the webcam stream.
+navigator.mediaDevices.getUserMedia(constraints).then((stream) => {
+  video.srcObject = stream;
+  video.addEventListener("loadeddata", predictWebcam);
 });
 
-async function handleSuccess(stream) {
-  const options = {
-    mimeType: "video/mp4",
-  };
-  const mediaRecorder = new MediaRecorder(stream, options);
-  mediaRecorder.addEventListener("dataavailable", async function (e) {
-    // console.log("dataavailable");
-    const a = await holistic.send({ image: videoElement });
-    console.log(a);
-  });
-  mediaRecorder.addEventListener("start", function (e) {
-    console.log("start");
-  });
-  mediaRecorder.start(100); // 밀리세컨드, 0.01초 timeslice
-  console.log(stream);
-  const videoTracks = stream.getVideoTracks();
-  console.log("Got stream with constraints:", constraints);
-  console.log(`Using video device: ${videoTracks[0].label}`);
-  window.stream = stream; // make variable available to browser console
-  videoElement.srcObject = stream;
-  console.log(videoElement);
-}
-
-function handleError(error) {
-  if (error.name === "OverconstrainedError") {
-    const v = constraints.video;
-    errorMsg(
-      `The resolution ${v.width.exact}x${v.height.exact} px is not supported by your device.`
-    );
-  } else if (error.name === "NotAllowedError") {
-    errorMsg(
-      "Permissions have not been granted to use your camera and " +
-        "microphone, you need to allow the page access to your devices in " +
-        "order for the demo to work."
-    );
+let lastVideoTime = -1;
+async function predictWebcam() {
+  canvasElement.style.height = videoHeight;
+  video.style.height = videoHeight;
+  canvasElement.style.width = videoWidth;
+  video.style.width = videoWidth;
+  // Now let's start detecting the stream.
+  if (runningMode === "IMAGE") {
+    runningMode = "VIDEO";
+    await poseLandmarker.setOptions({ runningMode: "VIDEO" });
   }
-  errorMsg(`getUserMedia error: ${error.name}`, error);
-}
+  let startTimeMs = performance.now();
+  if (lastVideoTime !== video.currentTime) {
+    lastVideoTime = video.currentTime;
+    poseLandmarker.detectForVideo(video, startTimeMs, (result) => {
+      canvasCtx.save();
+      canvasCtx.clearRect(0, 0, canvasElement.width, canvasElement.height);
+      for (const landmark of result.landmarks) {
+        drawingUtils.drawLandmarks(landmark, {
+          radius: (data) => DrawingUtils.lerp(data.from!.z, -0.15, 0.1, 5, 1)
+        });
+        drawingUtils.drawConnectors(landmark, PoseLandmarker.POSE_CONNECTIONS);
+      }
+      canvasCtx.restore();
+    });
+  }
 
-function errorMsg(msg, error) {
-  if (typeof error !== "undefined") {
-    console.error(error);
+  // Call this function again to keep predicting when the browser is ready.
+  if (webcamRunning === true) {
+    window.requestAnimationFrame(predictWebcam);
   }
 }
-
-async function initCamera() {
-  try {
-    const stream = await navigator.mediaDevices.getUserMedia(constraints);
-    handleSuccess(stream);
-  } catch (e) {
-    handleError(e);
-  }
-}
-
-initCamera();
-
-document
-  .querySelector("#showVideo")
-  .addEventListener("click", (e) => initCamera(e));
