@@ -258,7 +258,7 @@ loader.load('../static/assets/textures/star_wars_-_low_poly_hoth_skybox/scene.gl
 //     }
 
 //     loadMap2 (MapUrl);
-//  });
+ });
 
 // ---------------------------------------
 // ** 세트 수, 1세트당 횟수, 쉬는시간 변수 **
