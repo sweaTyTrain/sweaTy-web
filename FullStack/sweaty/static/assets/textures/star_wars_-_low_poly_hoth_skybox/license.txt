@@ -1,0 +1,11 @@
+Model Information:
+* title:	Star Wars - Low Poly Hoth Skybox
+* source:	https://sketchfab.com/3d-models/star-wars-low-poly-hoth-skybox-caddf0ec811a47d5a2449a4d076a9d7b
+* author:	Oscar R (https://sketchfab.com/braidoner)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Star Wars - Low Poly Hoth Skybox" (https://sketchfab.com/3d-models/star-wars-low-poly-hoth-skybox-caddf0ec811a47d5a2449a4d076a9d7b) by Oscar R (https://sketchfab.com/braidoner) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

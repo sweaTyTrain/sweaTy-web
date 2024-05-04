@@ -117,6 +117,9 @@
         0% {
           stroke-dashoffset: 0;
         }
+        10% {
+          stroke-dashoffset: 10;
+        }
     }
       @font-face {
         font-family: 'DungGeunMo';
@@ -141,7 +144,6 @@
 
   <body>
 
-
       <div class="container">
         <svg width="200" height="200" class="svg">
           <!-- border와 progress의 위치를 동일하게 설정 -->
@@ -156,22 +158,27 @@
       <script>
 
         // ver 2
-        var textProcessElement = document.getElementById('text-process');
-        var percentage = parseFloat(textProcessElement.innerText); // 텍스트를 숫자로 변환
+        var textProcessElement = getElementById('text-process');
+        var percentage = parseInt(textProcessElement.innerText); // 텍스트를 숫자로 변환
         var degree = percentage; // stroke-dasharray 값의 백분율
         // var degree = 50; // stroke-dasharray 값의 백분율
 
         // degree 값 확인
         console.log(degree);
 
+        // degree 값을 각도로 변환하여 dasharray를 계산합니다.
+        const circumference = 2 * Math.PI * 85; // 반지름이 90일 때 원의 둘레
+        const progress = (degree / 360) * circumference;
+        progressBar.style.strokeDasharray = `${progress} ${circumference}`;
 
-        // 선의 시작점을 동적으로 설정하는 함수
-        function setStrokeDashOffset(offset) {
-          document.querySelector('.progress').style.strokeDashoffset = offset;
-        }
 
-        // 시작점을 동적으로 설정
-        setStrokeDashOffset(degree);
+        // // 선의 시작점을 동적으로 설정하는 함수
+        // function setStrokeDashOffset(offset) {
+        //   document.querySelector('.progress').style.strokeDashoffset = offset;
+        // }
+
+        // // 시작점을 동적으로 설정
+        // setStrokeDashOffset(degree);
 
 
 
@@ -210,13 +217,6 @@
 
 
 
-    <div id="image-button-container">
-        <img id="image-button1" src="{% static 'img/field.jpg' %}" alt="Image Button">
-        <img id="image-button2" src="{% static 'img/desert.jpg' %}" alt="Image Button">
-    </div>
-
-
-
 
 
     <script src="../../static/js/MoCap.js"></script>
@@ -226,28 +226,20 @@
         let modelUrl = null;        //초기 아바타
         let MapUrl = null;       //초기 맵
 
-        // //아바타 교체 버튼
-        // $("#loadModelButton1").click(function() {
-        //     modelUrl = "{% static 'model/sukuna.vrm' %}"; // 캐릭터1 모델의 URL 설정
+        //아바타 교체 버튼
+        $("#loadModelButton1").click(function() {
+            modelUrl = "{% static 'model/sukuna.vrm' %}"; // 캐릭터1 모델의 URL 설정
         //     loadModel(modelUrl); // 모델 재로드
 
-        // });
+        });
 
-        // $("#loadModelButton2").click(function() {
-        //     modelUrl = "{% static 'model/three-vrm-girl.vrm' %}"; // 캐릭터2 모델의 URL 설정
-        //     loadModel(modelUrl); // 모델 재로드
+        $("#loadModelButton2").click(function() {
+            modelUrl = "{% static 'model/three-vrm-girl.vrm' %}"; // 캐릭터2 모델의 URL 설정
+            // loadModel(modelUrl); // 모델 재로드
 
-        // });
+        });
 
 
-        // //맵 교체 버튼
-        // $("#image-button1").click(function() {
-        //     MapUrl = "{% static 'assets/lowPoly.gltf' %}";            //초원맵으로 바꿀것
-        // });
-
-        // $("#image-button2").click(function() {
-        //     MapUrl = "{% static 'assets/scene.gltf' %}";                 //사막맵으로 바꿀것
-        // });
    
         window.onload = function() {
             // URL의 파라미터에서 선택된 버튼의 정보 가져오기
@@ -282,6 +274,14 @@
                     MapUrl = "{% static 'assets/low_poly_mountain/scene.gltf' %}";
                     modelUrl = "{% static 'model/sukuna.vrm' %}"
                     loadMountain(MapUrl); // MapUrl이 설정된 후 loadMap 함수 호출
+                    loadModel(modelUrl)
+                    break;
+                case "City":
+                    // City 버튼에 대한 처리
+                    console.log("City 버튼이 클릭되었습니다.");
+                    MapUrl = "{% static 'assets/low_poly_city/scene.gltf' %}";
+                    modelUrl = "{% static 'model/sukuna.vrm' %}"
+                    loadCity(MapUrl); // MapUrl이 설정된 후 loadMap 함수 호출
                     loadModel(modelUrl)
                     break;
                 default:

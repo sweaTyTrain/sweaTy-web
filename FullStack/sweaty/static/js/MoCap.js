@@ -15,7 +15,7 @@ renderer.setPixelRatio(window.devicePixelRatio);
 document.body.appendChild(renderer.domElement);
 
 // camera
-const orbitCamera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+const orbitCamera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 2000);
 orbitCamera.position.set(0.0, 20.0, 54.4);
 
 // 시작 위치와 최종 위치 정의
@@ -30,12 +30,16 @@ orbitControls.update();
 
 // scene
 const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x84FFFF);
 
 // light
 const light = new THREE.DirectionalLight(0xffffff);
-light.position.set(2.0, 2.0, 1.0).normalize();
+light.position.set(0.0, 20.0, 54.4); // 광원의 실제 위치를 변경하여 머리 위로 이동
+// light.position.set(0.0, 0.0, 0.4); // 광원의 실제 위치를 변경하여 머리 위로 이동
+
 light.intensity = 1.5; // 밝기 조절
 scene.add(light);
+
 
 // const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
 // scene.add(ambientLight);
@@ -44,6 +48,7 @@ scene.add(light);
 const clock = new THREE.Clock();
 
 let mixer;
+let mixer2
 function animate() {
     requestAnimationFrame(animate);
 
@@ -53,8 +58,14 @@ function animate() {
     }
     TWEEN.update();
     orbitControls.update();
-    if (mixer)
+    if (mixer) {
         mixer.update(clock.getDelta());
+    }
+
+    if (mixer2) {
+        mixer2.update(clock.getDelta());
+    }
+
     renderer.render(scene, orbitCamera);
 }
 animate();
@@ -66,15 +77,10 @@ const loader = new THREE.GLTFLoader();
 // Desert 맵 로드 함수
 function loadDesert(MapUrl) {
     loader.load(MapUrl, (gltf) => {
-        // 이전 맵 제거
-        // if (currentMap) {
-        //     scene.remove(currentMap);
-        //     currentMap = null;
-        // }
-
+        
         // 새 맵 로드
         const mesh = gltf.scene;
-        mesh.position.set(-5, -0.2, -40);
+        mesh.position.set(-4, -0.2, -40);
         mesh.scale.set(2, 2, 2);
         scene.add(mesh);
         // currentMap = mesh;
@@ -85,11 +91,6 @@ function loadDesert(MapUrl) {
 // Pyramid & Sphinx asset 로드 함수
 function loadPyramid(MapUrl2) {
     loader.load(MapUrl2, (gltf) => {
-        // 이전 맵 제거
-        // if (currentMap) {
-        //     scene.remove(currentMap);
-        //     currentMap = null;
-        // }
 
         // 새 맵 로드
         const mesh = gltf.scene;
@@ -106,12 +107,7 @@ function loadPyramid(MapUrl2) {
 // Island 맵 로드 함수
 function loadIsland(MapUrl) {
     loader.load(MapUrl, (gltf) => {
-        // 이전 맵 제거
-        // if (currentMap) {
-        //     scene.remove(currentMap);
-        //     currentMap = null;
-        // }
-
+        
         // 새 맵 로드
         const mesh = gltf.scene;
         mesh.position.set(-2, -1, 0);
@@ -125,11 +121,6 @@ function loadIsland(MapUrl) {
 // Island Maui asset 로드 함수
 function loadMaui(MapUrl2) {
     loader.load(MapUrl2, (gltf) => {
-        // 이전 맵 제거
-        // if (currentMap) {
-        //     scene.remove(currentMap);
-        //     currentMap = null;
-        // }
 
         // 새 맵 로드
         const mesh = gltf.scene;
@@ -145,12 +136,7 @@ function loadMaui(MapUrl2) {
 // Mountain 맵 로드 함수
 function loadMountain(MapUrl) {
     loader.load(MapUrl, (gltf) => {
-        // 이전 맵 제거
-        // if (currentMap) {
-        //     scene.remove(currentMap);
-        //     currentMap = null;
-        // }
-
+        
         // 새 맵 로드
         const mesh = gltf.scene;
         mesh.position.set(-2.0, -47.0, 10);
@@ -161,6 +147,20 @@ function loadMountain(MapUrl) {
     });
 }
 
+// City 맵 로드 함수
+function loadCity(MapUrl) {
+    loader.load(MapUrl, (gltf) => {
+        
+        // 새 맵 로드
+        const mesh = gltf.scene;
+        mesh.position.set(-10, -0.5, 2);
+        mesh.scale.set(0.5, 0.5, 0.5);
+        mesh.rotation.y = Math.PI * 5/6; 
+        scene.add(mesh);
+        // currentMap = mesh;
+        console.log("맵을 로드했습니다.");
+    });
+}
 
 
 
@@ -192,6 +192,35 @@ function loadModel(modelUrl) {
     );
 }
 
+let trainer_action1;
+let trainer_action2;
+let trainer_action3;
+
+loader.load('../static/assets/trainer.glb', (gltf) => {
+    const mesh = gltf.scene;
+    mesh.position.set(-1.0, 1.3, -1.0);
+    mesh.scale.set(0.012, 0.012, 0.012);
+    scene.add(mesh);
+
+    mixer2 = new THREE.AnimationMixer(mesh);
+    const clips = gltf.animations;
+    const clip1 = THREE.AnimationClip.findByName(clips, 'AngryPoint');
+    const clip2 = THREE.AnimationClip.findByName(clips, 'HappyIdle');
+    const clip3 = THREE.AnimationClip.findByName(clips, 'StandingThumbsUp');
+
+    trainer_action1 = mixer2.clipAction(clip1);
+    trainer_action2 = mixer2.clipAction(clip2);
+    trainer_action3 = mixer2.clipAction(clip3);
+
+    trainer_action1.setDuration(0.005);
+    trainer_action2.setDuration(0.005);
+    trainer_action3.setDuration(0.005);
+
+    // action1.play();
+    trainer_action2.play();
+    // trainer_action3.play();
+})
+
 
 // $("#loadModelButton1").click(function() {
 //     loadModel(modelUrl);
@@ -203,55 +232,18 @@ function loadModel(modelUrl) {
 
 
 
-// function loadMap1 (MapUrl){
-//     loader.load(MapUrl, (gltf) => {
-//     const mesh = gltf.scene;
-//     mesh.position.set(-2.0, -47.0, 10);
-//     mesh.scale.set(2, 2, 2);
-//     scene.add(mesh);
-//     currentMap = mesh;
-// })
+// const rgbeloader = new THREE.RGBELoader();
 
-// }
-// function loadMap2 (MapUrl){
-//     loader.load(MapUrl, (gltf) => {
-//     const mesh = gltf.scene;
-//     mesh.position.set(0, -4, -10);
-//     mesh.scale.set(10, 10 , 10);
-//     scene.add(mesh);
-//     currentMap = mesh;
-// })
-
-// }
+loader.load('../static/assets/textures/star_wars_-_low_poly_hoth_skybox/scene.gltf', (gltf) => {
+    const mesh = gltf.scene;
+    mesh.position.set(0, 0, 0);
+    mesh.scale.set(5, 5, 5);
+    scene.add(mesh);
 
 
-// loadMap1 (MapUrl);
-
-
-
-//  $("#image-button1").click(function() {
-//     if (currentMap) {
-//         scene.remove(currentMap);
-//     }
-
-//     loadMap1 (MapUrl);
-//  });
-
-//   $("#image-button2").click(function() {
-//     if (currentMap) {
-//         scene.remove(currentMap);
-
-//     }
-
-//     loadMap2 (MapUrl);
-//  });
-
-
-const rgbeloader = new THREE.RGBELoader();
-
-rgbeloader.load('../../static/assets/kloofendal_48d_partly_cloudy_puresky_4k.hdr', (texture) => {
-    texture.mapping = THREE.EquirectangularReflectionMapping;
-    scene.background = texture;
+// rgbeloader.load('../static/assets/kloofendal_48d_partly_cloudy_puresky_2k.hdr', (texture) => {
+//     texture.mapping = THREE.EquirectangularReflectionMapping;
+//     scene.background = texture;
 
     setTimeout(() => {
         // // 파일 로드 완료 후 로딩 화면 숨기기
@@ -311,7 +303,7 @@ fontLoader.load('../../static/fonts/DungGeunMo_Regular.json', function (font) {
         bevelThickness: 0.05, // 윤곽선 두께
     });
 
-    const textMaterial = new THREE.MeshStandardMaterial({ color: 0x507A03 }); // 텍스트 색상
+    const textMaterial = new THREE.MeshStandardMaterial({ color: 0xFFD400 }); // 텍스트 색상
     const textMesh = new THREE.Mesh(textGeometry, textMaterial);
 
     // 윤곽선 색상을 검정색(0x000000)으로 설정
@@ -320,6 +312,167 @@ fontLoader.load('../../static/fonts/DungGeunMo_Regular.json', function (font) {
     textMesh.position.set(-3, 3, 0);
     scene.add(textMesh);
 });
+
+let currentTween;
+
+function moveCameraDefault() {
+    // 현재 카메라의 위치와 방향
+    const currentPosition = orbitCamera.position.clone();
+    const currentLookAt = orbitControls.target.clone();
+
+    // 이전에 실행 중이던 Tween이 있다면 중지
+    if (currentTween) {
+        currentTween.stop();
+    }
+
+    currentTween = new TWEEN.Tween({
+        x: 0.0,
+        y: 2.0,
+        z: 7.4,
+        lookAtX: 0,
+        lookAtY: 1.2,
+        lookAtZ: 0
+    })
+    .to({
+        x: 3.0,
+        y: 2.0,
+        z: 7.4,
+        lookAtX: 0,
+        lookAtY: 1.2,
+        lookAtZ: 0
+    }, 3 * 1000)
+    .easing(TWEEN.Easing.Quadratic.InOut)
+    .onUpdate((object) => {
+        // 카메라의 위치와 방향을 업데이트
+        orbitCamera.position.set(object.x, object.y, object.z);
+        orbitControls.target.set(object.lookAtX, object.lookAtY, object.lookAtZ);
+        orbitControls.update();
+    })
+    .onComplete(() => {
+        tween1.start();
+    })
+
+    const tween1 = new TWEEN.Tween({
+        x: 3.0,
+        y: 2.0,
+        z: 7.4,
+        lookAtX: 0,
+        lookAtY: 1.2,
+        lookAtZ: 0
+    })
+    .to({
+        x: -3.0,
+        y: 2.0,
+        z: 7.4,
+        lookAtX: 0,
+        lookAtY: 1.2,
+        lookAtZ: 0
+    }, 6 * 1000)
+    .easing(TWEEN.Easing.Quadratic.InOut)
+    .onUpdate((object) => {
+        // 카메라의 위치와 방향을 업데이트
+        orbitCamera.position.set(object.x, object.y, object.z);
+        orbitControls.target.set(object.lookAtX, object.lookAtY, object.lookAtZ);
+        orbitControls.update();
+    })
+    .onComplete(() => {
+        tween2.start();
+    })
+
+    const tween2 = new TWEEN.Tween({
+        x: -3.0,
+        y: 2.0,
+        z: 7.4,
+        lookAtX: 0,
+        lookAtY: 1.2,
+        lookAtZ: 0
+    })
+    .to({
+        x: 0.0,
+        y: 2.0,
+        z: 7.4,
+        lookAtX: 0,
+        lookAtY: 1.2,
+        lookAtZ: 0
+    }, 3 * 1000)
+    .easing(TWEEN.Easing.Quadratic.InOut)
+    .onUpdate((object) => {
+        // 카메라의 위치와 방향을 업데이트
+        orbitCamera.position.set(object.x, object.y, object.z);
+        orbitControls.target.set(object.lookAtX, object.lookAtY, object.lookAtZ);
+        orbitControls.update();
+    })
+    .onComplete(() => {
+        currentTween.start();
+    })
+
+    const tween3 = new TWEEN.Tween({
+        x: currentPosition.x,
+        y: currentPosition.y,
+        z: currentPosition.z,
+        lookAtX: currentLookAt.x,
+        lookAtY: currentLookAt.y,
+        lookAtZ: currentLookAt.z
+    })
+    .to({
+        x: 0.0,
+        y: 2.0,
+        z: 7.4,
+        lookAtX: 0,
+        lookAtY: 1.2,
+        lookAtZ: 0
+    }, 3 * 1000)
+    .easing(TWEEN.Easing.Quadratic.InOut)
+    .onUpdate((object) => {
+        // 카메라의 위치와 방향을 업데이트
+        orbitCamera.position.set(object.x, object.y, object.z);
+        orbitControls.target.set(object.lookAtX, object.lookAtY, object.lookAtZ);
+        orbitControls.update();
+    })
+
+    tween3.start();
+
+    setTimeout(() => {
+        currentTween.start();
+    }, 3000);
+
+}
+
+function moveCameraToTarget(targetPosition, targetLookAt, time) {
+    // 현재 카메라의 위치와 방향
+    const currentPosition = orbitCamera.position.clone();
+    const currentLookAt = orbitControls.target.clone();
+
+    // 이전에 실행 중이던 Tween이 있다면 중지
+    if (currentTween) {
+        currentTween.stop();
+    }
+
+    currentTween = new TWEEN.Tween({
+            x: currentPosition.x,
+            y: currentPosition.y,
+            z: currentPosition.z,
+            lookAtX: currentLookAt.x,
+            lookAtY: currentLookAt.y,
+            lookAtZ: currentLookAt.z
+        })
+        .to({
+            x: targetPosition.x,
+            y: targetPosition.y,
+            z: targetPosition.z,
+            lookAtX: targetLookAt.x,
+            lookAtY: targetLookAt.y,
+            lookAtZ: targetLookAt.z
+        }, time * 1000)
+        .easing(TWEEN.Easing.Quadratic.InOut)
+        .onUpdate((object) => {
+            // 카메라의 위치와 방향을 업데이트
+            orbitCamera.position.set(object.x, object.y, object.z);
+            orbitControls.target.set(object.lookAtX, object.lookAtY, object.lookAtZ);
+            orbitControls.update();
+        })
+        .start();
+}
 
 // Animate Rotation Helper function
 // 앉을때 양반다리 모양으로 접히는것이 rigRotation함수를 적용한 관절이 잘못된 것이 아닐까?
@@ -418,7 +571,6 @@ const animateVRM = (vrm, results) => {
         });
         rigFace(riggedFace);
     }
-    console.log(vrm);
     // Animate Pose
     if (pose2DLandmarks && pose3DLandmarks) {
         riggedPose = Kalidokit.Pose.solve(pose3DLandmarks, pose2DLandmarks, {
@@ -721,7 +873,31 @@ const onResults = (results) => {
 
             // 현재 jsonCnt와 이전 jsonCnt를 비교하여 값이 변경되었는지 확인
             if (jsonCnt !== previousJsonCnt) {
-                gen_flower();
+                mixer2.stopAllAction();
+                trainer_action3.setDuration(0.005);
+                trainer_action3.play();
+                loader.load('../../static/assets/flower_pink.gltf', (gltf) => {
+                    const mesh = gltf.scene;
+                    mesh.position.set(0.0, 1.5, -1.0);
+                    mesh.scale.set(0.6, 0.6, 0.6);
+                    scene.add(mesh);
+                    mixer = new THREE.AnimationMixer(mesh);
+                    const clips = gltf.animations;
+                    const clip = THREE.AnimationClip.findByName(clips, 'Rotate');
+                    const action = mixer.clipAction(clip);
+            
+                    action.setDuration(0.005);
+                    action.play();
+                
+            
+                    // 1초 후에 GLTF를 삭제하는 함수 호출
+                    setTimeout(() => {
+                        scene.remove(mesh); // Scene에서 mesh 제거
+                        mixer = null;
+                        mixer2.stopAllAction();
+                        trainer_action2.play();
+                    }, 3000); // 1000ms = 1초
+                })
                 console.log("꽃생성");
                 // 변경된 경우에만 처리 -------------------------- 
                 previousJsonCnt = jsonCnt; // 이전 jsonCnt 업데이트
@@ -767,16 +943,29 @@ const onResults = (results) => {
                     // 이전 표정으로 돌아감
                     blendShapeProxy.setValue(expressionName, 0);
                 }, 3000); // 3초 후에 실행됨 (단위: 밀리초)
+
+                moveCameraToTarget(
+                    { x: 0.0, y: 1.8, z: 1.4 }, // 목표 위치
+                    { x: -1.0, y: 1.4, z: 0.0 }, // 목표 방향
+                    1 // 1초 동안 이동
+                );
+                setTimeout(() => {
+                    moveCameraDefault();
+                }, 1000);
+
             }
 
             if (parseFloat(jsonAccuracy)*100 < 70 && switchAccu == 0 && jsonAccuracy !== previousJsonAccu ) {
                 switchAccu = 1;
+                mixer2.stopAllAction();
+                trainer_action1.setDuration(0.002);
+                trainer_action1.play();
                 loader.load('../../static/assets/cloud_thunder.gltf', (gltf) => {
                     // 변경된 경우에만 처리
                     previousJsonAccu = jsonAccuracy; // 이전 jsonCnt 업데이트
 
                     const mesh = gltf.scene;
-                    mesh.position.set(0.0, 1.0, -1.0);
+                    mesh.position.set(0.0, 1.5, -1.0);
                     mesh.scale.set(0.5, 0.5, 0.5);
                     scene.add(mesh);
                     console.log("구름생성");
@@ -790,9 +979,9 @@ const onResults = (results) => {
                     const action2 = mixer.clipAction(clip2);
                     const action3 = mixer.clipAction(clip3);
 
-                    action1.setDuration(0.05);
-                    action2.setDuration(0.05);
-                    action3.setDuration(0.05);
+                    action1.setDuration(0.005);
+                    action2.setDuration(0.005);
+                    action3.setDuration(0.005);
 
                     action1.play();
                     action2.play();
@@ -801,6 +990,9 @@ const onResults = (results) => {
                     // 1초 후에 GLTF를 삭제하는 함수 호출
                     setTimeout(() => {
                         scene.remove(mesh); // Scene에서 mesh 제거
+                        mixer = null;
+                        mixer2.stopAllAction();
+                        trainer_action2.play();
                     }, 3000); // 1000ms = 1초
                     switchAccu = 0;
                 })
@@ -821,6 +1013,15 @@ const onResults = (results) => {
                     blendShapeProxy.setValue(expressionName, 0);
                 }, 3000); // 3초 후에 실행됨 (단위: 밀리초)
 
+                moveCameraToTarget(
+                    { x: 0.0, y: 1.8, z: 1.4 }, // 목표 위치
+                    { x: -1.0, y: 1.4, z: 0.0 }, // 목표 방향
+                    1 // 1초 동안 이동
+                );
+                setTimeout(() => {
+                    moveCameraDefault();
+                }, 1000);
+
             }
 
             //aframe 가상환경 안에  텍스트 로드
@@ -838,32 +1039,6 @@ const onResults = (results) => {
         });
 
 };
-}
-
-function gen_flower() {
-    loader.load('../../static/assets/flower_pink.gltf', (gltf) => {
-        const mesh = gltf.scene;
-        mesh.position.set(0.0, 1.0, -1.0);
-        mesh.scale.set(0.6, 0.6, 0.6);
-        scene.add(mesh);
-        mixer = new THREE.AnimationMixer(mesh);
-        const clips = gltf.animations;
-        const clip = THREE.AnimationClip.findByName(clips, 'Rotate');
-        const action = mixer.clipAction(clip);
-
-        action.setDuration(0.03);
-        action.play();
-
-        // 1초 후에 GLTF를 삭제하는 함수 호출
-        setTimeout(() => {
-            scene.remove(mesh); // Scene에서 mesh 제거
-        }, 3000); // 1000ms = 1초
-    })
-}
-
-function gen_cloudThunder() {
-
-
 }
 
 const holistic = new Holistic({
