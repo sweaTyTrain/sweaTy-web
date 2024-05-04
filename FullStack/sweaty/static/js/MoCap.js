@@ -311,8 +311,8 @@ loader.load("../static/assets/trainer2.glb", (gltf) => {
 // ** 세트 수, 1세트당 횟수, 쉬는시간 변수 **
 
 const TOTAL_SET = 2;
-const TOTAL_NUM = 2;
-const BREAK_TIME_NUM = 10; // 단위 : 초
+const TOTAL_NUM = 10;
+const BREAK_TIME_NUM = 2; // 단위 : 초
 
 let currentSet = 0;
 // previousJsonCnt = "0"; -> 현재 카운트 횟수
@@ -435,34 +435,14 @@ function getAjax(CoordinateData) {
 
             // 현재 jsonCnt와 이전 jsonCnt를 비교하여 값이 변경되었는지 확인
             if (jsonCnt !== previousJsonCnt) {
-                mixer2.stopAllAction();
+                trainer_action2.stop();
                 trainer_action3.setDuration(0.005);
                 trainer_action3.play();
-                loader.load("../../static/assets/flower_pink.gltf", (gltf) => {
-                    const mesh = gltf.scene;
-                    mesh.position.set(0.0, 1.5, -1.0);
-                    mesh.scale.set(0.6, 0.6, 0.6);
-                    scene.add(mesh);
-                    mixer = new THREE.AnimationMixer(mesh);
-                    const clips = gltf.animations;
-                    const clip = THREE.AnimationClip.findByName(
-                        clips,
-                        "Rotate"
-                    );
-                    const action = mixer.clipAction(clip);
-
-                    action.setDuration(0.005);
-                    action.play();
-
-                    // 1초 후에 GLTF를 삭제하는 함수 호출
-                    setTimeout(() => {
-                        scene.remove(mesh); // Scene에서 mesh 제거
-                        mixer = null;
-                        mixer2.stopAllAction();
-                        trainer_action2.play();
-                    }, 3000); // 1000ms = 1초
-                });
-                console.log("꽃생성");
+                setTimeout(() => {
+                    trainer_action3.stop();
+                    trainer_action2.play();
+                }, 3000); // 1000ms = 1초
+                
                 // 변경된 경우에만 처리 --------------------------
                 previousJsonCnt = jsonCnt; // 이전 jsonCnt 업데이트
 
@@ -503,6 +483,50 @@ function getAjax(CoordinateData) {
                     }
                 );
 
+                // 말풍선 생성 및 삭제
+                loader.load("../../static/assets/speech_bubble.gltf", (gltf) => {
+                    const mesh = gltf.scene;
+                    mesh.position.set(-2.6, 1.8, -0.5);
+                    mesh.rotation.set(0, 0.7, 0);
+                    mesh.scale.set(0.003, 0.003, 0.003);
+                    scene.add(mesh);
+
+                    // 말풍선 글씨
+                    fontLoader.load("../../static/fonts/DungGeunMo_Regular.json", function (font) {
+                        const textGeometry = new THREE.TextGeometry("Nice!", {
+                            font: font,
+                            size: 1,
+                            height: 0.1,
+                            bevelEnabled: true, // 윤곽선 활성화
+                            bevelSize: 0.03, // 윤곽선 크기
+                            bevelThickness: 0.03, // 윤곽선 두께
+                        });
+
+                        const textMaterial = new THREE.MeshStandardMaterial({ color: 0x507a03 }); // 텍스트 색상
+                        const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+
+                        // 윤곽선 색상을 검정색(0x000000)으로 설정
+                        textMaterial.emissive.setHex(0x000000);
+                        textMesh.name = "cloudText";
+                        textMesh.position.set(-3.0, 1.6, 0.15);
+                        textMesh.rotation.set(0, 0.7, 0);
+                        textMesh.scale.set(0.5, 0.5, 0.5);
+                        scene.add(textMesh);
+                    });
+
+                    // 5초 후에 GLTF를 삭제하는 함수 호출
+                    setTimeout(() => {
+                        const previousTextMesh2 = scene.getObjectByName("cloudText");
+                        scene.remove(previousTextMesh2);// 이전 텍스트 메시지 제거
+                        scene.remove(mesh); // Scene에서 mesh 제거
+                    }, 5000); // 1000ms = 1초
+                });
+
+                // 이전 텍스트 메시지 제거
+                const previousTextMesh2 = scene.getObjectByName("cloudText");
+                scene.remove(previousTextMesh2);
+
+                
                 // 모델의 blendShapeProxy를 가져옴
                 const blendShapeProxy = currentVrm.blendShapeProxy;
 
@@ -542,63 +566,18 @@ function getAjax(CoordinateData) {
                 }
             }
 
-            if (
-                parseFloat(jsonAccuracy) * 100 < 70 &&
-                switchAccu == 0 &&
-                jsonAccuracy !== previousJsonAccu
-            ) {
-                switchAccu = 1;
-                mixer2.stopAllAction();
+            if (parseFloat(jsonAccuracy) * 100 < 70 && jsonAccuracy !== previousJsonAccu) {
+                trainer_action2.stop();
                 trainer_action1.setDuration(0.002);
                 trainer_action1.play();
-                loader.load(
-                    "../../static/assets/cloud_thunder.gltf",
-                    (gltf) => {
-                        // 변경된 경우에만 처리
-                        previousJsonAccu = jsonAccuracy; // 이전 jsonCnt 업데이트
 
-                        const mesh = gltf.scene;
-                        mesh.position.set(0.0, 1.5, -1.0);
-                        mesh.scale.set(0.5, 0.5, 0.5);
-                        scene.add(mesh);
-                        console.log("구름생성");
-                        mixer = new THREE.AnimationMixer(mesh);
-                        const clips = gltf.animations;
-                        const clip1 = THREE.AnimationClip.findByName(
-                            clips,
-                            "Movement1"
-                        );
-                        const clip2 = THREE.AnimationClip.findByName(
-                            clips,
-                            "Movement2"
-                        );
-                        const clip3 = THREE.AnimationClip.findByName(
-                            clips,
-                            "Movement3"
-                        );
+                // 변경된 경우에만 처리
+                previousJsonAccu = jsonAccuracy; // 이전 jsonCnt 업데이트
 
-                        const action1 = mixer.clipAction(clip1);
-                        const action2 = mixer.clipAction(clip2);
-                        const action3 = mixer.clipAction(clip3);
-
-                        action1.setDuration(0.005);
-                        action2.setDuration(0.005);
-                        action3.setDuration(0.005);
-
-                        action1.play();
-                        action2.play();
-                        action3.play();
-
-                        // 1초 후에 GLTF를 삭제하는 함수 호출
-                        setTimeout(() => {
-                            scene.remove(mesh); // Scene에서 mesh 제거
-                            mixer = null;
-                            mixer2.stopAllAction();
-                            trainer_action2.play();
-                        }, 3000); // 1000ms = 1초
-                        switchAccu = 0;
-                    }
-                );
+                setTimeout(() => {
+                    trainer_action1.stop();
+                    trainer_action2.play();
+                }, 3000); // 1000ms = 1초
 
                 // 모델의 blendShapeProxy를 가져옴
                 const blendShapeProxy = currentVrm.blendShapeProxy;
@@ -844,7 +823,7 @@ function moveCameraDefault() {
                 lookAtY: 1.2,
                 lookAtZ: 0,
             },
-            3 * 1000
+            1 * 1000
         )
         .easing(TWEEN.Easing.Quadratic.InOut)
         .onUpdate((object) => {
@@ -862,7 +841,7 @@ function moveCameraDefault() {
 
     setTimeout(() => {
         currentTween.start();
-    }, 3000);
+    }, 1000);
 }
 
 function moveCameraToTarget(targetPosition, targetLookAt, time) {
