@@ -10,7 +10,7 @@
       name="description"
       content="Track face and body rigs just your browser webcam!"
     />
-    <meta name="csrf_token" content="{{ csrf_token }}">
+    <meta name="csrf_token" content="{{ csrf_token }}" />
 
       <!--     AJAX           -->
       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -83,7 +83,15 @@
     </div>
 
     <div class="preview">
-      <video class="input_video" width="1280px" height="720px"></video>
+      <!-- <video class="input_video" width="1280px" height="720px"></video> -->
+      <button id="showVideo">Open camera</button>
+      <video
+        id="gum-local"
+        autoplay
+        playsinline
+        width="1280px"
+        height="720px"
+      ></video>
       <canvas class="guides"></canvas>
       <section>
         <a class="current" href="/"><p>VRM</p></a>
@@ -141,20 +149,7 @@
           $("#image-button2").click(function() {
                MapUrl = "{% static 'assets/scene.gltf' %}";                 //사막맵으로 바꿀것
                });
-
-
-
-
     </script>
     <script type="module" src="{% static 'js/MoCap.js' %}"></script>
-
   </body>
-
 </html>
-
-
-
-
-
-
-
