@@ -701,44 +701,44 @@ const startProcess = async () => {
   // 맵 로드
   await loadMap(CURRENT_MAP);
 
-  //   await loadTrainer2("../static/assets/trainer2.glb").catch((error) => {
-  //     console.error(error);
-  //   });
-  //   console.log("trainer2 load done");
+  await loadTrainer2("../static/assets/trainer2.glb").catch((error) => {
+    console.error(error);
+  });
+  console.log("trainer2 load done");
 
-  //   await loadTrainer1("../static/assets/trainer.glb");
-  //   console.log("trainer1 load done");
+  await loadTrainer1("../static/assets/trainer.glb");
+  console.log("trainer1 load done");
 
-  //   await loadTexture(
-  //     "../static/assets/textures/star_wars_-_low_poly_hoth_skybox/scene.gltf"
-  //   );
-  //   console.log("skybox load done");
+  await loadTexture(
+    "../static/assets/textures/star_wars_-_low_poly_hoth_skybox/scene.gltf"
+  );
+  console.log("skybox load done");
 
-  //   await loadRGBETexture(
-  //     "../../static/assets/kloofendal_48d_partly_cloudy_puresky_4k.hdr"
-  //   );
-  //   console.log("loadRGBETexture done");
+  await loadRGBETexture(
+    "../../static/assets/kloofendal_48d_partly_cloudy_puresky_4k.hdr"
+  );
+  console.log("loadRGBETexture done");
 
-  //   await loadFont("../../static/fonts/DungGeunMo_Regular.json", (font) => {
-  //     const textGeometry = new THREE.TextGeometry("Count: 0", {
-  //       font: font,
-  //       size: 1,
-  //       height: 0.1,
-  //       bevelEnabled: true, // 윤곽선 활성화
-  //       bevelSize: 0.05, // 윤곽선 크기
-  //       bevelThickness: 0.05, // 윤곽선 두께
-  //     });
+  await loadFont("../../static/fonts/DungGeunMo_Regular.json", (font) => {
+    const textGeometry = new THREE.TextGeometry("Count: 0", {
+      font: font,
+      size: 1,
+      height: 0.1,
+      bevelEnabled: true, // 윤곽선 활성화
+      bevelSize: 0.05, // 윤곽선 크기
+      bevelThickness: 0.05, // 윤곽선 두께
+    });
 
-  //     const textMaterial = new THREE.MeshStandardMaterial({ color: 0xffd400 }); // 텍스트 색상
-  //     const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+    const textMaterial = new THREE.MeshStandardMaterial({ color: 0xffd400 }); // 텍스트 색상
+    const textMesh = new THREE.Mesh(textGeometry, textMaterial);
 
-  //     // 윤곽선 색상을 검정색(0x000000)으로 설정
-  //     textMaterial.emissive.setHex(0x000000);
-  //     textMesh.name = "countText";
-  //     textMesh.position.set(-3, 3, 0);
-  //     scene.add(textMesh);
-  //   });
-  //   console.log("loadFont done");
+    // 윤곽선 색상을 검정색(0x000000)으로 설정
+    textMaterial.emissive.setHex(0x000000);
+    textMesh.name = "countText";
+    textMesh.position.set(-3, 3, 0);
+    scene.add(textMesh);
+  });
+  console.log("loadFont done");
 
   console.log("loaded all model");
   document.getElementById("loading-screen").style.display = "none";
