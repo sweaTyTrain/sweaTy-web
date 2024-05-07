@@ -240,76 +240,15 @@
         modelUrl = "{% static 'model/three-vrm-girl.vrm' %}"; // 캐릭터2 모델의 URL 설정
         // loadModel(modelUrl); // 모델 재로드
       });
-      const desertAudio = document.getElementById("desert-audio");
-      const islandAudio = document.getElementById("island-audio");
-      const mountainAudio = document.getElementById("mountain-audio");
-
-      // Stop all audio before starting a new one
-      function stopAllAudio() {
-        desertAudio.pause();
-        islandAudio.pause();
-        mountainAudio.pause();
-        desertAudio.currentTime = 0;
-        islandAudio.currentTime = 0;
-        mountainAudio.currentTime = 0;
-      }
       window.onload = async function () {
         // URL의 파라미터에서 선택된 버튼의 정보 가져오기
         let urlParams = new URLSearchParams(window.location.search);
         let selectedButton = urlParams.get("loadMapButton");
 
         // 가져온 정보에 따른 처리
-        switch (selectedButton) {
-          case "Desert":
-            // Desert 버튼에 대한 처리
-            console.log("Desert 버튼이 클릭되었습니다.");
-            MapUrl = "{% static 'assets/low_poly_desert/scene.gltf' %}";
-            MapUrl2 =
-              "{% static 'assets 2/world_low_poly/pyramid_and_the_sphinx/scene.gltf' %}";
-            modelUrl = "{% static 'model/sukuna.vrm' %}";
-            await loadDesert(MapUrl); // MapUrl이 설정된 후 loadMap 함수 호출
-            await loadModel(modelUrl);
-            await loadPyramid(MapUrl2);
-            stopAllAudio(); // Stop other audios
-            desertAudio.play(); // Play Desert audio
-
-            break;
-          case "Island":
-            // Island 버튼에 대한 처리
-            console.log("Island 버튼이 클릭되었습니다.");
-            MapUrl = "{% static 'assets/low_poly_island/scene.gltf' %}";
-            MapUrl2 = "{% static 'assets 2/Island/Man_hawaiian/scene.gltf' %}";
-            modelUrl = "{% static 'model/sukuna.vrm' %}";
-            await loadIsland(MapUrl); // MapUrl이 설정된 후 loadMap 함수 호출
-            await loadModel(modelUrl);
-            await loadMaui(MapUrl2);
-            stopAllAudio(); // Stop other audios
-            islandAudio.play(); // Play Island audio
-
-            break;
-          case "Mountain":
-            // Mountain 버튼에 대한 처리
-            console.log("Mountain 버튼이 클릭되었습니다.");
-            MapUrl = "{% static 'assets/low_poly_mountain/scene.gltf' %}";
-            modelUrl = "{% static 'model/sukuna.vrm' %}";
-            await loadMountain(MapUrl); // MapUrl이 설정된 후 loadMap 함수 호출
-            await loadModel(modelUrl);
-            stopAllAudio(); // Stop other audios
-            mountainAudio.play(); // Play Mountain audio
-            break;
-          case "City":
-            // City 버튼에 대한 처리
-            console.log("City 버튼이 클릭되었습니다.");
-            MapUrl = "{% static 'assets/low_poly_city/scene.gltf' %}";
-            modelUrl = "{% static 'model/sukuna.vrm' %}";
-            await loadCity(MapUrl); // MapUrl이 설정된 후 loadMap 함수 호출
-            await loadModel(modelUrl);
-            break;
-          default:
-            // 아무 버튼도 클릭되지 않았을 때의 처리
-            console.log("아무 버튼도 클릭되지 않았습니다.");
-            break;
-        }
+        setCurrentMap(selectedButton);
+        // 카메라 세팅하면서 전체 프로세스 시작
+        setupCamera();
       };
     </script>
   </body>
