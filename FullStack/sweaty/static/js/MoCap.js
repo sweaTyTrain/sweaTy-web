@@ -21,23 +21,31 @@ async function loadDesert(MapUrl) {
 }
 
 // Pyramid & Sphinx asset 로드 함수
-async function loadPyramid(MapUrl2) {
-  const loader = new THREE.GLTFLoader();
-  loader.load(MapUrl2, (gltf) => {
-    // 새 맵 로드
-    const mesh = gltf.scene;
-    mesh.position.set(-50, 0, -20);
-    mesh.scale.set(0.03, 0.03, 0.03);
-    scene.add(mesh);
-    // currentMap = mesh;
-    console.log("asset을 로드했습니다.");
+async function loadPyramid(MapUrl) {
+  return new Promise((resolve, reject) => {
+    const loader = new THREE.GLTFLoader();
+    loader.load(
+      MapUrl,
+      (gltf) => {
+        // 새 맵 로드
+        const mesh = gltf.scene;
+        mesh.position.set(-50, 0, -20);
+        mesh.scale.set(0.03, 0.03, 0.03);
+        scene.add(mesh);
+        // currentMap = mesh;
+        console.log("asset을 로드했습니다.");
+        resolve(gltf);
+      },
+      null,
+      reject
+    );
   });
 }
 
 // Island 맵 로드 함수
 async function loadIsland(MapUrl) {
-  const loader = new THREE.GLTFLoader();
   return new Promise((resolve, reject) => {
+    const loader = new THREE.GLTFLoader();
     loader.load(
       MapUrl,
       (gltf) => {
@@ -57,45 +65,69 @@ async function loadIsland(MapUrl) {
 }
 
 // Island Maui asset 로드 함수
-async function loadMaui(MapUrl2) {
-  const loader = new THREE.GLTFLoader();
-  loader.load(MapUrl2, (gltf) => {
-    // 새 맵 로드
-    const mesh = gltf.scene;
-    mesh.position.set(-2, 0, 0);
-    mesh.scale.set(1.5, 1.5, 1.5);
-    scene.add(mesh);
-    // currentMap = mesh;
-    console.log("asset을 로드했습니다.");
+async function loadMaui(MapUrl) {
+  return new Promise((resolve, reject) => {
+    const loader = new THREE.GLTFLoader();
+    loader.load(
+      MapUrl,
+      (gltf) => {
+        // 새 맵 로드
+        const mesh = gltf.scene;
+        mesh.position.set(-2, 0, 0);
+        mesh.scale.set(1.5, 1.5, 1.5);
+        scene.add(mesh);
+        // currentMap = mesh;
+        console.log("asset을 로드했습니다.");
+        resolve(gltf);
+      },
+      null,
+      reject
+    );
   });
 }
 
 // Mountain 맵 로드 함수
 async function loadMountain(MapUrl) {
-  const loader = new THREE.GLTFLoader();
-  loader.load(MapUrl, (gltf) => {
-    // 새 맵 로드
-    const mesh = gltf.scene;
-    mesh.position.set(-2.0, -47.0, 10);
-    mesh.scale.set(2, 2, 2);
-    scene.add(mesh);
-    // currentMap = mesh;
-    console.log("맵을 로드했습니다.");
+  return new Promise((resolve, reject) => {
+    const loader = new THREE.GLTFLoader();
+    loader.load(
+      MapUrl,
+      (gltf) => {
+        // 새 맵 로드
+        const mesh = gltf.scene;
+        mesh.position.set(-2.0, -47.0, 10);
+        mesh.scale.set(2, 2, 2);
+        scene.add(mesh);
+        // currentMap = mesh;
+        console.log("맵을 로드했습니다.");
+        resolve(gltf);
+      },
+      null,
+      reject
+    );
   });
 }
 
 // City 맵 로드 함수
 async function loadCity(MapUrl) {
-  const loader = new THREE.GLTFLoader();
-  loader.load(MapUrl, (gltf) => {
-    // 새 맵 로드
-    const mesh = gltf.scene;
-    mesh.position.set(-10, -0.5, 2);
-    mesh.scale.set(0.5, 0.5, 0.5);
-    mesh.rotation.y = (Math.PI * 5) / 6;
-    scene.add(mesh);
-    // currentMap = mesh;
-    console.log("맵을 로드했습니다.");
+  return new Promise((resolve, reject) => {
+    const loader = new THREE.GLTFLoader();
+    loader.load(
+      MapUrl,
+      (gltf) => {
+        // 새 맵 로드
+        const mesh = gltf.scene;
+        mesh.position.set(-10, -0.5, 2);
+        mesh.scale.set(0.5, 0.5, 0.5);
+        mesh.rotation.y = (Math.PI * 5) / 6;
+        scene.add(mesh);
+        // currentMap = mesh;
+        console.log("맵을 로드했습니다.");
+        resolve(gltf);
+      },
+      null,
+      reject
+    );
   });
 }
 
@@ -701,14 +733,6 @@ const startProcess = async () => {
   // 맵 로드
   await loadMap(CURRENT_MAP);
 
-  await loadTrainer2("../static/assets/trainer2.glb").catch((error) => {
-    console.error(error);
-  });
-  console.log("trainer2 load done");
-
-  await loadTrainer1("../static/assets/trainer.glb");
-  console.log("trainer1 load done");
-
   await loadTexture(
     "../static/assets/textures/star_wars_-_low_poly_hoth_skybox/scene.gltf"
   );
@@ -739,6 +763,12 @@ const startProcess = async () => {
     scene.add(textMesh);
   });
   console.log("loadFont done");
+
+  //   await loadTrainer1("../static/assets/trainer.glb");
+  //   console.log("trainer1 load done");
+
+  //   await loadTrainer2("../static/assets/trainer2.glb");
+  //   console.log("trainer2 load done");
 
   console.log("loaded all model");
   document.getElementById("loading-screen").style.display = "none";
@@ -827,6 +857,7 @@ console.log("초기화");
 
 // ------------------------------
 // ** ajax 모듈 실행
+// ------------------------------
 
 function getAjax(CoordinateData) {
   //보안 csrftoken
