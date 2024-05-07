@@ -153,7 +153,7 @@
 
     <script>
       // ver 2
-      var textProcessElement = getElementById("text-process");
+      var textProcessElement = document.getElementById("text-process");
       var percentage = parseInt(textProcessElement.innerText); // 텍스트를 숫자로 변환
       var degree = percentage; // stroke-dasharray 값의 백분율
       // var degree = 50; // stroke-dasharray 값의 백분율
@@ -164,7 +164,8 @@
       // degree 값을 각도로 변환하여 dasharray를 계산합니다.
       const circumference = 2 * Math.PI * 85; // 반지름이 90일 때 원의 둘레
       const progress = (degree / 360) * circumference;
-      progressBar.style.strokeDasharray = `${progress} ${circumference}`;
+      // LDH - 0507 : progressBar 어디??
+      // progressBar.style.strokeDasharray = `${progress} ${circumference}`;
 
       // // 선의 시작점을 동적으로 설정하는 함수
       // function setStrokeDashOffset(offset) {
@@ -183,7 +184,13 @@
     </div>
 
     <div class="preview">
-      <video class="input_video" width="1280px" height="720px"></video>
+      <video
+        class="input_video"
+        autoplay
+        playsinline
+        width="1280px"
+        height="720px"
+      ></video>
       <canvas class="guides"></canvas>
       <section>
         <a class="current" href="/"><p>VRM</p></a>
@@ -246,7 +253,7 @@
         islandAudio.currentTime = 0;
         mountainAudio.currentTime = 0;
       }
-      window.onload = function () {
+      window.onload = async function () {
         // URL의 파라미터에서 선택된 버튼의 정보 가져오기
         let urlParams = new URLSearchParams(window.location.search);
         let selectedButton = urlParams.get("loadMapButton");
@@ -260,9 +267,9 @@
             MapUrl2 =
               "{% static 'assets 2/world_low_poly/pyramid_and_the_sphinx/scene.gltf' %}";
             modelUrl = "{% static 'model/sukuna.vrm' %}";
-            loadDesert(MapUrl); // MapUrl이 설정된 후 loadMap 함수 호출
-            loadModel(modelUrl);
-            loadPyramid(MapUrl2);
+            await loadDesert(MapUrl); // MapUrl이 설정된 후 loadMap 함수 호출
+            await loadModel(modelUrl);
+            await loadPyramid(MapUrl2);
             stopAllAudio(); // Stop other audios
             desertAudio.play(); // Play Desert audio
 
@@ -273,9 +280,9 @@
             MapUrl = "{% static 'assets/low_poly_island/scene.gltf' %}";
             MapUrl2 = "{% static 'assets 2/Island/Man_hawaiian/scene.gltf' %}";
             modelUrl = "{% static 'model/sukuna.vrm' %}";
-            loadIsland(MapUrl); // MapUrl이 설정된 후 loadMap 함수 호출
-            loadModel(modelUrl);
-            loadMaui(MapUrl2);
+            await loadIsland(MapUrl); // MapUrl이 설정된 후 loadMap 함수 호출
+            await loadModel(modelUrl);
+            await loadMaui(MapUrl2);
             stopAllAudio(); // Stop other audios
             islandAudio.play(); // Play Island audio
 
@@ -285,8 +292,8 @@
             console.log("Mountain 버튼이 클릭되었습니다.");
             MapUrl = "{% static 'assets/low_poly_mountain/scene.gltf' %}";
             modelUrl = "{% static 'model/sukuna.vrm' %}";
-            loadMountain(MapUrl); // MapUrl이 설정된 후 loadMap 함수 호출
-            loadModel(modelUrl);
+            await loadMountain(MapUrl); // MapUrl이 설정된 후 loadMap 함수 호출
+            await loadModel(modelUrl);
             stopAllAudio(); // Stop other audios
             mountainAudio.play(); // Play Mountain audio
             break;
@@ -295,8 +302,8 @@
             console.log("City 버튼이 클릭되었습니다.");
             MapUrl = "{% static 'assets/low_poly_city/scene.gltf' %}";
             modelUrl = "{% static 'model/sukuna.vrm' %}";
-            loadCity(MapUrl); // MapUrl이 설정된 후 loadMap 함수 호출
-            loadModel(modelUrl);
+            await loadCity(MapUrl); // MapUrl이 설정된 후 loadMap 함수 호출
+            await loadModel(modelUrl);
             break;
           default:
             // 아무 버튼도 클릭되지 않았을 때의 처리
