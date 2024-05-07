@@ -764,6 +764,9 @@ const startProcess = async () => {
   });
   console.log("loadFont done");
 
+  // trainer1, 2 로드
+  // 5/7 기준 아래 두 부분을 제외하면 ios 잘 작동함
+
   //   await loadTrainer1("../static/assets/trainer.glb");
   //   console.log("trainer1 load done");
 
