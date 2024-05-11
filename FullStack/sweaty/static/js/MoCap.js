@@ -51,8 +51,8 @@ async function loadIsland(MapUrl) {
       (gltf) => {
         // 새 맵 로드
         const mesh = gltf.scene;
-        mesh.position.set(-2, -1, 0);
-        mesh.scale.set(1.5, 1.5, 1.5);
+        mesh.position.set(-2, -3, 0);
+        mesh.scale.set(10, 4.3, 10);
         scene.add(mesh);
         // currentMap = mesh;
         console.log("맵을 로드했습니다.");
@@ -73,7 +73,7 @@ async function loadMaui(MapUrl) {
       (gltf) => {
         // 새 맵 로드
         const mesh = gltf.scene;
-        mesh.position.set(-2, 0, 0);
+        mesh.position.set(-5, 0, 0);
         mesh.scale.set(1.5, 1.5, 1.5);
         scene.add(mesh);
         // currentMap = mesh;
@@ -137,41 +137,101 @@ async function loadMap(map) {
       MapUrl = "../../static/assets/low_poly_desert/scene.gltf";
       MapUrl2 =
         "../../static/assets 2/world_low_poly/pyramid_and_the_sphinx/scene.gltf";
-      modelUrl = "../../static/model/sukuna.vrm";
+      modelUrl = "../../static/model/avatar-first.vrm";
       await loadDesert(MapUrl); // MapUrl이 설정된 후 loadMap 함수 호출
       await loadModel(modelUrl);
       await loadPyramid(MapUrl2);
       stopAllAudio(); // Stop other audios
       desertAudio.play(); // Play Desert audio
+
+      $("#btn_player").click(function(e){
+        if(desertAudio.paused==true){
+            desertAudio.play(); //재생
+        }else{
+            desertAudio.pause(); //일시정지
+            }
+        });
+
+        desertAudio.addEventListener("ended", function(){
+            //끝났을 때
+        });
+
       console.log("Desert Map load done");
       break;
     case "Island":
       MapUrl = "../../static/assets/low_poly_island/scene.gltf";
       MapUrl2 = "../../static/assets 2/Island/Man_hawaiian/scene.gltf";
-      modelUrl = "../../static/model/sukuna.vrm";
+      modelUrl = "../../static/model/avatar-first.vrm";
       await loadIsland(MapUrl); // MapUrl이 설정된 후 loadMap 함수 호출
       await loadModel(modelUrl);
       await loadMaui(MapUrl2);
       stopAllAudio(); // Stop other audios
       islandAudio.play(); // Play Island audio
+
+      //오디오 재생
+      $("#btn_player").click(function(e){
+        if(islandAudio.paused==true){
+            islandAudio.play(); //재생
+        }else{
+            islandAudio.pause(); //일시정지
+            }
+        });
+
+        islandAudio.addEventListener("ended", function(){
+            //끝났을 때
+        });
+
       console.log("Island Map load done");
       break;
     case "Mountain":
       MapUrl = "../../static/assets/low_poly_mountain/scene.gltf";
-      modelUrl = "../../static/model/sukuna.vrm";
+      modelUrl = "../../static/model/avatar-first.vrm";
       await loadMountain(MapUrl); // MapUrl이 설정된 후 loadMap 함수 호출
       await loadModel(modelUrl).catch((error) => {
         console.error(error);
       });
       stopAllAudio(); // Stop other audios
       mountainAudio.play(); // Play Mountain audio
+
+      //오디오 재생
+      $("#btn_player").click(function(e){
+        if(mountainAudio.paused==true){
+            mountainAudio.play(); //재생
+        }else{
+            cityAudio.pause(); //일시정지
+            }
+        });
+
+        mountainAudio.addEventListener("ended", function(){
+            //끝났을 때
+        });
+
+
       console.log("Island Map load done");
       break;
     case "City":
       MapUrl = "../../static/assets/low_poly_city/scene.gltf";
-      modelUrl = "../../static/model/sukuna.vrm";
+      modelUrl = "../../static/model/avatar-first.vrm";
       await loadCity(MapUrl); // MapUrl이 설정된 후 loadMap 함수 호출
       await loadModel(modelUrl);
+      stopAllAudio(); // Stop other audios
+      cityAudio.play(); // Play Island audio
+
+      //오디오 재생
+      $("#btn_player").click(function(e){
+        if(cityAudio.paused==true){
+            cityAudio.play(); //재생
+        }else{
+            cityAudio.pause(); //일시정지
+            }
+        });
+
+        cityAudio.addEventListener("ended", function(){
+            //끝났을 때
+        });
+
+
+
       console.log("City Map load done");
       break;
   }
@@ -186,15 +246,21 @@ function setCurrentMap(map) {
 const desertAudio = document.getElementById("desert-audio");
 const islandAudio = document.getElementById("island-audio");
 const mountainAudio = document.getElementById("mountain-audio");
+const cityAudio = document.getElementById("city-audio");
+const correctAudio = document.getElementById("correct-audio");
+const wrongAudio = document.getElementById("wrong-audio");
+
 
 // Stop all audio before starting a new one
 function stopAllAudio() {
   desertAudio.pause();
   islandAudio.pause();
   mountainAudio.pause();
+  cityAudio.pause();
   desertAudio.currentTime = 0;
   islandAudio.currentTime = 0;
   mountainAudio.currentTime = 0;
+  cityAudio.currentTime = 0;
 }
 
 // VRM 모델 로드 함수
@@ -885,11 +951,25 @@ function getAjax(CoordinateData) {
       receivedDataElement3.innerHTML =
         "SquatAccu: " + String(processAccuracy) + "%"; // HTML
 
+        /*
+      if (jsonAccuracy > 80){
+        correctAudio.play();
+      }
+      else {
+        wrongAudio.play();
+      }
+      */
+
+
       // 프로세스 바에 표시할 로직
       if (processAccuracy > 0) {
         var receivedDataElement4 = document.getElementById("text-process");
         receivedDataElement4.innerHTML = parseInt(processAccuracy);
       }
+
+
+
+
 
       // 현재 jsonCnt와 이전 jsonCnt를 비교하여 값이 변경되었는지 확인
       if (jsonCnt !== previousJsonCnt) {
@@ -1025,12 +1105,17 @@ function getAjax(CoordinateData) {
           }
         }
       }
+
+
       if (parseFloat(jsonAccuracy) < 80 && jsonAccuracy !== previousJsonAccu) {
         if (trainer_action2 !== undefined && trainer_action1 !== undefined) {
           trainer_action2.stop();
           trainer_action1.setDuration(0.002);
           trainer_action1.play();
         }
+
+
+
 
         setTimeout(() => {
           if (trainer_action2 !== undefined && trainer_action1 !== undefined) {
@@ -1066,6 +1151,9 @@ function getAjax(CoordinateData) {
           moveCameraDefault();
         }, 1000);
       }
+
+
+
       // 변경된 경우에만 처리
       previousJsonAccu = jsonAccuracy; // 이전 jsonCnt 업데이트
 
@@ -1350,7 +1438,7 @@ const animateVRM = (vrm, results) => {
       rigPosition(
         "Hips",
         {
-          x: 0,
+          x: hipsPosition.x,
           y: hipsPosition.y - leftFootPosition.y + 0.13,
           z: 0,
         },
@@ -1361,7 +1449,7 @@ const animateVRM = (vrm, results) => {
       rigPosition(
         "Hips",
         {
-          x: 0,
+          x: hipsPosition.x,
           y: hipsPosition.y - rightFootPosition.y + 0.13,
           z: 0,
         },
