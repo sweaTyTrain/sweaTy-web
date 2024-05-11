@@ -187,9 +187,11 @@ async function loadMap(map) {
       MapUrl = "../../static/assets/low_poly_island/scene.gltf";
       MapUrl2 = "../../static/assets 2/Island/Man_hawaiian/scene.gltf";
       modelUrl = "../../static/model/avatar-first.vrm";
+      flowerUrl = "../../static/assets 2/Island/Hawaiian_flower/scene.gltf";
       await loadIsland(MapUrl); // MapUrl이 설정된 후 loadMap 함수 호출
       await loadModel(modelUrl);
-      await loadMaui(MapUrl2);
+      await loadHFlower(flowerUrl);
+      // await loadMaui(MapUrl2);
       stopAllAudio(); // Stop other audios
       islandAudio.play(); // Play Island audio
 
@@ -519,7 +521,7 @@ function moveCameraCircle() {
       orbitControls.update();
     })
     .onComplete(() => {
-      moveCameraDefault();
+      // moveCameraDefault();
     });
 
   // Tween 시작
@@ -1096,7 +1098,7 @@ function getAjax(CoordinateData) {
           1 // 1초 동안 이동
         );
         setTimeout(() => {
-          moveCameraDefault();
+          // moveCameraDefault();
         }, 1000);
 
         // 주어진 운동 횟수를 다 채웠다면, 쉬는 시간을 가짐.
@@ -1150,7 +1152,7 @@ function getAjax(CoordinateData) {
           1 // 1초 동안 이동
         );
         setTimeout(() => {
-          moveCameraDefault();
+          // moveCameraDefault();
         }, 1000);
       }
       // 변경된 경우에만 처리
