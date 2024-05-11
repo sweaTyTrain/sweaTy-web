@@ -62,30 +62,19 @@
         color: black;
       }
 
-      #image-button-container {
-        position: fixed;
-        top: 10px; /* Adjust top position as needed */
-        right: 10px; /* Adjust right position as needed */
-        z-index: 10000; /* Ensure it's above other content */
-        display: flex;
-        flex-direction: column; /* Arrange items vertically */
-        align-items: flex-end; /* Align items to the right */
-      }
-      #image-button1 {
-        width: 100px; /* Adjust width as needed */
-        height: 70px; /* Adjust height as needed */
-        margin-bottom: 10px; /* Adjust spacing between buttons */
-      }
-      #image-button2 {
-        width: 100px; /* Adjust width as needed */
-        height: 70px; /* Adjust height as needed */
+      /* 기본 폰트 스타일 및 색상 */
+      #showCnt,
+      #showSquatAcuu {
+        color: yellow; /* 연두색 */
+        font-size: 30px; /* 폰트 크기 */
+        font-weight: bold; /* 두꺼운 폰트 */
       }
 
       /* 원형 게이지 바 스타일 */
 
       .container {
         left: 1rem;
-        top: 43rem;
+        top: 30rem;
         width: 200px;
         height: 200px;
         border-radius: 50%;
@@ -137,6 +126,52 @@
         transform: translate(-50%, -50%); /* 수직 및 수평 중앙 정렬 */
         font-size: 80px; /* 글자 크기 설정 */
         color: black; /* 글자 색상 설정 */
+      }
+      #loadModelButton1 {
+        background-color: #9bde7e; /* 연두색 */
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 5px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); /* 그림자 추가 */
+        transition: all 0.3s ease;
+      }
+
+      #loadModelButton1:hover {
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3); /* 호버 시 그림자 증가 */
+      }
+
+      #loadModelButton1:active {
+        transform: translateY(2px); /* 클릭 시 살짝 아래로 이동 */
+      }
+
+      #loadModelButton2 {
+        background-color: #9bde7e;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        border-radius: 5px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); /* 그림자 추가 */
+      }
+
+      #loadModelButton2:hover {
+        box-shadow: 0 10px 15px rgba(0, 0, 0, 0.3); /* 호버 시 그림자 증가 */
+      }
+
+      #loadModelButton2:active {
+        transform: translateY(2px); /* 클릭 시 살짝 아래로 */
+      }
+
+      #audioCanvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1; /* 다른 요소보다 뒤에 위치하도록 설정 */
+        opacity: 0.5; /* 투명도 조절 */
       }
     </style>
   </head>
@@ -205,21 +240,47 @@
       <p id="showPre"></p>
       <p id="showCnt"></p>
       <p id="showSquatAcuu"></p>
+
+      <br />
+
+      <button id="btn_player">음악 on/off</button>
     </h1>
+    <canvas id="audioCanvas" width="400" height="400"></canvas>
 
     <audio
       id="desert-audio"
       src="{% static 'audio/desert.mp3' %}"
       preload="auto"
+      loop
     ></audio>
     <audio
       id="island-audio"
       src="{% static 'audio/island.mp3' %}"
       preload="auto"
+      loop
     ></audio>
     <audio
       id="mountain-audio"
       src="{% static 'audio/mountain.mp3' %}"
+      preload="auto"
+      loop
+    ></audio>
+    <audio
+      id="city-audio"
+      src="{% static 'audio/city.mp3' %}"
+      preload="auto"
+      loop
+    ></audio>
+
+    <audio
+      id="correct-audio"
+      src="{% static 'audio/correct.mp3' %}"
+      preload="auto"
+    ></audio>
+
+    <audio
+      id="wrong-audio"
+      src="{% static 'audio/wrong.mp3' %}"
       preload="auto"
     ></audio>
 
@@ -232,8 +293,8 @@
 
       //아바타 교체 버튼
       $("#loadModelButton1").click(function () {
-        modelUrl = "{% static 'model/sukuna.vrm' %}"; // 캐릭터1 모델의 URL 설정
-            loadModel(modelUrl); // 모델 재로드
+        modelUrl = "{% static 'model/avatar-first.vrm' %}"; // 캐릭터1 모델의 URL 설정
+        loadModel(modelUrl); // 모델 재로드
       });
 
       $("#loadModelButton2").click(function () {
@@ -250,6 +311,12 @@
         // 카메라 세팅하면서 전체 프로세스 시작
         setupCamera();
       };
+
+      //오디오 볼륨 통일
+      const audios = document.querySelectorAll("audio");
+      audios.forEach((audio) => {
+        audio.volume = 0.5; // 원하는 볼륨 값으로 설정
+      });
     </script>
   </body>
 </html>

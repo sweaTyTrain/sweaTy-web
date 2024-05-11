@@ -24,4 +24,8 @@ cmd(Terminal) 창에서 수행
 
 8. python manage.py runserver 입력   
 
-9. 로컬 주소 복사 후 chrome에서 실행 
+9. 로컬 주소 복사 후 chrome에서 실행
+
+10. + 추가 python manage.py makemigrations
+
+11. + 추가python manage.py migrate
