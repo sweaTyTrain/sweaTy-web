@@ -7,8 +7,10 @@ async function loadDesert(MapUrl) {
       (gltf) => {
         // 새 맵 로드
         const mesh = gltf.scene;
-        mesh.position.set(-4, -0.2, -40);
-        mesh.scale.set(2, 2, 2);
+        mesh.position.set(-2.5, -15, -20);
+        mesh.scale.set(35, 35, 35);
+        mesh.rotation.y = (Math.PI * 1) / 3;
+
         scene.add(mesh);
         // currentMap = mesh;
         console.log("맵을 로드했습니다.");
@@ -51,8 +53,9 @@ async function loadIsland(MapUrl) {
       (gltf) => {
         // 새 맵 로드
         const mesh = gltf.scene;
-        mesh.position.set(-2, -3, 0);
-        mesh.scale.set(10, 4.3, 10);
+        mesh.position.set(1, -3.3, -1);
+        mesh.scale.set(4.3, 4.3, 4.3);
+        mesh.rotation.y = -(Math.PI * 1) / 4;
         scene.add(mesh);
         // currentMap = mesh;
         console.log("맵을 로드했습니다.");
@@ -78,6 +81,28 @@ async function loadMaui(MapUrl) {
         scene.add(mesh);
         // currentMap = mesh;
         console.log("asset을 로드했습니다.");
+        resolve(gltf);
+      },
+      null,
+      reject
+    );
+  });
+}
+
+// Island Flower asset 로드 함수
+async function loadHFlower(MapUrl) {
+  return new Promise((resolve, reject) => {
+    const loader = new THREE.GLTFLoader();
+    loader.load(
+      MapUrl,
+      (gltf) => {
+        // 새 맵 로드
+        const mesh = gltf.scene;
+        mesh.position.set(-2, 0, 0);
+        mesh.scale.set(15, 15, 15);
+        scene.add(mesh);
+        // currentMap = mesh;
+        console.log("flower asset을 로드했습니다.");
         resolve(gltf);
       },
       null,
@@ -144,17 +169,17 @@ async function loadMap(map) {
       stopAllAudio(); // Stop other audios
       desertAudio.play(); // Play Desert audio
 
-      $("#btn_player").click(function(e){
-        if(desertAudio.paused==true){
-            desertAudio.play(); //재생
-        }else{
-            desertAudio.pause(); //일시정지
-            }
-        });
+      $("#btn_player").click(function (e) {
+        if (desertAudio.paused == true) {
+          desertAudio.play(); //재생
+        } else {
+          desertAudio.pause(); //일시정지
+        }
+      });
 
-        desertAudio.addEventListener("ended", function(){
-            //끝났을 때
-        });
+      desertAudio.addEventListener("ended", function () {
+        //끝났을 때
+      });
 
       console.log("Desert Map load done");
       break;
@@ -162,24 +187,26 @@ async function loadMap(map) {
       MapUrl = "../../static/assets/low_poly_island/scene.gltf";
       MapUrl2 = "../../static/assets 2/Island/Man_hawaiian/scene.gltf";
       modelUrl = "../../static/model/avatar-first.vrm";
+      flowerUrl = "../../static/assets 2/Island/Hawaiian_flower/scene.gltf";
       await loadIsland(MapUrl); // MapUrl이 설정된 후 loadMap 함수 호출
       await loadModel(modelUrl);
-      await loadMaui(MapUrl2);
+      await loadHFlower(flowerUrl);
+      // await loadMaui(MapUrl2);
       stopAllAudio(); // Stop other audios
       islandAudio.play(); // Play Island audio
 
       //오디오 재생
-      $("#btn_player").click(function(e){
-        if(islandAudio.paused==true){
-            islandAudio.play(); //재생
-        }else{
-            islandAudio.pause(); //일시정지
-            }
-        });
+      $("#btn_player").click(function (e) {
+        if (islandAudio.paused == true) {
+          islandAudio.play(); //재생
+        } else {
+          islandAudio.pause(); //일시정지
+        }
+      });
 
-        islandAudio.addEventListener("ended", function(){
-            //끝났을 때
-        });
+      islandAudio.addEventListener("ended", function () {
+        //끝났을 때
+      });
 
       console.log("Island Map load done");
       break;
@@ -194,18 +221,17 @@ async function loadMap(map) {
       mountainAudio.play(); // Play Mountain audio
 
       //오디오 재생
-      $("#btn_player").click(function(e){
-        if(mountainAudio.paused==true){
-            mountainAudio.play(); //재생
-        }else{
-            cityAudio.pause(); //일시정지
-            }
-        });
+      $("#btn_player").click(function (e) {
+        if (mountainAudio.paused == true) {
+          mountainAudio.play(); //재생
+        } else {
+          cityAudio.pause(); //일시정지
+        }
+      });
 
-        mountainAudio.addEventListener("ended", function(){
-            //끝났을 때
-        });
-
+      mountainAudio.addEventListener("ended", function () {
+        //끝났을 때
+      });
 
       console.log("Island Map load done");
       break;
@@ -218,19 +244,17 @@ async function loadMap(map) {
       cityAudio.play(); // Play Island audio
 
       //오디오 재생
-      $("#btn_player").click(function(e){
-        if(cityAudio.paused==true){
-            cityAudio.play(); //재생
-        }else{
-            cityAudio.pause(); //일시정지
-            }
-        });
+      $("#btn_player").click(function (e) {
+        if (cityAudio.paused == true) {
+          cityAudio.play(); //재생
+        } else {
+          cityAudio.pause(); //일시정지
+        }
+      });
 
-        cityAudio.addEventListener("ended", function(){
-            //끝났을 때
-        });
-
-
+      cityAudio.addEventListener("ended", function () {
+        //끝났을 때
+      });
 
       console.log("City Map load done");
       break;
@@ -249,7 +273,6 @@ const mountainAudio = document.getElementById("mountain-audio");
 const cityAudio = document.getElementById("city-audio");
 const correctAudio = document.getElementById("correct-audio");
 const wrongAudio = document.getElementById("wrong-audio");
-
 
 // Stop all audio before starting a new one
 function stopAllAudio() {
@@ -498,7 +521,7 @@ function moveCameraCircle() {
       orbitControls.update();
     })
     .onComplete(() => {
-      moveCameraDefault();
+      // moveCameraDefault();
     });
 
   // Tween 시작
@@ -951,25 +974,11 @@ function getAjax(CoordinateData) {
       receivedDataElement3.innerHTML =
         "SquatAccu: " + String(processAccuracy) + "%"; // HTML
 
-        /*
-      if (jsonAccuracy > 80){
-        correctAudio.play();
-      }
-      else {
-        wrongAudio.play();
-      }
-      */
-
-
       // 프로세스 바에 표시할 로직
       if (processAccuracy > 0) {
         var receivedDataElement4 = document.getElementById("text-process");
         receivedDataElement4.innerHTML = parseInt(processAccuracy);
       }
-
-
-
-
 
       // 현재 jsonCnt와 이전 jsonCnt를 비교하여 값이 변경되었는지 확인
       if (jsonCnt !== previousJsonCnt) {
@@ -1089,7 +1098,7 @@ function getAjax(CoordinateData) {
           1 // 1초 동안 이동
         );
         setTimeout(() => {
-          moveCameraDefault();
+          // moveCameraDefault();
         }, 1000);
 
         // 주어진 운동 횟수를 다 채웠다면, 쉬는 시간을 가짐.
@@ -1105,17 +1114,12 @@ function getAjax(CoordinateData) {
           }
         }
       }
-
-
       if (parseFloat(jsonAccuracy) < 80 && jsonAccuracy !== previousJsonAccu) {
         if (trainer_action2 !== undefined && trainer_action1 !== undefined) {
           trainer_action2.stop();
           trainer_action1.setDuration(0.002);
           trainer_action1.play();
         }
-
-
-
 
         setTimeout(() => {
           if (trainer_action2 !== undefined && trainer_action1 !== undefined) {
@@ -1148,12 +1152,9 @@ function getAjax(CoordinateData) {
           1 // 1초 동안 이동
         );
         setTimeout(() => {
-          moveCameraDefault();
+          // moveCameraDefault();
         }, 1000);
       }
-
-
-
       // 변경된 경우에만 처리
       previousJsonAccu = jsonAccuracy; // 이전 jsonCnt 업데이트
 
