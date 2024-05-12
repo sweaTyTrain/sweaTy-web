@@ -62,13 +62,15 @@
         color: black;
       }
 
+
+
       /* 기본 폰트 스타일 및 색상 */
-      #showCnt,
-      #showSquatAcuu {
+      #showCnt, #showSquatAcuu {
         color: yellow; /* 연두색 */
-        font-size: 30px; /* 폰트 크기 */
+        font-size: 30px;  /* 폰트 크기 */
         font-weight: bold; /* 두꺼운 폰트 */
       }
+
 
       /* 원형 게이지 바 스타일 */
 
@@ -82,12 +84,16 @@
         background: yellowgreen;
       }
 
+
+
+
       .border {
         fill: none;
         stroke: white;
         opacity: 0.3;
         stroke-width: 25;
       }
+
 
       .progress {
         position: absolute;
@@ -101,6 +107,7 @@
         transform: rotate(-90deg);
         stroke-width: 25;
       }
+
 
       @keyframes progress {
         0% {
@@ -164,15 +171,9 @@
         transform: translateY(2px); /* 클릭 시 살짝 아래로 */
       }
 
-      #audioCanvas {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 1; /* 다른 요소보다 뒤에 위치하도록 설정 */
-        opacity: 0.5; /* 투명도 조절 */
-      }
+
+
+
     </style>
   </head>
 
@@ -241,11 +242,12 @@
       <p id="showCnt"></p>
       <p id="showSquatAcuu"></p>
 
-      <br />
+      <br>
 
       <button id="btn_player">음악 on/off</button>
+
     </h1>
-    <canvas id="audioCanvas" width="400" height="400"></canvas>
+
 
     <audio
       id="desert-audio"
@@ -272,17 +274,20 @@
       loop
     ></audio>
 
-    <audio
+     <audio
       id="correct-audio"
       src="{% static 'audio/correct.mp3' %}"
       preload="auto"
     ></audio>
 
-    <audio
+         <audio
       id="wrong-audio"
       src="{% static 'audio/wrong.mp3' %}"
       preload="auto"
     ></audio>
+
+
+
 
     <script src="../../static/js/MoCap.js"></script>
 
@@ -292,15 +297,16 @@
       let MapUrl = null; //초기 맵
 
       //아바타 교체 버튼
-      $("#loadModelButton1").click(function () {
+      $("#loadModelButton1").click(function() {
         modelUrl = "{% static 'model/avatar-first.vrm' %}"; // 캐릭터1 모델의 URL 설정
         loadModel(modelUrl); // 모델 재로드
       });
 
-      $("#loadModelButton2").click(function () {
+      $("#loadModelButton2").click(function() {
         modelUrl = "{% static 'model/three-vrm-girl.vrm' %}"; // 캐릭터2 모델의 URL 설정
         loadModel(modelUrl); // 모델 재로드
       });
+
       window.onload = async function () {
         // URL의 파라미터에서 선택된 버튼의 정보 가져오기
         let urlParams = new URLSearchParams(window.location.search);
@@ -312,11 +318,19 @@
         setupCamera();
       };
 
+
       //오디오 볼륨 통일
       const audios = document.querySelectorAll("audio");
       audios.forEach((audio) => {
         audio.volume = 0.5; // 원하는 볼륨 값으로 설정
       });
+
+
+
     </script>
+
+
+
+
   </body>
 </html>
