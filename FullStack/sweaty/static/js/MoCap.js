@@ -347,9 +347,9 @@ async function loadTrainer1(modelUrl) {
         trainer_action2 = mixer2.clipAction(clip2);
         trainer_action3 = mixer2.clipAction(clip3);
 
-        trainer_action1.setDuration(0.005);
-        trainer_action2.setDuration(0.005);
-        trainer_action3.setDuration(0.005);
+        trainer_action1.setDuration(0.05);
+        trainer_action2.setDuration(0.05);
+        trainer_action3.setDuration(0.05);
 
         // action1.play();
         trainer_action2.play();
@@ -795,7 +795,7 @@ const startProcess = async () => {
   const lerp = Kalidokit.Vector.lerp;
 
   // renderer
-  const renderer = new THREE.WebGLRenderer({ alpha: true });
+  renderer = new THREE.WebGLRenderer({ alpha: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(window.devicePixelRatio);
   document.body.appendChild(renderer.domElement);
@@ -861,47 +861,15 @@ const startProcess = async () => {
   // trainer1, 2 로드
   // 5/7 기준 아래 두 부분을 제외하면 ios 잘 작동함
 
-  //   await loadTrainer1("../static/assets/trainer.glb");
-  //   console.log("trainer1 load done");
+  await loadTrainer1("../static/assets/trainer.glb");
+  console.log("trainer1 load done");
 
-  //   await loadTrainer2("../static/assets/trainer2.glb");
-  //   console.log("trainer2 load done");
+  await loadTrainer2("../static/assets/trainer2.glb");
+  console.log("trainer2 load done");
 
   console.log("loaded all model");
   document.getElementById("loading-screen").style.display = "none";
-
-  // Main Render Loop
-  const clock = new THREE.Clock();
-
-  let mixer;
-  let mixer2;
-  let mixer3;
-  function animate() {
-    requestAnimationFrame(animate);
-
-    if (currentVrm) {
-      // Update model to render physics
-      currentVrm.update(clock.getDelta());
-    }
-    TWEEN.update();
-    orbitControls.update();
-    if (mixer) {
-      mixer.update(clock.getDelta());
-      // console.log("믹서1")
-    }
-
-    if (mixer2) {
-      mixer2.update(clock.getDelta());
-      // console.log("믹서2")
-    }
-
-    if (mixer3) {
-      mixer3.update(clock.getDelta());
-      // console.log("믹서3")
-    }
-
-    renderer.render(scene, orbitCamera);
-  }
+  // 애니메이션 시작
   animate();
 
   // Tween.js를 사용하여 애니메이션 적용
@@ -947,8 +915,8 @@ const startProcess = async () => {
 };
 
 // 이전 jsonCnt를 저장할 변수 선언
-let previousJsonCnt = "0";
-let previousJsonAccu = "-1";
+let previousJsonCnt = 0;
+let previousJsonAccu = 0;
 let switchAccu = 0;
 console.log("초기화");
 
@@ -987,9 +955,10 @@ function getAjax(CoordinateData) {
 
       // 현재 jsonCnt와 이전 jsonCnt를 비교하여 값이 변경되었는지 확인
       if (jsonCnt !== previousJsonCnt) {
-        if (trainer2_action2 && trainer_action3) {
+        if (trainer_action2 && trainer_action3) {
+          console.log("실행됨")
           trainer_action2.stop();
-          trainer_action3.setDuration(0.005);
+          trainer_action3.setDuration(0.05);
           trainer_action3.play();
         }
 
@@ -1020,7 +989,7 @@ function getAjax(CoordinateData) {
           });
 
           const textMaterial = new THREE.MeshStandardMaterial({
-            color: 0x507a03,
+            color: 0xffd400,
           }); // 텍스트 색상
           const textMesh = new THREE.Mesh(textGeometry, textMaterial);
 
@@ -1067,6 +1036,14 @@ function getAjax(CoordinateData) {
               scene.add(textMesh);
             }
           );
+          moveCameraToTarget(
+            { x: 0.0, y: 1.8, z: 1.4 }, // 목표 위치
+            { x: -1.0, y: 1.4, z: 0.0 }, // 목표 방향
+            1 // 1초 동안 이동
+          );
+          setTimeout(() => {
+            moveCameraDefault();
+          }, 1000);
 
           // 5초 후에 GLTF를 삭제하는 함수 호출
           setTimeout(() => {
@@ -1075,10 +1052,6 @@ function getAjax(CoordinateData) {
             scene.remove(mesh); // Scene에서 mesh 제거
           }, 5000); // 1000ms = 1초
         });
-
-        // 이전 텍스트 메시지 제거
-        const previousTextMesh2 = scene.getObjectByName("cloudText");
-        scene.remove(previousTextMesh2);
 
         // 모델의 blendShapeProxy를 가져옴
         if (currentVrm !== undefined) {
@@ -1097,15 +1070,6 @@ function getAjax(CoordinateData) {
           }, 3000); // 3초 후에 실행됨 (단위: 밀리초)
         }
 
-        moveCameraToTarget(
-          { x: 0.0, y: 1.8, z: 1.4 }, // 목표 위치
-          { x: -1.0, y: 1.4, z: 0.0 }, // 목표 방향
-          1 // 1초 동안 이동
-        );
-        setTimeout(() => {
-          moveCameraDefault();
-        }, 1000);
-
         // 주어진 운동 횟수를 다 채웠다면, 쉬는 시간을 가짐.
         // 만약 모든 세트를 다 마치면, 다음 화면으로 넘어감
         if (previousJsonCnt == TOTAL_NUM) {
@@ -1120,9 +1084,11 @@ function getAjax(CoordinateData) {
         }
       }
       if (parseFloat(jsonAccuracy) < 80 && jsonAccuracy !== previousJsonAccu) {
+        console.log(jsonAccuracy);
+        console.log(previousJsonAccu);
         if (trainer_action2 !== undefined && trainer_action1 !== undefined) {
           trainer_action2.stop();
-          trainer_action1.setDuration(0.002);
+          trainer_action1.setDuration(0.05);
           trainer_action1.play();
         }
 
@@ -1668,6 +1634,47 @@ let trainer2_action2;
 
 /* THREEJS WORLD SETUP */
 let currentVrm = undefined;
+
+let renderer;
+
+// Main Render Loop
+const clock = new THREE.Clock();
+
+let mixer;
+let mixer2;
+let mixer3;
+
+function animate() {
+  requestAnimationFrame(animate);
+
+  if (currentVrm) {
+    // Update model to render physics
+    currentVrm.update(clock.getDelta());
+  }
+  TWEEN.update();
+
+  if (orbitControls) {
+    orbitControls.update();
+  }
+  if (mixer) {
+    mixer.update(clock.getDelta());
+    // console.log("믹서1")
+  }
+
+  if (mixer2) {
+    mixer2.update(clock.getDelta());
+    // console.log("믹서2")
+  }
+
+  if (mixer3) {
+    mixer3.update(clock.getDelta());
+    // console.log("믹서3")
+  }
+  if (renderer) {
+    renderer.render(scene, orbitCamera);
+  }
+}
+
 
 /* SETUP MEDIAPIPE HOLISTIC INSTANCE */
 const holistic = new Holistic({
