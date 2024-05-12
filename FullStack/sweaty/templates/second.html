@@ -299,19 +299,19 @@
 
       // loading 텍스트를 한 글자씩 나카나기
 
-      const content = "Loading . . .";
+      const content = ["여", "행", "지", "에", "\u00a0","곧" , "\u00a0", "착", "륙", "합", "니", "다", "\u00a0", ".", "\u00a0", ".", "\u00a0", ".", "\u00a0"];
       const text = document.getElementById("loading-text");
       let i = 0;
 
       function typing() {
         let txt = content[i++];
         text.innerText += txt;
-        if (i > content.length) {
+        if (i >= content.length) {
           text.textContent = "";
           i = 0;
         }
       }
-      setInterval(typing, 150)
+      setInterval(typing, 200)
 
 
 
