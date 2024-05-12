@@ -5,9 +5,14 @@ async function loadDesert(MapUrl) {
     loader.load(
       MapUrl,
       (gltf) => {
-        // 새 맵 로드
         const mesh = gltf.scene;
-        mesh.position.set(-2.5, -15, -20);
+
+        // desert 1
+        // mesh.position.set(-4, -0.2, -40);
+        // mesh.scale.set(2, 2, 2);
+
+        // desert 2
+        mesh.position.set(3, -11.5, -25);
         mesh.scale.set(35, 35, 35);
         mesh.rotation.y = (Math.PI * 1) / 3;
 
@@ -159,13 +164,13 @@ async function loadCity(MapUrl) {
 async function loadMap(map) {
   switch (map) {
     case "Desert":
-      MapUrl = "../../static/assets/low_poly_desert/scene.gltf";
+      MapUrl = "../../static/assets 2/desert/low_poly_desert/scene.gltf";
       MapUrl2 =
         "../../static/assets 2/world_low_poly/pyramid_and_the_sphinx/scene.gltf";
       modelUrl = "../../static/model/avatar-first.vrm";
       await loadDesert(MapUrl); // MapUrl이 설정된 후 loadMap 함수 호출
       await loadModel(modelUrl);
-      await loadPyramid(MapUrl2);
+      // await loadPyramid(MapUrl2);
       stopAllAudio(); // Stop other audios
       desertAudio.play(); // Play Desert audio
 
@@ -521,7 +526,7 @@ function moveCameraCircle() {
       orbitControls.update();
     })
     .onComplete(() => {
-      // moveCameraDefault();
+      moveCameraDefault();
     });
 
   // Tween 시작
@@ -1098,7 +1103,7 @@ function getAjax(CoordinateData) {
           1 // 1초 동안 이동
         );
         setTimeout(() => {
-          // moveCameraDefault();
+          moveCameraDefault();
         }, 1000);
 
         // 주어진 운동 횟수를 다 채웠다면, 쉬는 시간을 가짐.
@@ -1152,7 +1157,7 @@ function getAjax(CoordinateData) {
           1 // 1초 동안 이동
         );
         setTimeout(() => {
-          // moveCameraDefault();
+          moveCameraDefault();
         }, 1000);
       }
       // 변경된 경우에만 처리
