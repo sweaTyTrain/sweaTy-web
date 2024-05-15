@@ -247,7 +247,10 @@
 
       <br>
 
-      <button id="btn_player">음악 on/off</button>
+      <button id="btn_player">
+        <img id="music_img" src="{% static 'img/on.jpg' %}" width="50" height="50">
+
+      </button>
 
     </h1>
 
@@ -348,6 +351,25 @@
       audios.forEach((audio) => {
         audio.volume = 0.5; // 원하는 볼륨 값으로 설정
       });
+
+      //오디오 버튼 바꾸기
+      var images = [
+            "{% static 'img/on.jpg' %}",
+            "{% static 'img/off.jpg' %}"
+        ];
+
+      var index = 0;
+
+      document.getElementById("btn_player").addEventListener("click", function() {
+          index = (index + 1) % images.length; // 다음 이미지로 이동
+          document.getElementById("music_img").src = images[index]; // 이미지 변경
+      });
+
+
+
+
+
+
 
 
 
