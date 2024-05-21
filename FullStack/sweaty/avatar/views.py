@@ -433,7 +433,7 @@ def test(request):
 
 
 
-        if  (left_knee_angle + right_knee_angle) / 2 < 150 and (left_knee_angle + right_knee_angle) / 2 > 100:
+        if  (left_knee_angle + right_knee_angle) / 2 < 150 and (left_knee_angle + right_knee_angle) / 2 > 120:
             Keypointstest.objects.create(left_kneex=leftKneeXCoordinate,
                                          right_kneex=rightKneeXCoordinate,
                                          left_hipx=leftHipXCoordinate,
@@ -552,7 +552,7 @@ def test(request):
 
 
 
-        if squat_data.squat_state == [1,0,0,0] and (left_knee_angle + right_knee_angle) / 2 <= 100:
+        if squat_data.squat_state == [1,0,0,0] and (left_knee_angle + right_knee_angle) / 2 <= 120:
 
             if (model[list(model.keys())[3]].score_samples(np.array(squat_data.reg[0]).reshape(-1, 1))<90):
                 squat_data.accuracy[0] = 1
@@ -706,4 +706,5 @@ def test(request):
 
     json_data0 = latest_entry.squat_count
     json_data1 = latest_entry.score
-    return JsonResponse({'json_data0':json_data0, 'json_data1':json_data1 })
+    json_data2 = latest_entry.accuracy
+    return JsonResponse({'json_data0':json_data0, 'json_data1':json_data1, 'json_data2':json_data2 })

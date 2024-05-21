@@ -347,9 +347,9 @@ async function loadTrainer1(modelUrl) {
         trainer_action2 = mixer2.clipAction(clip2);
         trainer_action3 = mixer2.clipAction(clip3);
 
-        trainer_action1.setDuration(0.005);
-        trainer_action2.setDuration(0.005);
-        trainer_action3.setDuration(0.005);
+        trainer_action1.setDuration(0.05);
+        trainer_action2.setDuration(0.05);
+        trainer_action3.setDuration(0.05);
 
         // action1.play();
         trainer_action2.play();
@@ -369,7 +369,6 @@ async function loadTrainer2(modelUrl) {
       modelUrl,
       (gltf) => {
         console.log("hi trainer2");
-        console.log(gltf);
         const mesh = gltf.scene;
         mesh.position.set(1.0, 1.0, -1.0);
         mesh.scale.set(0.012, 0.012, 0.012);
@@ -383,8 +382,6 @@ async function loadTrainer2(modelUrl) {
 
         // Set the time of the animation to correspond to the 28th frame
         trainer2_action1.time = (clip1.duration / 56) * 28;
-
-        console.log(clip1.duration);
 
         trainer2_action1.paused = true;
         trainer2_action1.play();
@@ -467,25 +464,25 @@ function moveCameraToTarget(targetPosition, targetLookAt, time) {
     lookAtY: currentLookAt.y,
     lookAtZ: currentLookAt.z,
   })
-    .to(
-      {
-        x: targetPosition.x,
-        y: targetPosition.y,
-        z: targetPosition.z,
-        lookAtX: targetLookAt.x,
-        lookAtY: targetLookAt.y,
-        lookAtZ: targetLookAt.z,
-      },
-      time * 1000
-    )
-    .easing(TWEEN.Easing.Quadratic.InOut)
-    .onUpdate((object) => {
-      // 카메라의 위치와 방향을 업데이트
-      orbitCamera.position.set(object.x, object.y, object.z);
-      orbitControls.target.set(object.lookAtX, object.lookAtY, object.lookAtZ);
-      orbitControls.update();
-    })
-    .start();
+  .to(
+    {
+      x: targetPosition.x,
+      y: targetPosition.y,
+      z: targetPosition.z,
+      lookAtX: targetLookAt.x,
+      lookAtY: targetLookAt.y,
+      lookAtZ: targetLookAt.z,
+    },
+    time * 1000
+  )
+  .easing(TWEEN.Easing.Quadratic.InOut)
+  .onUpdate((object) => {
+    // 카메라의 위치와 방향을 업데이트
+    orbitCamera.position.set(object.x, object.y, object.z);
+    orbitControls.target.set(object.lookAtX, object.lookAtY, object.lookAtZ);
+    orbitControls.update();
+  })
+  .start();
 }
 
 function moveCameraCircle() {
@@ -504,30 +501,30 @@ function moveCameraCircle() {
   currentTween = new TWEEN.Tween({
     t: (Math.PI * 1) / 2,
   })
-    .to(
-      {
-        t: Math.PI * 2 + (Math.PI * 1) / 2,
-      },
-      3 * 1000
-    )
-    .easing(TWEEN.Easing.Linear.None)
-    .onUpdate((object) => {
-      // 현재 각도 계산
-      const angle = object.t;
+  .to(
+    {
+      t: Math.PI * 2 + (Math.PI * 1) / 2,
+    },
+    3 * 1000
+  )
+  .easing(TWEEN.Easing.Linear.None)
+  .onUpdate((object) => {
+    // 현재 각도 계산
+    const angle = object.t;
 
-      // 카메라의 위치 설정
-      const newX = Math.cos(angle) * 7.0;
-      const newZ = Math.sin(angle) * 7.0;
-      orbitCamera.position.set(newX, 2.0, newZ);
+    // 카메라의 위치 설정
+    const newX = Math.cos(angle) * 7.0;
+    const newZ = Math.sin(angle) * 7.0;
+    orbitCamera.position.set(newX, 2.0, newZ);
 
-      // 카메라가 중심을 바라보도록 방향 설정
-      orbitCamera.lookAt(centerPoint);
-      orbitControls.target.copy(centerPoint);
-      orbitControls.update();
-    })
-    .onComplete(() => {
-      moveCameraDefault();
-    });
+    // 카메라가 중심을 바라보도록 방향 설정
+    orbitCamera.lookAt(centerPoint);
+    orbitControls.target.copy(centerPoint);
+    orbitControls.update();
+  })
+  .onComplete(() => {
+    moveCameraDefault();
+  });
 
   // Tween 시작
   currentTween.start();
@@ -535,8 +532,8 @@ function moveCameraCircle() {
 
 function moveCameraDefault() {
   // 현재 카메라의 위치와 방향
-  const currentPosition = orbitCamera.position.clone();
-  const currentLookAt = orbitControls.target.clone();
+  var currentPosition = orbitCamera.position.clone();
+  var currentLookAt = orbitControls.target.clone();
 
   // 이전에 실행 중이던 Tween이 있다면 중지
   if (currentTween) {
@@ -544,13 +541,40 @@ function moveCameraDefault() {
   }
 
   currentTween = new TWEEN.Tween({
-    x: 0.0,
-    y: 2.0,
-    z: 7.4,
-    lookAtX: 0,
-    lookAtY: 1.2,
-    lookAtZ: 0,
+    x: currentPosition.x,
+    y: currentPosition.y,
+    z: currentPosition.z,
+    lookAtX: currentLookAt.x,
+    lookAtY: currentLookAt.y,
+    lookAtZ: currentLookAt.z,
   })
+  .to(
+    {
+      x: 0.0,
+      y: 2.0,
+      z: 7.4,
+      lookAtX: 0,
+      lookAtY: 1.2,
+      lookAtZ: 0,
+    },
+    1 * 1000
+  )
+  .easing(TWEEN.Easing.Quadratic.InOut)
+  .onUpdate((object) => {
+    // 카메라의 위치와 방향을 업데이트
+    orbitCamera.position.set(object.x, object.y, object.z);
+    orbitControls.target.set(object.lookAtX, object.lookAtY, object.lookAtZ);
+    orbitControls.update();
+  })
+  .chain(
+    new TWEEN.Tween({
+      x: 0.0,
+      y: 2.0,
+      z: 7.4,
+      lookAtX: 0,
+      lookAtY: 1.2,
+      lookAtZ: 0,
+    })
     .to(
       {
         x: 3.0,
@@ -569,102 +593,125 @@ function moveCameraDefault() {
       orbitControls.target.set(object.lookAtX, object.lookAtY, object.lookAtZ);
       orbitControls.update();
     })
-    .onComplete(() => {
-      tween1.start();
-    });
-
-  const tween1 = new TWEEN.Tween({
-    x: 3.0,
-    y: 2.0,
-    z: 7.4,
-    lookAtX: 0,
-    lookAtY: 1.2,
-    lookAtZ: 0,
-  })
-    .to(
-      {
-        x: -3.0,
+    .chain(
+      new TWEEN.Tween({
+        x: 3.0,
         y: 2.0,
         z: 7.4,
         lookAtX: 0,
         lookAtY: 1.2,
         lookAtZ: 0,
-      },
-      6 * 1000
+      })
+      .to(
+        {
+          x: -3.0,
+          y: 2.0,
+          z: 7.4,
+          lookAtX: 0,
+          lookAtY: 1.2,
+          lookAtZ: 0,
+        },
+        6 * 1000
+      )
+      .easing(TWEEN.Easing.Quadratic.InOut)
+      .onUpdate((object) => {
+        // 카메라의 위치와 방향을 업데이트
+        orbitCamera.position.set(object.x, object.y, object.z);
+        orbitControls.target.set(object.lookAtX, object.lookAtY, object.lookAtZ);
+        orbitControls.update();
+      })
+      .onComplete(() => {
+        currentTween = new TWEEN.Tween({
+          x: -3.0,
+          y: 2.0,
+          z: 7.4,
+          lookAtX: 0,
+          lookAtY: 1.2,
+          lookAtZ: 0,
+        })
+        .to(
+          {
+            x: 0.0,
+            y: 2.0,
+            z: 7.4,
+            lookAtX: 0,
+            lookAtY: 1.2,
+            lookAtZ: 0,
+          },
+          3 * 1000
+        )
+        .easing(TWEEN.Easing.Quadratic.InOut)
+        .onUpdate((object) => {
+          // 카메라의 위치와 방향을 업데이트
+          orbitCamera.position.set(object.x, object.y, object.z);
+          orbitControls.target.set(object.lookAtX, object.lookAtY, object.lookAtZ);
+          orbitControls.update();
+        })
+        .chain(
+          new TWEEN.Tween({
+            x: 0.0,
+            y: 2.0,
+            z: 7.4,
+            lookAtX: 0,
+            lookAtY: 1.2,
+            lookAtZ: 0,
+          })
+          .to(
+            {
+              x: 3.0,
+              y: 2.0,
+              z: 7.4,
+              lookAtX: 0,
+              lookAtY: 1.2,
+              lookAtZ: 0,
+            },
+            3 * 1000
+          )
+          .easing(TWEEN.Easing.Quadratic.InOut)
+          .onUpdate((object) => {
+            // 카메라의 위치와 방향을 업데이트
+            orbitCamera.position.set(object.x, object.y, object.z);
+            orbitControls.target.set(object.lookAtX, object.lookAtY, object.lookAtZ);
+            orbitControls.update();
+          })
+          .chain(
+            new TWEEN.Tween({
+              x: 3.0,
+              y: 2.0,
+              z: 7.4,
+              lookAtX: 0,
+              lookAtY: 1.2,
+              lookAtZ: 0,
+            })
+            .to(
+              {
+                x: -3.0,
+                y: 2.0,
+                z: 7.4,
+                lookAtX: 0,
+                lookAtY: 1.2,
+                lookAtZ: 0,
+              },
+              6 * 1000
+            )
+            .easing(TWEEN.Easing.Quadratic.InOut)
+            .onUpdate((object) => {
+              // 카메라의 위치와 방향을 업데이트
+              orbitCamera.position.set(object.x, object.y, object.z);
+              orbitControls.target.set(object.lookAtX, object.lookAtY, object.lookAtZ);
+              orbitControls.update();
+            })
+            .onComplete(() => {
+              currentTween.start();
+            })
+          )
+        )
+        .start();
+      })
     )
-    .easing(TWEEN.Easing.Quadratic.InOut)
-    .onUpdate((object) => {
-      // 카메라의 위치와 방향을 업데이트
-      orbitCamera.position.set(object.x, object.y, object.z);
-      orbitControls.target.set(object.lookAtX, object.lookAtY, object.lookAtZ);
-      orbitControls.update();
-    })
-    .onComplete(() => {
-      tween2.start();
-    });
+  );
 
-  const tween2 = new TWEEN.Tween({
-    x: -3.0,
-    y: 2.0,
-    z: 7.4,
-    lookAtX: 0,
-    lookAtY: 1.2,
-    lookAtZ: 0,
-  })
-    .to(
-      {
-        x: 0.0,
-        y: 2.0,
-        z: 7.4,
-        lookAtX: 0,
-        lookAtY: 1.2,
-        lookAtZ: 0,
-      },
-      3 * 1000
-    )
-    .easing(TWEEN.Easing.Quadratic.InOut)
-    .onUpdate((object) => {
-      // 카메라의 위치와 방향을 업데이트
-      orbitCamera.position.set(object.x, object.y, object.z);
-      orbitControls.target.set(object.lookAtX, object.lookAtY, object.lookAtZ);
-      orbitControls.update();
-    })
-    .onComplete(() => {
-      currentTween.start();
-    });
-
-  const tween3 = new TWEEN.Tween({
-    x: currentPosition.x,
-    y: currentPosition.y,
-    z: currentPosition.z,
-    lookAtX: currentLookAt.x,
-    lookAtY: currentLookAt.y,
-    lookAtZ: currentLookAt.z,
-  })
-    .to(
-      {
-        x: 0.0,
-        y: 2.0,
-        z: 7.4,
-        lookAtX: 0,
-        lookAtY: 1.2,
-        lookAtZ: 0,
-      },
-      1 * 1000
-    )
-    .easing(TWEEN.Easing.Quadratic.InOut)
-    .onUpdate((object) => {
-      // 카메라의 위치와 방향을 업데이트
-      orbitCamera.position.set(object.x, object.y, object.z);
-      orbitControls.target.set(object.lookAtX, object.lookAtY, object.lookAtZ);
-      orbitControls.update();
-    });
-
-  tween3.start();
-
-  setTimeout(() => {
-    currentTween.start();
-  }, 1000);
+  currentTween.start();
 }
 
 // ---------------------------------------------------
@@ -795,7 +842,7 @@ const startProcess = async () => {
   const lerp = Kalidokit.Vector.lerp;
 
   // renderer
-  const renderer = new THREE.WebGLRenderer({ alpha: true });
+  renderer = new THREE.WebGLRenderer({ alpha: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(window.devicePixelRatio);
   document.body.appendChild(renderer.domElement);
@@ -861,47 +908,15 @@ const startProcess = async () => {
   // trainer1, 2 로드
   // 5/7 기준 아래 두 부분을 제외하면 ios 잘 작동함
 
-  //   await loadTrainer1("../static/assets/trainer.glb");
-  //   console.log("trainer1 load done");
+  await loadTrainer1("../static/assets/trainer.glb");
+  console.log("trainer1 load done");
 
-  //   await loadTrainer2("../static/assets/trainer2.glb");
-  //   console.log("trainer2 load done");
+  await loadTrainer2("../static/assets/trainer2.glb");
+  console.log("trainer2 load done");
 
   console.log("loaded all model");
   document.getElementById("loading-screen").style.display = "none";
-
-  // Main Render Loop
-  const clock = new THREE.Clock();
-
-  let mixer;
-  let mixer2;
-  let mixer3;
-  function animate() {
-    requestAnimationFrame(animate);
-
-    if (currentVrm) {
-      // Update model to render physics
-      currentVrm.update(clock.getDelta());
-    }
-    TWEEN.update();
-    orbitControls.update();
-    if (mixer) {
-      mixer.update(clock.getDelta());
-      // console.log("믹서1")
-    }
-
-    if (mixer2) {
-      mixer2.update(clock.getDelta());
-      // console.log("믹서2")
-    }
-
-    if (mixer3) {
-      mixer3.update(clock.getDelta());
-      // console.log("믹서3")
-    }
-
-    renderer.render(scene, orbitCamera);
-  }
+  // 애니메이션 시작
   animate();
 
   // Tween.js를 사용하여 애니메이션 적용
@@ -947,10 +962,9 @@ const startProcess = async () => {
 };
 
 // 이전 jsonCnt를 저장할 변수 선언
-let previousJsonCnt = "0";
-let previousJsonAccu = "-1";
+let previousJsonCnt = 0;
+let previousJsonAccu = 0;
 let switchAccu = 0;
-console.log("초기화");
 
 // ------------------------------
 // ** ajax 모듈 실행
@@ -971,8 +985,9 @@ function getAjax(CoordinateData) {
 
     success: async function (data) {
       var jsonCnt = data.json_data0;
-      var jsonAccuracy = data.json_data1;
-      var processAccuracy = parseFloat(jsonAccuracy);
+      var jsonScore = data.json_data1;
+      var jsonAccuracy = data.json_data2;
+      var processAccuracy = parseFloat(jsonScore);
       var receivedDataElement2 = document.getElementById("showCnt"); // HTML 요소 선택
       receivedDataElement2.innerHTML = "Count: " + jsonCnt; // HTML
       var receivedDataElement3 = document.getElementById("showSquatAcuu"); // HTML 요소 선택
@@ -987,9 +1002,9 @@ function getAjax(CoordinateData) {
 
       // 현재 jsonCnt와 이전 jsonCnt를 비교하여 값이 변경되었는지 확인
       if (jsonCnt !== previousJsonCnt) {
-        if (trainer2_action2 && trainer_action3) {
+        if (trainer_action2 && trainer_action3) {
           trainer_action2.stop();
-          trainer_action3.setDuration(0.005);
+          trainer_action3.setDuration(0.05);
           trainer_action3.play();
         }
 
@@ -1020,7 +1035,7 @@ function getAjax(CoordinateData) {
           });
 
           const textMaterial = new THREE.MeshStandardMaterial({
-            color: 0x507a03,
+            color: 0xffd400,
           }); // 텍스트 색상
           const textMesh = new THREE.Mesh(textGeometry, textMaterial);
 
@@ -1076,10 +1091,6 @@ function getAjax(CoordinateData) {
           }, 5000); // 1000ms = 1초
         });
 
-        // 이전 텍스트 메시지 제거
-        const previousTextMesh2 = scene.getObjectByName("cloudText");
-        scene.remove(previousTextMesh2);
-
         // 모델의 blendShapeProxy를 가져옴
         if (currentVrm !== undefined) {
           const blendShapeProxy = currentVrm.blendShapeProxy;
@@ -1097,15 +1108,6 @@ function getAjax(CoordinateData) {
           }, 3000); // 3초 후에 실행됨 (단위: 밀리초)
         }
 
-        moveCameraToTarget(
-          { x: 0.0, y: 1.8, z: 1.4 }, // 목표 위치
-          { x: -1.0, y: 1.4, z: 0.0 }, // 목표 방향
-          1 // 1초 동안 이동
-        );
-        setTimeout(() => {
-          moveCameraDefault();
-        }, 1000);
-
         // 주어진 운동 횟수를 다 채웠다면, 쉬는 시간을 가짐.
         // 만약 모든 세트를 다 마치면, 다음 화면으로 넘어감
         if (previousJsonCnt == TOTAL_NUM) {
@@ -1118,13 +1120,84 @@ function getAjax(CoordinateData) {
             setBreakTime();
           }
         }
+        moveCameraToTarget(
+          { x: 0.0, y: 1.8, z: 1.4 }, // 목표 위치
+          { x: -1.0, y: 1.4, z: 0.0 }, // 목표 방향
+          1 // 1초 동안 이동
+        );
+        setTimeout(() => {
+          moveCameraDefault();
+        }, 1000);
       }
-      if (parseFloat(jsonAccuracy) < 80 && jsonAccuracy !== previousJsonAccu) {
+      if (parseFloat(jsonScore) < 80 && jsonScore !== previousJsonAccu) {
+
         if (trainer_action2 !== undefined && trainer_action1 !== undefined) {
           trainer_action2.stop();
-          trainer_action1.setDuration(0.002);
+          trainer_action1.setDuration(0.05);
           trainer_action1.play();
         }
+        // 말풍선 생성 및 삭제
+        const loader = new THREE.GLTFLoader();
+        const fontLoader = new THREE.FontLoader();
+        
+        loader.load("../../static/assets/speech_bubble.gltf", (gltf) => {
+          const mesh = gltf.scene;
+          mesh.position.set(-2.6, 1.8, -0.5);
+          mesh.rotation.set(0, 0.7, 0);
+          mesh.scale.set(0.003, 0.005, 0.003);
+          scene.add(mesh);
+          var badJoints = ["무릎사이 간격", "발사이 간격"];
+          var feedbackText = "";
+          console.log(jsonAccuracy[4]);
+          console.log(jsonAccuracy[5]);
+          console.log(jsonAccuracy[14]);
+          console.log(jsonAccuracy[15]);
+          console.log("-------------");
+          console.log(jsonAccuracy[20]);
+          console.log(jsonAccuracy[21]);
+          console.log(jsonAccuracy[22]);
+          console.log("=============");
+          if (jsonAccuracy[4]==0 || jsonAccuracy[5]==0 || jsonAccuracy[14]==0 || jsonAccuracy[15]==0)
+            feedbackText = feedbackText + "\n" + badJoints[0];
+          if (jsonAccuracy[20]==0 || jsonAccuracy[21]==0 || jsonAccuracy[22]==0)
+            feedbackText = feedbackText + "\n" + badJoints[1];
+          if (feedbackText=="")
+            feedbackText = "\nUndefined";
+          // 말풍선 글씨
+          fontLoader.load(
+            "../../static/fonts/DungGeunMo_Regular.json",
+            function (font) {
+              const textGeometry = new THREE.TextGeometry(feedbackText+"\n조정 필요", {
+                font: font,
+                size: 1,
+                height: 0.1,
+                bevelEnabled: true, // 윤곽선 활성화
+                bevelSize: 0.03, // 윤곽선 크기
+                bevelThickness: 0.03, // 윤곽선 두께
+              });
+
+              const textMaterial = new THREE.MeshStandardMaterial({
+                color: 0x507a03,
+              }); // 텍스트 색상
+              const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+
+              // 윤곽선 색상을 검정색(0x000000)으로 설정
+              textMaterial.emissive.setHex(0x000000);
+              textMesh.name = "cloudText";
+              textMesh.position.set(-3.0, 2.3, 0.6);
+              textMesh.rotation.set(0, 0.7, 0);
+              textMesh.scale.set(0.2, 0.2, 0.2);
+              scene.add(textMesh);
+            }
+          );
+
+          // 5초 후에 GLTF를 삭제하는 함수 호출
+          setTimeout(() => {
+            const previousTextMesh2 = scene.getObjectByName("cloudText");
+            scene.remove(previousTextMesh2); // 이전 텍스트 메시지 제거
+            scene.remove(mesh); // Scene에서 mesh 제거
+          }, 5000); // 1000ms = 1초
+        });
 
         setTimeout(() => {
           if (trainer_action2 !== undefined && trainer_action1 !== undefined) {
@@ -1161,7 +1234,7 @@ function getAjax(CoordinateData) {
         }, 1000);
       }
       // 변경된 경우에만 처리
-      previousJsonAccu = jsonAccuracy; // 이전 jsonCnt 업데이트
+      previousJsonAccu = jsonScore; // 이전 jsonCnt 업데이트
 
       //aframe 가상환경 안에  텍스트 로드
       //const shoulderText2 = document.querySelector('#shoulderText2');
@@ -1669,6 +1742,47 @@ let trainer2_action2;
 /* THREEJS WORLD SETUP */
 let currentVrm = undefined;
 
+let renderer;
+
+// Main Render Loop
+const clock = new THREE.Clock();
+
+let mixer;
+let mixer2;
+let mixer3;
+
+function animate() {
+  requestAnimationFrame(animate);
+
+  if (currentVrm) {
+    // Update model to render physics
+    currentVrm.update(clock.getDelta());
+  }
+  TWEEN.update();
+
+  if (orbitControls) {
+    orbitControls.update();
+  }
+  if (mixer) {
+    mixer.update(clock.getDelta());
+    // console.log("믹서1")
+  }
+
+  if (mixer2) {
+    mixer2.update(clock.getDelta());
+    // console.log("믹서2")
+  }
+
+  if (mixer3) {
+    mixer3.update(clock.getDelta());
+    // console.log("믹서3")
+  }
+  if (renderer) {
+    renderer.render(scene, orbitCamera);
+  }
+}
+
+
 /* SETUP MEDIAPIPE HOLISTIC INSTANCE */
 const holistic = new Holistic({
   locateFile: (file) => {
@@ -1720,7 +1834,7 @@ const setupCamera = () => {
     },
     width: 640,
     height: 480,
-    // facingMode: "environment", //학교에서 빌린 웹캠은 후면카메라로 인식되어서 코드 추가함
+    facingMode: "environment", //학교에서 빌린 웹캠은 후면카메라로 인식되어서 코드 추가함
   });
   camera.start();
 };
