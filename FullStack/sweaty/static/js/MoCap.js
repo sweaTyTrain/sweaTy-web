@@ -1834,7 +1834,7 @@ const setupCamera = () => {
     },
     width: 640,
     height: 480,
-    // facingMode: "environment", //학교에서 빌린 웹캠은 후면카메라로 인식되어서 코드 추가함
+    facingMode: "environment", //학교에서 빌린 웹캠은 후면카메라로 인식되어서 코드 추가함
   });
   camera.start();
 };
