@@ -8,29 +8,39 @@
   <style>
 
     body {
-      background-color: rgb(227, 238, 220);
+      background-color: rgb(209, 224, 245);
       font-family: 'DungGeunMo', sans-serif; /* DungGeunMo 폰트를 사용하거나, 사용할 수 없을 경우 sans-serif를 대비로 지정 */
     }
 
     .navbar {
-      background-color: #91c82a;
+      background-color: #a7c8ff;
       margin-bottom: 3%;
     }
 
     .navbar a {
       color: rgb(139, 115, 200);
     }
+
+    .instruction {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 70px;
+      color: #003ea8;
+      margin-bottom: 5%;
+      text-shadow: 3px 4px 5px #002a72;
+    }
     
     .button-container {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 10%;
+      margin-bottom: 9%;
     }
 
     .button-container button {
       flex: 1;
-      border: 0.4rem solid #91c82a;
-      background: #91c82a;
+      border: 0.4rem solid #a7c8ff;
+      background: #afc9f6;
       cursor: pointer;
       width: calc(25% - 0.5rem); /* 버튼이 컨테이너를 가로로 꽉 차게 하기 위해 4개의 버튼에 대한 너비를 계산 */
       max-width: 20rem; /* 최대 너비 설정 */
@@ -54,7 +64,7 @@
     .button-container button span {
       font-size: 2rem;
       font-weight: bold;
-      color: #91c82a;
+      color: #003ea8;
       font-family: 'DungGeunMo', sans-serif; /* DungGeunMo 폰트를 사용하거나, 사용할 수 없을 경우 sans-serif를 대비로 지정 */
 }
 
@@ -62,15 +72,6 @@
       box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* 마우스를 올렸을 때 음영 변경 */
     }
 
-    .instruction {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 70px;
-      color: #91c82a;
-      margin-bottom: 2%;
-      text-shadow: 3px 4px 5px #3f5713;
-    }
 
     .copyright {
       font-size: 10px;
