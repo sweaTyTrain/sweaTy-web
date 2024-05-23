@@ -1,0 +1,94 @@
+body {
+    height: 100vh;
+    background: radial-gradient(ellipse at bottom, grey 0%, #090a0f 100%);
+    overflow: hidden; 
+  }
+
+.snow{
+  width: 10px;
+  height: 12px;
+  opacity: 0.5;
+  background: #fff;
+  animation: snow 10s linear infinite;
+  animation-duration: 3s;
+}
+
+.snow:nth-of-type(n) {
+  width: 10px;
+  height: 8px;
+  opacity: 0.5; /* 직사각형 요소의 투명도를 0.8로 설정 */
+  background: #ABF200;
+  animation-duration: 3s;
+}
+
+.snow:nth-of-type(2n) {
+  width: 10px;
+  height: 8px;  
+  opacity: 0.8; /* 직사각형 요소의 투명도를 0.8로 설정 */
+  background: skyblue;
+  animation-duration: 3s;
+}
+
+.snow:nth-of-type(7n+1) {
+    width:10px;
+    height: 7px;
+    opacity: 0.8; /* 직사각형 요소의 투명도를 0.8로 설정 */
+    background: #FAED7D;
+    animation-duration: 3s;
+}
+
+.snow:nth-of-type(10n) {
+    width:10px;
+    height: 8px;
+    opacity: 0.8; /* 직사각형 요소의 투명도를 0.8로 설정 */
+    background: #FFC19E;
+    animation-duration: 3s;
+}  
+
+.snow:nth-of-type(2n+1) {
+  width: 14px;
+  height: 8px;
+  opacity: 0.8; /* 직사각형 요소의 투명도를 0.8로 설정 */
+  background: #FFB2D9;
+  animation-duration: 3s;
+}
+
+.snow:nth-of-type(9n) {
+  width: 8px;
+  height: 9px;
+  opacity: 0.8; /* 직사각형 요소의 투명도를 0.8로 설정 */
+  background: #3DB7CC;
+  animation-duration: 3s;
+}
+
+/* 애니메이션 지정 */
+@keyframes snow {
+  0%{
+    opacity: 1;
+    transform: translateY(-100vh) rotate(45deg) scale(1);
+  }
+  20%{
+    opacity: 1;
+    transform: translate(-15px, 20vh) rotate(90deg) scale(1.5); /* 20% 구간에서 회전 설정 */
+  }
+  40%{
+    opacity: 1;
+    transform: translate(-15px, 40vh) rotate(45deg) scale(1);
+  }
+  60%{
+    opacity: 1;
+    transform: translate(-15px, 60vh) rotate(90deg) scale(1.5);
+  }
+  80%{
+    opacity: 1;
+    transform: translate(-15px, 80vh) rotate(90deg) scale(1); /* 80% 구간에서 회전 설정 */
+  }
+
+  100%{
+    opacity: 1;
+    transform: translateY(100vh) rotate(45deg) scale(2); /* 회전 각도를 405도로 변경하여 360도를 회전한 후에도 회전이 계속될 수 있도록 설정 */
+
+  }
+}
+  
+  

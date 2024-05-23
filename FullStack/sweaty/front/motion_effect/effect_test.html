@@ -1,0 +1,41 @@
+<!-- 웹 화면에 이펙트를 적용합니다.
+1. style_snow.css 파일을 링크 시에는 밑에 setTimeout 함수를 주석 처리 하세요. -->
+
+<!DOCTYPE html>
+<html lang="ko">
+<head> 
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewpoint" content=""width=device-width, initial-scale="1.0">
+    <title>Snow</title>
+    <link rel="stylesheet" href="style_snow.css">
+</head>
+<body>
+    <div class="snow"></div>
+    <script>
+        function createSnow(){
+            const el = document.createElement("div");
+            el.classList.add('snow');
+            el.style.marginLeft = randomPosition() + 'px';
+            document.body.appendChild(el);
+        }
+        function randomPosition(){
+            return Math.floor(Math.random() * window.innerWidth);
+        }
+        for(let i=0; i<300; i++) {
+            createSnow();
+        }
+
+        // 5초 후에 눈 요소들의 움직임을 멈추고 지웁니다.(style_snow.css 링크 시 이하 코드 주석처리)
+        setTimeout(function() {
+            // 모든 snow 클래스를 가진 요소들을 선택합니다.
+            const snowElements = document.querySelectorAll('.snow');
+            // 각 요소를 순회하면서 제거합니다.
+            snowElements.forEach(function(el) {
+                el.parentNode.removeChild(el);
+            });
+        }, 3000);
+
+    </script>
+</body>
+</html>
