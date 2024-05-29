@@ -1144,6 +1144,9 @@ function getAjax(CoordinateData) {
         // 만약 모든 세트를 다 마치면, 다음 화면으로 넘어감 X
         if (previousJsonCnt == TOTAL_NUM) {
           console.log("운동 끝");
+          setTimeout(() => {
+            window.location.assign('../firework');
+          }, 2000);
           currentSet += 1;
 
           // 모든 세트를 다 채운 케이스

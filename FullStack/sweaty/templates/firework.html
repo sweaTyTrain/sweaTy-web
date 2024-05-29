@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html>
-  <head></head>
+  <head>
+    <style>
+        @font-face {
+        font-family: "DungGeunMo";
+        src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/DungGeunMo.woff")
+          format("woff");
+        font-weight: normal;
+        font-style: normal;
+      }
+    </style>
+  </head>
   <body> 
     <!-- <h1>운동 목표를 달성했네요!</h1>
     <link rel="stylesheet" href="style_firework.css"> -->
@@ -115,75 +125,73 @@
       }
     
       function animate() {
-          let startTime = Date.now(); // 시작 시간 기록
-    
-          function frame() {
-              let currentTime = Date.now(); // 현재 시간 기록
-              let elapsedTime = (currentTime - startTime) / 1000; // 경과 시간 (초 단위)
-    
-              if (elapsedTime < 10) { // 10초 동안 애니메이션 실행
-                  // 오디오 요소 생성 및 재생 (한 번만 재생)
-                  if (elapsedTime < 0.1) {
-                      var audio = new Audio('FullStack/sweaty/avatar/motion_effect/mp3-output-ttsfree(dot)com (1).mp3');
-                      audio.play();
-                  }
-    
-                  if (!document.getElementById("exerciseAccuracyText")) {
-                      // "운동 정확도가 90% 넘었어요!" 텍스트 추가
-                      let textElement = document.createElement("div");
-                      textElement.id = "exerciseAccuracyText";
-                      textElement.textContent = "운동 정확도가 90% 넘었어요!";
-                      textElement.style.position = "absolute";
-                      textElement.style.top = "50%";
-                      textElement.style.left = "50%";
-                      textElement.style.transform = "translate(-50%, -50%)";
-                      textElement.style.color = "white";
-                      textElement.style.fontSize = "35px";
-                      textElement.style.width = "300px";
-                      textElement.style.textAlign = "center";
-                      textElement.style.whiteSpace = "nowrap";
-                      textElement.style.fontWeight = "bold";
-    
-                      document.body.appendChild(textElement);
-                  }
-    
-                  window.requestAnimationFrame(frame);
-    
-                  c.fillStyle = `rgba(0,0,0,${config.fill})`;
-                  c.fillRect(0, 0, canvas.width, canvas.height);
-    
-                  fireworkArray.forEach((fw, index) => {
-                      fw.update(c);
-    
-                      if (fw.life) {
-                          fireworkArray.splice(index, 1);
-                      }
-                  });
-    
-                  sparkArray.forEach((s, index) => {
-                      if (s.life <= 0) {
-                          sparkArray.splice(index, 1);
-                      }
-    
-                      s.update(c);
-                  });
-    
-                  init();
-              } else {
-                  // 애니메이션이 종료되면
-                  fireworkArray = [];
-                  sparkArray = [];
-                  document.body.removeChild(canvas);
-    
-                  let textElement = document.getElementById("exerciseAccuracyText");
-                  if (textElement) {
-                      document.body.removeChild(textElement);
-                  }
-              }
-          }
-    
-          frame(); // frame 함수 호출
-      }
+    let startTime = Date.now(); // 시작 시간 기록
+
+    function frame() {
+        let currentTime = Date.now(); // 현재 시간 기록
+
+        // 경과 시간 (초 단위) 계산하지 않음
+
+        // 오디오 요소 생성 및 재생 (한 번만 재생)은 여기서 제거
+
+        if (!document.getElementById("exerciseAccuracyText")) {
+            // "운동 정확도가 90% 넘었어요!" 텍스트 추가
+            let textElement = document.createElement("div");
+            textElement.id = "exerciseAccuracyText";
+            textElement.textContent = "오.운.완!";
+            textElement.style.fontFamily = "DungGeunMo";
+            textElement.style.position = "absolute";
+            textElement.style.top = "50%";
+            textElement.style.left = "50%";
+            textElement.style.transform = "translate(-50%, -50%)";
+            textElement.style.color = "#003ea8";
+            textElement.style.fontSize = "100px";
+            textElement.style.textAlign = "center";
+            textElement.style.whiteSpace = "nowrap";
+            document.body.appendChild(textElement);
+
+            let textElement2 = document.createElement("div");
+            textElement2.id = "exerciseAccuracyText";
+            textElement2.textContent = "병아리 콩 3개 만큼 운동했어요";
+            textElement2.style.fontFamily = "DungGeunMo";
+            textElement2.style.position = "absolute";
+            textElement2.style.top = "60%";
+            textElement2.style.left = "50%";
+            textElement2.style.transform = "translate(-50%, -50%)";
+            textElement2.style.color = "#003ea8";
+            textElement2.style.fontSize = "60px";
+            textElement2.style.textAlign = "center";
+            textElement2.style.whiteSpace = "nowrap";
+            document.body.appendChild(textElement2);
+        }
+
+        window.requestAnimationFrame(frame);
+
+        c.fillStyle = `rgba(255,255,255,${config.fill})`;
+        c.fillRect(0, 0, canvas.width, canvas.height);
+
+        fireworkArray.forEach((fw, index) => {
+            fw.update(c);
+
+            if (fw.life) {
+                fireworkArray.splice(index, 1);
+            }
+        });
+
+        sparkArray.forEach((s, index) => {
+            if (s.life <= 0) {
+                sparkArray.splice(index, 1);
+            }
+
+            s.update(c);
+        });
+
+        init(); // init 함수 호출 (새로운 폭죽 생성)
+    }
+
+    frame(); // frame 함수 호출
+}
+
     
       animate();
     });
