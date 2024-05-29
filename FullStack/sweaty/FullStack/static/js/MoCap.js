@@ -1,6 +1,6 @@
 // 모바일 확인
-const isMobile = /(Macintosh|iPad|Android|BlackBerry|Windows Phone)/i.test(
-  navigator.userAgent
+const isMobile = /(iPhone|iPad|Android|BlackBerry|Windows Phone)/i.test(
+    navigator.userAgent
 );
 console.log(navigator.userAgent);
 console.log("isMobile: ", isMobile);
