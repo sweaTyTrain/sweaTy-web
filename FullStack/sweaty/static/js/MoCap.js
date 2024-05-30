@@ -1205,7 +1205,7 @@ function getAjax(CoordinateData) {
             jsonAccuracy[22] == 0
           )
             feedbackText = feedbackText + "\n" + badJoints[1];
-          if (feedbackText == "") feedbackText = "\nUndefined";
+          if (feedbackText == "") feedbackText = "\n고관절 각도";
           // 말풍선 글씨
           fontLoader.load(
             "../../static/fonts/DungGeunMo_Regular.json",

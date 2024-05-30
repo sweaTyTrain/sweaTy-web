@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import index,second,video_feed,test, firework,end
+from .views import index,second,video_feed,test, firework
 
 from django.conf import settings
 from django.conf.urls.static import static
@@ -11,8 +11,6 @@ urlpatterns = [
     path('test/', test, name='test'),   #jsonresponse 페이지
     path('second/', second, name='second'),    #아바타 뷰 url
     path('firework/', firework, name='firework'),
-    path('end/',end,name='end'),
-
 ]
 
 if settings.DEBUG:
