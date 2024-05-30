@@ -1192,6 +1192,7 @@ function getAjax(CoordinateData) {
           console.log(jsonAccuracy[21]);
           console.log(jsonAccuracy[22]);
           console.log("=============");
+          console.log(jsonAccuracy);
           if (
             jsonAccuracy[4] == 0 ||
             jsonAccuracy[5] == 0 ||
