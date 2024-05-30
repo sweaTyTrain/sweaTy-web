@@ -1712,7 +1712,7 @@ const animateVRM = (vrm, results) => {
 // ** 세트 수, 1세트당 횟수, 쉬는시간 변수 **
 
 const TOTAL_SET = 2;
-const TOTAL_NUM = 10;
+const TOTAL_NUM = 5;
 const BREAK_TIME_NUM = 2; // 단위 : 초
 
 let currentSet = 0;
