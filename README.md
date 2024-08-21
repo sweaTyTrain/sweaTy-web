@@ -1,4 +1,5 @@
 # sweaTy-web
+### Workout Web App (AI Model + Avatar + Game Effects)
 ### 웹앱 상으로 운동중 화면을 만듭니다. (인공지능 모델 + 아바타 + 게임효과)
 
 
